@@ -3,6 +3,7 @@
 # custom
 .vscode/
 *.lock
+!next.lock
 
 # dependencies
 /node_modules
