@@ -160,7 +160,7 @@ export async function getServerSideProps({
 }: GetServerSidePropsContext) {
     const secret = process.env.NEXTAUTH_SECRET
     const tokenJWT = await getToken({ req, secret })
-    console.log('JSON Web Token', tokenJWT)
+    // console.log('JSON Web Token', tokenJWT)
     return {
         props: {
             tokenJWT,
