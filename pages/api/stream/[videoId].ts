@@ -2,9 +2,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { PassThrough } from 'stream'
 import { getURLVideoID, getVideoID, validateID, validateURL } from 'ytdl-core'
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ytdl = require('ytdl-core')
 const FFmpeg = require('fluent-ffmpeg')
 const fs = require('fs')
+FFmpeg.setFfmpegPath(ffmpegPath)
 
 type Data = {
     name: string
