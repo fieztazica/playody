@@ -45,7 +45,6 @@ export default NextAuth({
     pages: {
         signIn: "/login"
     },
-
     callbacks: {
         async session({ session, token, user }: any) {
             session.accessToken = (token as ExtendedToken).accessToken

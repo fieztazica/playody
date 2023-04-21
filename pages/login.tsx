@@ -15,7 +15,8 @@ const Login = ({ providers }: Props) => {
 		<div className='flex flex-col justify-center items-center bg-black h-screen'>
 			<button
 				className='bg-[#18D860] text-white p-5 rounded-full'
-				onClick={() => {
+				onClick={(e) => {
+                    e.preventDefault();
 					signIn(providerId, { callbackUrl: '/' })
 				}}
 			>
