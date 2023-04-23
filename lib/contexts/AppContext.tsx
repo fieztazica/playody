@@ -1,4 +1,4 @@
-import { AppCtxType, TokenError, ExtendedSession } from '@/types';
+import { AppCtxType, TokenError, ExtendedSession } from '@/typings';
 import { signIn, useSession } from 'next-auth/react';
 import { createContext, useContext, useEffect, useState } from 'react';
 

@@ -1,4 +1,4 @@
-import { ExtendedSession, TokenError } from '@/types'
+import { ExtendedSession, TokenError } from '@/typings'
 import { signIn, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { spotifyApi } from '../config/spotify'

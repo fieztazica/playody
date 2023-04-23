@@ -1,4 +1,4 @@
-import { ExtendedToken, TokenError } from "@/types";
+import { ExtendedToken, TokenError } from "@/typings";
 import { spotifyApi, scopes } from "@/lib/config/spotify";
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";

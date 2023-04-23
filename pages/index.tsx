@@ -4,10 +4,11 @@ import Link from 'next/link'
 import { JWT, getToken } from 'next-auth/jwt'
 import { GetServerSidePropsContext } from 'next'
 import Script from 'next/script'
-import { Suspense, useEffect, useState } from 'react'
+import { ChangeEvent, Suspense, useEffect, useState } from 'react'
 import useSpotify from '@/lib/hooks/useSpotify'
 import { spotifyApi } from '@/lib/config/spotify'
 import SpotifyWebApi from 'spotify-web-api-node'
+import { Button, Input } from '@chakra-ui/react'
 
 declare global {
     interface Window {
@@ -34,6 +35,10 @@ export default function Home({ tokenJWT }: { tokenJWT: JWT }) {
 
     const playSong = (uri: string) => {
         spotifyApi.play({ context_uri: uri, device_id: deviceId })
+    }
+
+    const setVolume = (e: ChangeEvent<HTMLInputElement>) => {
+        spotifyApi.setVolume(e.target?.value as unknown as number || 50)
     }
 
     useEffect(() => {
@@ -112,32 +117,33 @@ export default function Home({ tokenJWT }: { tokenJWT: JWT }) {
                 id="spotify-player"
                 src="https://sdk.scdn.co/spotify-player.js"
             ></Script>
-            <main className="flex min-h-screen flex-col items-center p-24">
+            <main className="tw-flex tw-min-h-screen tw-flex-col tw-items-center tw-p-24">
                 <p>
                     {status} as {session?.user?.name}
                 </p>
+                <audio className='tw-hidden' src="/api/yt/SSojHpCIcdg" controls></audio>
                 <p>Playing: {title}</p>
                 <button id="togglePlay">Toggle Play</button>
                 <p>{session?.user?.email}</p>
-                <label>
-                    Query:
-                    <input
+                <div className="tw-min-w-fit">
+                    <Input
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        className="text-black"
                         onBlur={() => findSong()}
-                    ></input>
-                </label>
+                    />
+                </div>
+
                 <div className="p-5">
                     {searchResults.map((v, i) => (
                         <div key={i.toString()}>
                             <a href={v.external_urls.spotify}>{v.name}</a>
-                            <button
-                                className="ml-2 px-1 bg-white rounded text-black"
+                            <Button
+                                ml={2}
+                                size={'xs'}
                                 onClick={() => playSong(v.album.uri)}
                             >
                                 Play
-                            </button>
+                            </Button>
                         </div>
                     ))}
                 </div>
