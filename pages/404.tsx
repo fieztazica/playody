@@ -1,26 +1,33 @@
-import Link from "next/link"
+import { Button, Heading } from '@chakra-ui/react'
+import Link from 'next/link'
 
 function NotFound() {
     return (
-        <main className="grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
-            <div className="text-center">
-                <p className="text-base font-semibold text-indigo-600">404</p>
-                <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-5xl">
+        <main className="tw-grid tw-min-h-full tw-place-items-center tw-px-6 tw-py-24 tw-sm:py-32 tw-lg:px-8">
+            <div className="tw-text-center">
+                <Heading
+                    as="h4"
+                    fontSize={'2xl'}
+                    className="tw-text-base tw-font-semibold tw-text-indigo-600"
+                >
+                    404
+                </Heading>
+                <Heading
+                    as="h1"
+                    className="tw-mt-4 tw-text-3xl tw-font-bold tw-tracking-tight tw-sm:text-5xl"
+                >
                     Page not found
-                </h1>
-                <p className="mt-6 text-base leading-7 text-gray-400">
+                </Heading>
+                <p className="tw-mt-6 tw-text-base tw-leading-7 tw-text-gray-400">
                     Sorry, we couldn’t find the page you’re looking for.
                 </p>
-                <div className="mt-10 flex items-center justify-center gap-x-6">
-                    <Link
-                        href="/"
-                        className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
+                <div className="tw-mt-10 tw-flex tw-items-center tw-justify-center tw-gap-x-6">
+                    <Button as={Link} href="/" colorScheme="teal">
                         Go back home
-                    </Link>
-                    <a href="https://owlvernyte.tk/to" className="text-sm font-semibold text-gray-200">
+                    </Button>
+                    <Button as={Link} href="https://owlvernyte.tk/to">
                         Contact support <span aria-hidden="true">&rarr;</span>
-                    </a>
+                    </Button>
                 </div>
             </div>
         </main>
