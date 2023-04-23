@@ -1,5 +1,8 @@
+import { NextPage } from 'next'
 import { Session, User } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
+import { AppProps } from 'next/app'
+import { ReactElement, ReactNode } from 'react'
 
 export enum TokenError {
     RefreshAccessTokenError = 'RefreshAccessTokenError'
@@ -44,4 +47,12 @@ interface Image {
 
 export type AppCtxType = {
     theme: "dark" | "light"
+}
+
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+    getLayout?: (page: ReactElement) => ReactNode
+}
+
+export type AppPropsWithLayout = AppProps & {
+    Component: NextPageWithLayout
 }

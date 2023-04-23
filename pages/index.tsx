@@ -9,6 +9,7 @@ import useSpotify from '@/lib/hooks/useSpotify'
 import { spotifyApi } from '@/lib/config/spotify'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { Button, Input } from '@chakra-ui/react'
+import MainLayout from '@/components/layouts/MainLayout'
 
 declare global {
     interface Window {
@@ -16,7 +17,7 @@ declare global {
     }
 }
 
-export default function Home({ tokenJWT }: { tokenJWT: JWT }) {
+const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
     const { data: session, status } = useSession()
     const spotifyApi = useSpotify()
     const [searchResults, setSearchResults] = useState<
@@ -24,104 +25,28 @@ export default function Home({ tokenJWT }: { tokenJWT: JWT }) {
     >([])
     const [query, setQuery] = useState<string>('')
     const [title, setTitle] = useState<string>('')
-    const [deviceId, setDeviceId] = useState<string>('')
 
     const findSong = () => {
-        spotifyApi.search(query, ['track']).then((r) => {
-            console.log(r.body.tracks?.items)
-            setSearchResults(r.body.tracks?.items!)
-        })
+        if (query)
+            spotifyApi.search(query, ['track']).then((r) => {
+                console.log(r.body.tracks?.items)
+                setSearchResults(r.body.tracks?.items!)
+            })
     }
 
-    const playSong = (uri: string) => {
-        spotifyApi.play({ context_uri: uri, device_id: deviceId })
-    }
-
-    const setVolume = (e: ChangeEvent<HTMLInputElement>) => {
-        spotifyApi.setVolume(e.target?.value as unknown as number || 50)
-    }
-
-    useEffect(() => {
-        window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = tokenJWT.accessToken
-            console.log(token)
-            //@ts-ignore
-            const player = new Spotify.Player({
-                name: 'Web Playback SDK Quick Start Player',
-                //@ts-ignore
-                getOAuthToken: (cb) => {
-                    cb(token)
-                },
-                volume: 0.5,
-            })
-
-            // Ready
-            //@ts-ignore
-            player.addListener('ready', ({ device_id }) => {
-                console.log('Ready with Device ID', device_id)
-                setDeviceId(device_id)
-            })
-
-            // Not Ready
-            //@ts-ignore
-            player.addListener('not_ready', ({ device_id }) => {
-                console.log('Device ID has gone offline', device_id)
-            })
-
-            //@ts-ignore
-            player.addListener('initialization_error', ({ message }) => {
-                console.error(message)
-            })
-
-            player.addListener(
-                'player_state_changed',
-                ({
-                    //@ts-ignore
-                    position,
-                    //@ts-ignore
-                    duration,
-                    //@ts-ignore
-                    track_window: { current_track },
-                }) => {
-                    console.log('Currently Playing', current_track)
-                    setTitle(
-                        `${current_track.name} / ${current_track.artists[0].name}`
-                    )
-                    console.log('Position in Song', position)
-                    console.log('Duration of Song', duration)
-                }
-            )
-
-            //@ts-ignore
-            player.addListener('authentication_error', ({ message }) => {
-                console.error(message)
-            })
-
-            //@ts-ignore
-            player.addListener('account_error', ({ message }) => {
-                console.error(message)
-            })
-
-            //@ts-ignore
-            document.getElementById('togglePlay').onclick = function () {
-                player.togglePlay()
-            }
-
-            player.connect()
-        }
-    }, [])
+    useEffect(() => {}, [])
 
     return (
         <>
-            <Script
-                id="spotify-player"
-                src="https://sdk.scdn.co/spotify-player.js"
-            ></Script>
-            <main className="tw-flex tw-min-h-screen tw-flex-col tw-items-center tw-p-24">
+            <main className="tw-flex tw-flex-col tw-items-center tw-p-24 ">
                 <p>
                     {status} as {session?.user?.name}
                 </p>
-                <audio className='tw-hidden' src="/api/yt/SSojHpCIcdg" controls></audio>
+                <audio
+                    className="tw-hidden"
+                    src="/api/yt/SSojHpCIcdg"
+                    controls
+                ></audio>
                 <p>Playing: {title}</p>
                 <button id="togglePlay">Toggle Play</button>
                 <p>{session?.user?.email}</p>
@@ -140,7 +65,7 @@ export default function Home({ tokenJWT }: { tokenJWT: JWT }) {
                             <Button
                                 ml={2}
                                 size={'xs'}
-                                onClick={() => playSong(v.album.uri)}
+                                onClick={() => console.log(v.album.uri)}
                             >
                                 Play
                             </Button>
@@ -159,6 +84,12 @@ export default function Home({ tokenJWT }: { tokenJWT: JWT }) {
         </>
     )
 }
+
+Home.getLayout = (page: React.ReactElement) => {
+    return <MainLayout>{page}</MainLayout>
+}
+
+export default Home
 
 export async function getServerSideProps({
     req,
