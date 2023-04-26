@@ -8,7 +8,7 @@ import { ChangeEvent, Suspense, useEffect, useState } from 'react'
 import useSpotify from '@/lib/hooks/useSpotify'
 import { spotifyApi } from '@/lib/config/spotify'
 import SpotifyWebApi from 'spotify-web-api-node'
-import { Button, Input } from '@chakra-ui/react'
+import { Box, Button, Input } from '@chakra-ui/react'
 import MainLayout from '@/components/layouts/MainLayout'
 
 declare global {
@@ -42,13 +42,13 @@ const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
                 <p>
                     {status} as {session?.user?.name}
                 </p>
-                <audio
+                {/* <audio
                     className="tw-hidden"
                     src="/api/yt/SSojHpCIcdg"
                     controls
-                ></audio>
+                ></audio> */}
                 <p>Playing: {title}</p>
-                <button id="togglePlay">Toggle Play</button>
+                {/* <button id="togglePlay">Toggle Play</button> */}
                 <p>{session?.user?.email}</p>
                 <div className="tw-min-w-fit">
                     <Input
