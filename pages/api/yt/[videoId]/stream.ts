@@ -22,6 +22,7 @@ export default async function handler(
         for await (const chunk of streamify(`http://youtube.com/watch?v=${validateYoutube(decodeURIComponent(videoId as string))}`)) {
             res.write(chunk)
         }
+        res.writeHead(204);
         res.end()
     } catch (err) {
         console.error(err)
