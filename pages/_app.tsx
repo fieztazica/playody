@@ -4,6 +4,7 @@ import { AppCtxProvider } from '@/lib/contexts/AppContext'
 import { ChakraProvider } from '@chakra-ui/react'
 import { AppPropsWithLayout } from '@/typings'
 import { theme } from '@/lib/theme'
+import { AudioCtxProvider } from '@/lib/contexts/AudioContext'
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
     const getLayout = Component.getLayout ?? ((page) => page)
@@ -12,7 +13,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         <ChakraProvider theme={theme}>
             <SessionProvider session={pageProps.session}>
                 <AppCtxProvider>
-                    {getLayout(<Component {...pageProps} />)}
+                    <AudioCtxProvider>
+                        {getLayout(<Component {...pageProps} />)}
+                    </AudioCtxProvider>
                 </AppCtxProvider>
             </SessionProvider>
         </ChakraProvider>

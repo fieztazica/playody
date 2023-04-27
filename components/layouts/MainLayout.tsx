@@ -8,10 +8,12 @@ import {
     GridItem,
     Input,
     Stack,
+    Link,
 } from '@chakra-ui/react'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import AudioPlayer from '../AudioPlayer'
 import Head from 'next/head'
+import DisplayUser from '../DisplayUser'
 
 function MainLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -19,11 +21,8 @@ function MainLayout({ children }: { children: React.ReactNode }) {
             <Head>
                 <title>Playody</title>
             </Head>
-            <Grid className=" tw-h-screen" templateRows="repeat(40, 1fr)">
-                <GridItem
-                    rowSpan={35}
-                    boxShadow={'0 0 25px -15px #FF0080, 0 0 20px -10px #7928CA'}
-                >
+            <Grid h="full" templateRows="repeat(40, 1fr)">
+                <GridItem rowSpan={35}>
                     <Box
                         maxW={'sm'}
                         display={{ base: 'none', md: 'block' }}
@@ -35,14 +34,12 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                         h="full"
                         float={'left'}
                         textOverflow={'ellipsis'}
+                        bgColor={'rgba(0,0,0, 0.08)'}
+                        borderRight={'1px'}
+                        borderRightColor={'gray.600'}
+                        borderRightStyle={'solid'}
                     >
-                        <Flex>
-                            <Avatar mr={5} />
-                            <Stack direction={'column'}>
-                                <Link href="/">Ten tao</Link>
-                                <Link href="/">Logout</Link>
-                            </Stack>
-                        </Flex>
+                        <DisplayUser />
                         <Stack>
                             <Divider />
                             <Link href="/">Home</Link>
@@ -51,7 +48,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                             <Link href="/">My Playlists</Link>
                             <Divider />
                             {new Array(10).fill(0).map((v, i) => (
-                                <Link key={i} href="#">
+                                <Link key={i} href="#" w={'fit-content'}>
                                     Playlist #{i}
                                 </Link>
                             ))}
@@ -63,9 +60,8 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                         float={'none'}
                         overflow={'hidden'}
                         h="full"
-                        bgGradient="linear(to-b, blue.900, purple.900, pink.900)"
                     >
-                        <Box bgColor={"rgba(0,0,0, 0.15)"}>
+                        <Box bgColor={'rgba(0,0,0, 0.1)'}>
                             <Container p={5}>
                                 <Input
                                     focusBorderColor="pink.400"
@@ -79,7 +75,15 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                         </Box>
                     </Box>
                 </GridItem>
-                <GridItem rowSpan={5} display={'block'} overflow={'hidden'}>
+                <GridItem
+                    rowSpan={{ base: 'auto', md: 5 }}
+                    display={{ base: 'none', md: 'block' }}
+                    overflow={'hidden'}
+                    bgColor={'rgba(0,0,0,1)'}
+                    boxShadow={
+                        'inset 0 10px 25px -25px #FF0080, inset 0 10px 20px -20px #7928CA'
+                    }
+                >
                     <AudioPlayer />
                 </GridItem>
             </Grid>
