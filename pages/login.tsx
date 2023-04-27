@@ -1,7 +1,6 @@
-import { GetServerSideProps } from 'next'
-import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react'
-import Image from 'next/image'
-import spotifyLogo from '../assets/spotify-logo.png'
+import { GetServerSideProps } from 'next';
+import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
+import { Button, Stack } from '@chakra-ui/react';
 
 interface Props {
     providers: Awaited<ReturnType<typeof getProviders>>
@@ -13,15 +12,20 @@ const Login = ({ providers }: Props) => {
 
     return (
         <div className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-h-screen">
-            <button
-                className="tw-bg-[#18D860] tw-text-white tw-p-5 tw-rounded-full"
-                onClick={(e) => {
-                    e.preventDefault()
-                    signIn(providerId, { callbackUrl: '/' })
-                }}
-            >
-                Login with {providerName}
-            </button>
+            <Stack>
+                <Button
+                    bgColor={'#18D860'}
+                    _hover={{
+                        bgColor: '#14b851',
+                    }}
+                    onClick={(e) => {
+                        e.preventDefault()
+                        signIn(providerId, { callbackUrl: '/' })
+                    }}
+                >
+                    Login with {providerName}
+                </Button>
+            </Stack>
         </div>
     )
 }
