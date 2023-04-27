@@ -1,6 +1,6 @@
-import { GetServerSideProps } from 'next';
-import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
-import { Button, Stack } from '@chakra-ui/react';
+import { GetServerSideProps } from 'next'
+import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react'
+import { Button, Stack } from '@chakra-ui/react'
 
 interface Props {
     providers: Awaited<ReturnType<typeof getProviders>>

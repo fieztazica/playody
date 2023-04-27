@@ -11,7 +11,8 @@ const useSpotify = () => {
 
         // if refresh token fails, redirect to login
         if (
-            (session as ExtendedSession).error === TokenError.RefreshAccessTokenError
+            (session as ExtendedSession).error ===
+            TokenError.RefreshAccessTokenError
         ) {
             signIn()
         }

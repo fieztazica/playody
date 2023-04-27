@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { PassThrough } from 'stream'
 import { getURLVideoID, getVideoID, validateID, validateURL } from 'ytdl-core'
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
 const ytdl = require('ytdl-core')
 const FFmpeg = require('fluent-ffmpeg')
 const fs = require('fs')
@@ -19,10 +19,14 @@ export default async function handler(
     try {
         const { videoId } = req.query
 
-        for await (const chunk of streamify(`http://youtube.com/watch?v=${validateYoutube(decodeURIComponent(videoId as string))}`)) {
+        for await (const chunk of streamify(
+            `http://youtube.com/watch?v=${validateYoutube(
+                decodeURIComponent(videoId as string)
+            )}`
+        )) {
             res.write(chunk)
         }
-        res.writeHead(204);
+        res.writeHead(204)
         res.end()
     } catch (err) {
         console.error(err)
@@ -34,8 +38,8 @@ export default async function handler(
 }
 
 function validateYoutube(string: string) {
-    if (validateID(string)) return getVideoID(string);
-    if (!new URL(string) || !validateURL(string)) throw new Error("Not a URL");
+    if (validateID(string)) return getVideoID(string)
+    if (!new URL(string) || !validateURL(string)) throw new Error('Not a URL')
     return getURLVideoID(string)
 }
 
@@ -47,7 +51,7 @@ function streamify(uri: string, opt?: any) {
         audioFormat: 'mp3',
         filter(format: any) {
             return format.container === opt.videoFormat && format.audioBitrate
-        }
+        },
     }
 
     const video = ytdl(uri, opt)

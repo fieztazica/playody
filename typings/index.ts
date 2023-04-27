@@ -2,10 +2,16 @@ import { NextPage } from 'next'
 import { Session, User } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
 import { AppProps } from 'next/app'
-import { Dispatch, ReactElement, ReactNode, RefObject, SetStateAction } from 'react'
+import {
+    Dispatch,
+    ReactElement,
+    ReactNode,
+    RefObject,
+    SetStateAction,
+} from 'react'
 
 export enum TokenError {
-    RefreshAccessTokenError = 'RefreshAccessTokenError'
+    RefreshAccessTokenError = 'RefreshAccessTokenError',
 }
 
 export interface ExtendedToken extends JWT {
@@ -22,31 +28,31 @@ export interface ExtendedSession extends Session {
 }
 
 export interface UserProfile {
-    country: string;
-    display_name: string;
-    email: string;
+    country: string
+    display_name: string
+    email: string
     explicit_content: {
-        filter_enabled: boolean,
+        filter_enabled: boolean
         filter_locked: boolean
-    },
-    external_urls: { spotify: string; };
-    followers: { href: string; total: number; };
-    href: string;
-    id: string;
-    images: Image[];
-    product: string;
-    type: string;
-    uri: string;
+    }
+    external_urls: { spotify: string }
+    followers: { href: string; total: number }
+    href: string
+    id: string
+    images: Image[]
+    product: string
+    type: string
+    uri: string
 }
 
 interface Image {
-    url: string;
-    height: number;
-    width: number;
+    url: string
+    height: number
+    width: number
 }
 
 export type AppCtxType = {
-    theme: "dark" | "light"
+    theme: 'dark' | 'light'
 }
 
 export type AudioCtxType = {

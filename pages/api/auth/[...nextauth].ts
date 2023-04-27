@@ -1,7 +1,7 @@
-import { ExtendedToken, TokenError } from "@/typings";
-import { spotifyApi, scopes } from "@/lib/config/spotify";
-import NextAuth from "next-auth";
-import SpotifyProvider from "next-auth/providers/spotify";
+import { ExtendedToken, TokenError } from '@/typings'
+import { spotifyApi, scopes } from '@/lib/config/spotify'
+import NextAuth from 'next-auth'
+import SpotifyProvider from 'next-auth/providers/spotify'
 
 const spotifyScopes = encodeURIComponent(scopes)
 
@@ -21,14 +21,15 @@ const refreshAccessToken = async (
             ...token,
             accessToken: refreshedTokens.access_token,
             refreshToken: refreshedTokens.refresh_token || token.refreshToken,
-            accessTokenExpiresAt: Date.now() + refreshedTokens.expires_in * 1000
+            accessTokenExpiresAt:
+                Date.now() + refreshedTokens.expires_in * 1000,
         }
     } catch (error) {
         console.error(error)
 
         return {
             ...token,
-            error: TokenError.RefreshAccessTokenError
+            error: TokenError.RefreshAccessTokenError,
         }
     }
 }
@@ -39,17 +40,17 @@ export default NextAuth({
         SpotifyProvider({
             clientId: process.env.SPOTIFY_CLIENT_ID as string,
             clientSecret: process.env.SPOTIFY_CLIENT_SECRET as string,
-            authorization: `https://accounts.spotify.com/authorize?scope=${spotifyScopes}`
-        })
+            authorization: `https://accounts.spotify.com/authorize?scope=${spotifyScopes}`,
+        }),
     ],
     pages: {
-        signIn: "/login"
+        signIn: '/login',
     },
     callbacks: {
         async session({ session, token, user }: any) {
             session.accessToken = (token as ExtendedToken).accessToken
             session.error = (token as ExtendedToken).error
-            return session;
+            return session
         },
         async jwt({ token, user, account, profile, isNewUser }: any) {
             let extendedToken: ExtendedToken
@@ -61,7 +62,7 @@ export default NextAuth({
                     user,
                     accessToken: account.access_token as string,
                     refreshToken: account.refresh_token as string,
-                    accessTokenExpiresAt: (account.expires_at as number) * 1000 // converted to ms
+                    accessTokenExpiresAt: (account.expires_at as number) * 1000, // converted to ms
                 }
 
                 // console.log('FIRST TIME LOGIN, EXTENDED TOKEN: ', extendedToken)
@@ -69,7 +70,10 @@ export default NextAuth({
             }
 
             // Subsequent requests to check auth sessions
-            if (Date.now() + 5000 < (token as ExtendedToken).accessTokenExpiresAt) {
+            if (
+                Date.now() + 5000 <
+                (token as ExtendedToken).accessTokenExpiresAt
+            ) {
                 // console.log('ACCESS TOKEN STILL VALID, RETURNING EXTENDED TOKEN: ', token)
                 return token
             }

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.running>* {
+.running > * {
     display: inline-block;
     animation: marquee 10s linear infinite;
     background: none;
@@ -23,7 +23,6 @@
 }
 
 .marquee-container .marquee {
-
     overflow: hidden;
     position: absolute;
     white-space: nowrap;

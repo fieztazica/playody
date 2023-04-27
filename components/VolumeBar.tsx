@@ -65,7 +65,7 @@ function VolumeBar({ ...props }) {
                             justifyContent={'center'}
                         >
                             <Slider
-                            colorScheme='pink'
+                                colorScheme="pink"
                                 value={volume}
                                 onChange={(v) => setVolume(v)}
                                 orientation="vertical"

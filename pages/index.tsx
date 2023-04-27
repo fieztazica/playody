@@ -26,7 +26,7 @@ const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
     >([])
     const [query, setQuery] = useState<string>('')
     const [title, setTitle] = useState<string>('')
-    const {setQueue} = useAudioCtx()
+    const { setQueue } = useAudioCtx()
 
     const findSong = () => {
         if (query)
@@ -52,7 +52,7 @@ const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         onBlur={() => findSong()}
-                        placeholder='Search spotify'
+                        placeholder="Search spotify"
                     />
                 </div>
                 <div className="p-5">
