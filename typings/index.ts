@@ -2,7 +2,7 @@ import { NextPage } from 'next'
 import { Session, User } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
 import { AppProps } from 'next/app'
-import { ReactElement, ReactNode } from 'react'
+import { Dispatch, ReactElement, ReactNode, RefObject, SetStateAction } from 'react'
 
 export enum TokenError {
     RefreshAccessTokenError = 'RefreshAccessTokenError'
@@ -48,6 +48,36 @@ interface Image {
 export type AppCtxType = {
     theme: "dark" | "light"
 }
+
+export type AudioCtxType = {
+    audioRef: RefObject<HTMLAudioElement>
+    currentTime: number
+    setCurrentTime: Dispatch<SetStateAction<number>>
+    duration: number
+    setDuration: Dispatch<SetStateAction<number>>
+    isPause: boolean
+    setIsPause: Dispatch<SetStateAction<boolean>>
+    volume: number
+    setVolume: Dispatch<SetStateAction<number>>
+    loopMode: LoopMode
+    setLoopMode: Dispatch<SetStateAction<LoopMode>>
+    queue: Track[]
+    setQueue: Dispatch<SetStateAction<Track[]>>
+}
+
+export type Track = {
+    name: string
+    src: string
+    cover?: string
+    artists?: Artist[]
+    album?: string
+}
+
+export type Artist = {
+    name: string
+}
+
+export type LoopMode = 'queue' | 'song' | 'none'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode

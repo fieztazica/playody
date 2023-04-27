@@ -9,6 +9,8 @@ const theme = extendTheme({
                 fontFamily: 'body',
                 color: mode('gray.800', 'whiteAlpha.900')(props),
                 bg: mode('white', 'black')(props),
+                bgGradient: "linear(to-b, blue.900, purple.900, pink.900)",
+                height: "full",
                 lineHeight: 'base',
             },
         }),
