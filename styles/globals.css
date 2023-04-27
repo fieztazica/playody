@@ -2,29 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-    --foreground-rgb: 0, 0, 0;
-    --background-start-rgb: 214, 219, 220;
-    --background-end-rgb: 255, 255, 255;
-} */
-
-/* @media (prefers-color-scheme: dark) {
-    :root {
-        --foreground-rgb: 255, 255, 255;
-        --background-start-rgb: 0, 0, 0;
-        --background-end-rgb: 0, 0, 0;
-    }
-} */
-
-html {
-    @apply tw-h-full;
+.running>* {
+    display: inline-block;
+    animation: marquee 10s linear infinite;
+    background: none;
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    white-space: nowrap;
+    flex-wrap: nowrap;
 }
 
+.running .running2 {
+    animation-delay: 15s;
+}
+
+.marquee-container {
+    height: 30px;
+    overflow: hidden;
+    line-height: 30px;
+}
+
+.marquee-container .marquee {
+
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    animation: marquee 30s linear infinite;
+}
+
+.marquee-container .marquee2 {
+    animation-delay: 15s;
+}
+
+.marquee-container b {
+    padding-left: 10px;
+}
+
+@keyframes marquee {
+    from {
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+    }
+
+    to {
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%);
+    }
+}
+
+html,
 body {
-    /* color: rgb(var(--foreground-rgb));
-    background: linear-gradient(to bottom,
-            transparent,
-            rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb)); */
     @apply tw-h-full;
 }
 
