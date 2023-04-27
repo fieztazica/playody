@@ -10,6 +10,7 @@ import { spotifyApi } from '@/lib/config/spotify'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { Box, Button, Input } from '@chakra-ui/react'
 import MainLayout from '@/components/layouts/MainLayout'
+import { useAudioCtx } from '@/lib/contexts/AudioContext'
 
 declare global {
     interface Window {
@@ -25,6 +26,7 @@ const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
     >([])
     const [query, setQuery] = useState<string>('')
     const [title, setTitle] = useState<string>('')
+    const {setQueue} = useAudioCtx()
 
     const findSong = () => {
         if (query)
@@ -42,11 +44,6 @@ const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
                 <p>
                     {status} as {session?.user?.name}
                 </p>
-                {/* <audio
-                    className="tw-hidden"
-                    src="/api/yt/SSojHpCIcdg"
-                    controls
-                ></audio> */}
                 <p>Playing: {title}</p>
                 {/* <button id="togglePlay">Toggle Play</button> */}
                 <p>{session?.user?.email}</p>
@@ -55,9 +52,9 @@ const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         onBlur={() => findSong()}
+                        placeholder='Search spotify'
                     />
                 </div>
-
                 <div className="p-5">
                     {searchResults.map((v, i) => (
                         <div key={i.toString()}>
