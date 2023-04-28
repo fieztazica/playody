@@ -19,14 +19,11 @@ declare global {
 }
 
 const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
-    const { data: session, status } = useSession()
     const spotifyApi = useSpotify()
     const [searchResults, setSearchResults] = useState<
         SpotifyApi.TrackObjectFull[]
     >([])
     const [query, setQuery] = useState<string>('')
-    const [title, setTitle] = useState<string>('')
-    const { setQueue } = useAudioCtx()
 
     const findSong = () => {
         if (query)
@@ -36,17 +33,9 @@ const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
             })
     }
 
-    useEffect(() => {}, [])
-
     return (
         <>
             <main className="tw-flex tw-flex-col tw-items-center tw-p-24 ">
-                <p>
-                    {status} as {session?.user?.name}
-                </p>
-                <p>Playing: {title}</p>
-                {/* <button id="togglePlay">Toggle Play</button> */}
-                <p>{session?.user?.email}</p>
                 <div className="tw-min-w-fit">
                     <Input
                         value={query}
@@ -69,14 +58,6 @@ const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
                         </div>
                     ))}
                 </div>
-                <button
-                    className="bg-[#18D860] text-white p-2 rounded-full"
-                    onClick={() => {
-                        signOut()
-                    }}
-                >
-                    Log out
-                </button>
             </main>
         </>
     )

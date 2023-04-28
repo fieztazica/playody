@@ -11,7 +11,7 @@ const exSongs: Track[] = [
         name: 'Making My Way',
         src: 'https://cdn.discordapp.com/attachments/854996766154817559/1100978279063748660/M-TP_Making_My_Way_DEMO.mp3',
         artists: [{ name: 'Son Tung M-TP' }, { name: 'Onionn.' }],
-        cover: "https://cdn.discordapp.com/attachments/1085226397255094324/1100046203644821504/image.png"
+        cover: 'https://cdn.discordapp.com/attachments/1085226397255094324/1100046203644821504/image.png',
     },
     {
         name: 'Gotta Go',
@@ -32,7 +32,7 @@ function AudioPlayer() {
         loopMode,
         playingIndex,
         setPlayingIndex,
-        nextSong
+        nextSong,
     } = useAudioCtx()
 
     const handleLoadedData = () => {
