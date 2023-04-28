@@ -69,6 +69,14 @@ export type AudioCtxType = {
     setLoopMode: Dispatch<SetStateAction<LoopMode>>
     queue: Track[]
     setQueue: Dispatch<SetStateAction<Track[]>>
+    shuffle: boolean
+    setShuffle: Dispatch<SetStateAction<boolean>>
+    playingIndex: number
+    setPlayingIndex: Dispatch<SetStateAction<number>>
+    previousIndexes: number[]
+    setPreviousIndexes: Dispatch<SetStateAction<number[]>>
+    nextSong: () => void
+    previousSong: () => void
 }
 
 export type Track = {

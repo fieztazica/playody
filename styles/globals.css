@@ -6,8 +6,8 @@
     display: inline-block;
     animation: marquee 10s linear infinite;
     background: none;
-    -webkit-transform: translateX(100%);
-    transform: translateX(100%);
+    -webkit-transform: translateX(120%);
+    transform: translateX(120%);
     white-space: nowrap;
     flex-wrap: nowrap;
 }
@@ -39,8 +39,8 @@
 
 @keyframes marquee {
     from {
-        -webkit-transform: translateX(100%);
-        transform: translateX(100%);
+        -webkit-transform: translateX(120%);
+        transform: translateX(120%);
     }
 
     to {
