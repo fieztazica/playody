@@ -11,10 +11,11 @@ const exSongs: Track[] = [
         name: 'Making My Way',
         src: 'https://cdn.discordapp.com/attachments/854996766154817559/1100978279063748660/M-TP_Making_My_Way_DEMO.mp3',
         artists: [{ name: 'Son Tung M-TP' }, { name: 'Onionn.' }],
+        cover: "https://cdn.discordapp.com/attachments/1085226397255094324/1100046203644821504/image.png"
     },
     {
         name: 'Gotta Go',
-        src: '/api/yt/SSojHpCIcdg',
+        src: 'https://cdn.discordapp.com/attachments/854996766154817559/1101416896659734629/DUCCI_GOTTA_GO_from_05_-_THE_MOIRAP_2023_Audio.mp3',
         artists: [{ name: 'DUCCI' }],
     },
 ]
@@ -28,20 +29,15 @@ function AudioPlayer() {
         setCurrentTime,
         queue,
         setQueue,
+        loopMode,
+        playingIndex,
+        setPlayingIndex,
+        nextSong
     } = useAudioCtx()
 
     const handleLoadedData = () => {
         setDuration(audioRef.current?.duration || 0)
         if (!isPause) audioRef.current?.play()
-    }
-
-    const handlePausePlayClick = () => {
-        if (!isPause) {
-            audioRef.current?.pause()
-        } else {
-            audioRef.current?.play()
-        }
-        setIsPause(!isPause)
     }
 
     useEffect(() => {
@@ -58,12 +54,12 @@ function AudioPlayer() {
                     ref={audioRef}
                     className="tw-hidden"
                     // src="/api/yt/SSojHpCIcdg"
-                    src={queue?.[0]?.src}
+                    src={queue?.[playingIndex]?.src}
                     onLoadedData={handleLoadedData}
                     onTimeUpdate={() =>
                         setCurrentTime(audioRef.current?.currentTime || 0)
                     }
-                    onEnded={() => setIsPause(true)}
+                    onEnded={() => nextSong()}
                 ></audio>
             )}
         </Stack>

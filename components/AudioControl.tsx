@@ -1,4 +1,5 @@
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
+import { LoopMode } from '@/typings'
 import {
     Button,
     IconButton,
@@ -15,6 +16,7 @@ import {
     BsSkipForwardFill,
     BsFillPlayFill,
     BsRepeat,
+    BsRepeat1,
     BsShuffle,
     BsFillPauseFill,
 } from 'react-icons/bs'
@@ -27,6 +29,12 @@ function AudioControl({ ...props }) {
         setIsPause,
         audioRef,
         setCurrentTime,
+        loopMode,
+        setLoopMode,
+        nextSong,
+        previousSong,
+        setShuffle,
+        shuffle
     } = useAudioCtx()
 
     const currentMinutes = Math.floor(currentTime / 60)
@@ -52,6 +60,23 @@ function AudioControl({ ...props }) {
         }
     }
 
+    const LoopIcon = loopMode === 'song' ? BsRepeat1 : BsRepeat
+
+    const toggleLoopMode = () => {
+        const loopModes: ['none', 'song', 'queue'] = ['none', 'song', 'queue']
+
+        const currentLoopIndex = loopModes.indexOf(loopMode)
+
+        const nextMode: LoopMode =
+            loopModes[
+                currentLoopIndex + 1 >= loopModes.length
+                    ? 0
+                    : currentLoopIndex + 1
+            ]
+
+        setLoopMode(nextMode)
+    }
+
     return (
         <>
             <Stack
@@ -64,17 +89,22 @@ function AudioControl({ ...props }) {
             >
                 <Stack direction={'row'} align={'center'}>
                     <IconButton
+                        color={loopMode !== 'none' ? 'pink.300' : undefined}
+                        fontSize={'lg'}
                         size="sm"
                         variant={'ghost'}
                         rounded={'full'}
-                        icon={<BsRepeat />}
+                        icon={<LoopIcon />}
                         aria-label="loop button"
+                        onClick={toggleLoopMode}
+                        title={`${loopMode}`}
                     />
 
                     <IconButton
                         rounded={'full'}
                         icon={<BsFillSkipBackwardFill />}
                         aria-label="back button"
+                        onClick={() => previousSong()}
                     />
                     <IconButton
                         fontSize={'4xl'}
@@ -90,16 +120,20 @@ function AudioControl({ ...props }) {
                         rounded={'full'}
                         icon={<BsSkipForwardFill />}
                         aria-label="next button"
+                        onClick={() => nextSong()}
                     />
                     <IconButton
+                        color={!!shuffle ? 'pink.300' : undefined}
+                        fontSize={'lg'}
                         size="sm"
                         variant={'ghost'}
                         rounded={'full'}
                         icon={<BsShuffle />}
                         aria-label="shuffle button"
+                        onClick={() => setShuffle(!shuffle)}
                     />
                 </Stack>
-                <Stack direction={'row'} w="full" spacing={4}>
+                <Stack direction={'row'} w="full" spacing={4} justifyContent={"center"}>
                     <Text minW={'max-content'}>
                         {currentMinutes.toString().padStart(2, '0')}:
                         {currentSeconds.toString().padStart(2, '0')}
@@ -110,9 +144,10 @@ function AudioControl({ ...props }) {
                         max={duration}
                         value={currentTime}
                         onChange={handleSliderChange}
+                        maxW="4xl"
                     >
-                        <SliderTrack>
-                            <SliderFilledTrack />
+                        <SliderTrack bg="purple.900">
+                            <SliderFilledTrack bg="pink.700" />
                         </SliderTrack>
                         <SliderThumb />
                     </Slider>
