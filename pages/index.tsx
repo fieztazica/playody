@@ -35,8 +35,8 @@ const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
 
     return (
         <>
-            <main className="tw-flex tw-flex-col tw-items-center tw-p-24 ">
-                <div className="tw-min-w-fit">
+            <main className="tw-flex tw-flex-col tw-items-center tw-p-4">
+                <div className="tw-w-96 tw-min-h-[1000px]">
                     <Input
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}

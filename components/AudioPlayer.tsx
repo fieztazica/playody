@@ -50,6 +50,10 @@ function AudioPlayer() {
                 direction={{ base: 'column', md: 'row' }}
                 p={4}
                 align={'flex-end'}
+                bgColor={'rgba(0,0,0,1)'}
+                    boxShadow={
+                        'inset 0 10px 25px -25px #FF0080, inset 0 10px 20px -20px #7928CA'
+                    }
             >
                 <DisplaySong />
                 <Spacer />
