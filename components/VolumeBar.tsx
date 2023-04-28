@@ -25,6 +25,7 @@ function VolumeBar({ ...props }) {
     const { volume, setVolume, audioRef } = useAudioCtx()
     const { onOpen, onClose, isOpen, onToggle } = useDisclosure()
     const [showTooltip, setShowTooltip] = useState(false)
+    const [sliderValue, setSliderValue] = useState<number>(volume)
     const [tempVol, setTempVol] = useState<number>(volume)
 
     const VolumeIcon =
@@ -36,12 +37,18 @@ function VolumeBar({ ...props }) {
             ? BsFillVolumeOffFill
             : BsFillVolumeMuteFill
 
+    const onVolumeButtonClick = () => {
+        setVolume((v) => (v != 0 ? 0 : tempVol))
+        setSliderValue((v) => (v != 0 ? 0 : tempVol))
+    }
+
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.volume = volume / 100
         }
         if (volume != 0) setTempVol(volume)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        setSliderValue(volume)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [volume])
 
     return (
@@ -55,9 +62,7 @@ function VolumeBar({ ...props }) {
                             icon={<VolumeIcon />}
                             variant={isOpen ? 'solid' : 'ghost'}
                             rounded={'full'}
-                            onClick={() =>
-                                setVolume((v) => (v != 0 ? 0 : tempVol))
-                            }
+                            onClick={onVolumeButtonClick}
                             onMouseEnter={onOpen}
                         />
                     </PopoverTrigger>
@@ -78,8 +83,9 @@ function VolumeBar({ ...props }) {
                             justifyContent={'center'}
                         >
                             <Slider
-                                value={volume}
-                                onChange={(v) => setVolume(v)}
+                                value={sliderValue}
+                                onChange={(v) => setSliderValue(v)}
+                                onChangeEnd={(v) => setVolume(v)}
                                 orientation="vertical"
                                 max={100}
                                 min={0}
@@ -95,7 +101,7 @@ function VolumeBar({ ...props }) {
                                     <SliderFilledTrack bg="pink.700" />
                                 </SliderTrack>
                                 <Tooltip
-                                    label={`${volume}%`}
+                                    label={`${sliderValue}%`}
                                     isOpen={showTooltip}
                                     placement="left"
                                 >

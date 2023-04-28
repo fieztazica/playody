@@ -2,52 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-.running > * {
-    display: inline-block;
-    animation: marquee 10s linear infinite;
-    background: none;
-    -webkit-transform: translateX(120%);
-    transform: translateX(120%);
-    white-space: nowrap;
-    flex-wrap: nowrap;
-}
 
-.running .running2 {
-    animation-delay: 15s;
-}
 
-.marquee-container {
-    height: 30px;
-    overflow: hidden;
-    line-height: 30px;
-}
 
-.marquee-container .marquee {
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    animation: marquee 30s linear infinite;
-}
 
-.marquee-container .marquee2 {
-    animation-delay: 15s;
-}
 
-.marquee-container b {
-    padding-left: 10px;
-}
-
-@keyframes marquee {
-    from {
-        -webkit-transform: translateX(120%);
-        transform: translateX(120%);
-    }
-
-    to {
-        -webkit-transform: translateX(-100%);
-        transform: translateX(-100%);
-    }
-}
 
 html,
 body {

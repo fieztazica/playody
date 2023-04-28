@@ -1,4 +1,4 @@
-import { Box, Flex, Stack } from '@chakra-ui/react'
+import { Box, Flex, Spacer, Stack } from '@chakra-ui/react'
 import { useContext, useEffect, useRef, useState } from 'react'
 import DisplaySong from './DisplaySong'
 import AudioControl from './AudioControl'
@@ -45,10 +45,18 @@ function AudioPlayer() {
     }, [])
 
     return (
-        <Stack direction={{ base: 'column', md: 'row' }} spacing={5} p={4}>
-            <DisplaySong />
-            <AudioControl />
-            <VolumeBar display={{ base: 'none', md: 'inherit' }} />
+        <>
+            <Flex
+                direction={{ base: 'column', md: 'row' }}
+                p={4}
+                align={'flex-end'}
+            >
+                <DisplaySong />
+                <Spacer />
+                <AudioControl />
+                <Spacer />
+                <VolumeBar display={{ base: 'none', md: 'inherit' }} />
+            </Flex>
             {!!queue.length && (
                 <audio
                     ref={audioRef}
@@ -62,7 +70,7 @@ function AudioPlayer() {
                     onEnded={() => nextSong()}
                 ></audio>
             )}
-        </Stack>
+        </>
     )
 }
 
