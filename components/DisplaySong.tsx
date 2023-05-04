@@ -17,12 +17,12 @@ function DisplaySong({ ...props }) {
     return (
         <Stack
             // bg="red"
-            h="full"
+            h='full'
             direction={'row'}
             align={'center'}
             justifyContent={'left'}
             maxW={'2xs'}
-            w="full"
+            w='full'
             {...props}
         >
             <Image
@@ -30,37 +30,41 @@ function DisplaySong({ ...props }) {
                 alt={`${nowPlaying?.name}'s cover`}
                 title={`${nowPlaying?.name}'s cover`}
                 objectFit={'cover'}
-                w="6em"
-                h="6em"
+                w='6em'
+                h='6em'
                 boxShadow={'0 0 20px -15px white'}
                 display={{ base: 'none', md: 'flex' }}
-                bg="rgba(255,255,255,0.1)"
+                bg='rgba(255,255,255,0.1)'
             />
             <VStack
-                align="stretch"
+                align='stretch'
                 // bg="yellow"
                 overflow={'hidden'}
-                maxW="inherit"
             >
-                <Text
-                    noOfLines={2}
-                    fontSize={18}
-                    fontWeight={'bold'}
-                    title={`${nowPlaying?.name}`}
-                >
+                <p className={'tw-text-ellipsis tw-overflow-hidden tw-text-xl tw-font-bold'}>
                     {nowPlaying?.name || 'No Song Playing'}
-                </Text>
-
-                <Text
-                    noOfLines={1}
-                    fontSize={16}
-                    fontWeight={'light'}
-                    title={`${nowPlaying?.artists
-                        ?.map((v) => v.name)
-                        .join(', ')}`}
-                >
+                </p>
+                {/*<Text*/}
+                {/*    noOfLines={2}*/}
+                {/*    fontSize={18}*/}
+                {/*    fontWeight={'bold'}*/}
+                {/*    title={`${nowPlaying?.name}`}*/}
+                {/*>*/}
+                {/*    {nowPlaying?.name || 'No Song Playing'}*/}
+                {/*</Text>*/}
+                <p className={'tw-truncate hover:tw-text-clip'}>
                     {nowPlaying?.artists?.map((v) => v.name).join(', ')}
-                </Text>
+                </p>
+                {/*<Text*/}
+                {/*    noOfLines={1}*/}
+                {/*    fontSize={16}*/}
+                {/*    fontWeight={'light'}*/}
+                {/*    title={`${nowPlaying?.artists*/}
+                {/*        ?.map((v) => v.name)*/}
+                {/*        .join(', ')}`}*/}
+                {/*>*/}
+                {/*    {nowPlaying?.artists?.map((v) => v.name).join(', ')}*/}
+                {/*</Text>*/}
             </VStack>
         </Stack>
     )

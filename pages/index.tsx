@@ -1,22 +1,9 @@
-import { Inter } from 'next/font/google'
-import { signOut, useSession } from 'next-auth/react'
-import Link from 'next/link'
 import { JWT, getToken } from 'next-auth/jwt'
 import { GetServerSidePropsContext } from 'next'
-import Script from 'next/script'
-import { ChangeEvent, Suspense, useEffect, useState } from 'react'
+import { useState } from 'react'
 import useSpotify from '@/lib/hooks/useSpotify'
-import { spotifyApi } from '@/lib/config/spotify'
-import SpotifyWebApi from 'spotify-web-api-node'
 import { Box, Button, Input } from '@chakra-ui/react'
 import MainLayout from '@/components/layouts/MainLayout'
-import { useAudioCtx } from '@/lib/contexts/AudioContext'
-
-declare global {
-    interface Window {
-        onSpotifyWebPlaybackSDKReady: any
-    }
-}
 
 const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
     const spotifyApi = useSpotify()
@@ -31,12 +18,13 @@ const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
                 console.log(r.body.tracks?.items)
                 setSearchResults(r.body.tracks?.items!)
             })
+        else setSearchResults([])
     }
 
     return (
         <>
-            <main className="tw-flex tw-flex-col tw-items-center tw-p-4">
-                <div className="tw-w-96 tw-min-h-[1000px]">
+            <main className="tw-flex tw-flex-col tw-items-center">
+                <div className="tw-w-full tw-p-2 tw-sticky tw-top-0 tw-bg-[rgba(0,0,0,0.1)]">
                     <Input
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
@@ -46,7 +34,7 @@ const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
                 </div>
                 <div className="p-5">
                     {searchResults.map((v, i) => (
-                        <div key={i.toString()}>
+                        <div key={i.toString()} className={"tw-p-5"}>
                             <a href={v.external_urls.spotify}>{v.name}</a>
                             <Button
                                 ml={2}

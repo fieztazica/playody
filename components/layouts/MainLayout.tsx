@@ -32,15 +32,6 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                         overflow={'hidden'}
                         h="full"
                     >
-                        <Box bgColor={'rgba(0,0,0, 0.1)'}>
-                            <Container p={5}>
-                                <Input
-                                    focusBorderColor="pink.400"
-                                    placeholder="Search a song..."
-                                    _placeholder={{ color: 'inherit' }}
-                                />
-                            </Container>
-                        </Box>
                         <Box display={'block'} overflowY={'auto'}>
                             {children}
                         </Box>
