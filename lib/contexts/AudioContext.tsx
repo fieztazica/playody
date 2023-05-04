@@ -61,6 +61,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
                     break
                 case 'song':
                     // audioRef.current.currentTime = 0
+
                     audioRef.current.play()
                     break
             }

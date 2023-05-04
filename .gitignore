@@ -4,6 +4,7 @@
 .vscode/
 *.lock
 !next.lock
+.idea/
 
 # dependencies
 /node_modules

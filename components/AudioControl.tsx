@@ -34,7 +34,10 @@ function AudioControl({ ...props }) {
         nextSong,
         previousSong,
         setShuffle,
-        shuffle
+        shuffle,
+        playingIndex,
+        setPlayingIndex,
+        queue,
     } = useAudioCtx()
 
     const currentMinutes = Math.floor(currentTime / 60)
@@ -60,6 +63,11 @@ function AudioControl({ ...props }) {
         }
     }
 
+    const toggleNextSong = () => {
+        setPlayingIndex(playingIndex + 1 >= queue.length ? 0 : playingIndex + 1)
+        // nextSong()
+    }
+
     const LoopIcon = loopMode === 'song' ? BsRepeat1 : BsRepeat
 
     const toggleLoopMode = () => {
@@ -72,7 +80,7 @@ function AudioControl({ ...props }) {
                 currentLoopIndex + 1 >= loopModes.length
                     ? 0
                     : currentLoopIndex + 1
-            ]
+                ]
 
         setLoopMode(nextMode)
     }
@@ -83,7 +91,7 @@ function AudioControl({ ...props }) {
                 justifyItems={'center'}
                 align={'center'}
                 spacing={2}
-                w="full"
+                w='full'
                 p={2}
                 {...props}
             >
@@ -91,11 +99,11 @@ function AudioControl({ ...props }) {
                     <IconButton
                         color={loopMode !== 'none' ? 'pink.300' : undefined}
                         fontSize={'lg'}
-                        size="sm"
+                        size='sm'
                         variant={'ghost'}
                         rounded={'full'}
                         icon={<LoopIcon />}
-                        aria-label="loop button"
+                        aria-label='loop button'
                         onClick={toggleLoopMode}
                         title={`${loopMode}`}
                     />
@@ -103,7 +111,7 @@ function AudioControl({ ...props }) {
                     <IconButton
                         rounded={'full'}
                         icon={<BsFillSkipBackwardFill />}
-                        aria-label="back button"
+                        aria-label='back button'
                         onClick={() => previousSong()}
                     />
                     <IconButton
@@ -114,40 +122,40 @@ function AudioControl({ ...props }) {
                             !isPause ? <BsFillPauseFill /> : <BsFillPlayFill />
                         }
                         onClick={handlePausePlayClick}
-                        aria-label="pause/resume button"
+                        aria-label='pause/resume button'
                     />
                     <IconButton
                         rounded={'full'}
                         icon={<BsSkipForwardFill />}
-                        aria-label="next button"
-                        onClick={() => nextSong()}
+                        aria-label='next button'
+                        onClick={toggleNextSong}
                     />
                     <IconButton
                         color={!!shuffle ? 'pink.300' : undefined}
                         fontSize={'lg'}
-                        size="sm"
+                        size='sm'
                         variant={'ghost'}
                         rounded={'full'}
                         icon={<BsShuffle />}
-                        aria-label="shuffle button"
+                        aria-label='shuffle button'
                         onClick={() => setShuffle(!shuffle)}
                     />
                 </Stack>
-                <Stack direction={'row'} w="full" spacing={4} justifyContent={"center"}>
+                <Stack direction={'row'} w='full' spacing={4} justifyContent={'center'}>
                     <Text minW={'max-content'}>
                         {currentMinutes.toString().padStart(2, '0')}:
                         {currentSeconds.toString().padStart(2, '0')}
                     </Text>
                     <Slider
-                        colorScheme="pink"
-                        aria-label="slider-time"
+                        colorScheme='pink'
+                        aria-label='slider-time'
                         max={duration}
                         value={currentTime}
                         onChange={handleSliderChange}
-                        maxW="4xl"
+                        maxW='4xl'
                     >
-                        <SliderTrack bg="purple.900">
-                            <SliderFilledTrack bg="pink.700" />
+                        <SliderTrack bg='purple.900'>
+                            <SliderFilledTrack bg='pink.700' />
                         </SliderTrack>
                         <SliderThumb />
                     </Slider>
