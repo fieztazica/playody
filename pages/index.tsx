@@ -1,11 +1,9 @@
-import { JWT, getToken } from 'next-auth/jwt'
-import { GetServerSidePropsContext } from 'next'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import useSpotify from '@/lib/hooks/useSpotify'
-import { Box, Button, Input } from '@chakra-ui/react'
+import { Button, Input } from '@chakra-ui/react'
 import MainLayout from '@/components/layouts/MainLayout'
 
-const Home = ({ tokenJWT }: { tokenJWT: JWT }) => {
+const Home = () => {
     const spotifyApi = useSpotify()
     const [searchResults, setSearchResults] = useState<
         SpotifyApi.TrackObjectFull[]
@@ -57,16 +55,15 @@ Home.getLayout = (page: React.ReactElement) => {
 
 export default Home
 
-export async function getServerSideProps({
-    req,
-    res,
-}: GetServerSidePropsContext) {
-    const secret = process.env.NEXTAUTH_SECRET
-    const tokenJWT = await getToken({ req, secret })
-    // console.log('JSON Web Token', tokenJWT)
-    return {
-        props: {
-            tokenJWT,
-        }, // will be passed to the page component as props
-    }
-}
+// export async function getServerSideProps({
+//     req,
+//                                          }: GetServerSidePropsContext) {
+//     const secret = process.env.NEXTAUTH_SECRET
+//     const tokenJWT = await getToken({ req, secret })
+//     // console.log('JSON Web Token', tokenJWT)
+//     return {
+//         props: {
+//             tokenJWT,
+//         }, // will be passed to the page component as props
+//     }
+// }

@@ -9,7 +9,7 @@ const useSpotify = () => {
     useEffect(() => {
         if (!session) return
 
-        // if refresh token fails, redirect to login
+        // if refresh token fails, redirect to log in
         if (
             (session as ExtendedSession).error ===
             TokenError.RefreshAccessTokenError

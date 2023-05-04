@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
     //     return NextResponse.next()
     // }
 
-    // // Redirect to login if (1) user doesn't have a token AND (2) is requesting protected route
+    // // Redirect to log in if (1) user doesn't have a token AND (2) is requesting protected route
     // if (!token && !['/login', '/'].includes(pathname)) {
     //     return NextResponse.redirect(new URL('/login', request.url))
     // }
