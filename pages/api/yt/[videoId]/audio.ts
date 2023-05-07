@@ -1,13 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse, NextConfig } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 import {
-    getBasicInfo, getInfo,
+    getInfo,
     getURLVideoID,
     getVideoID,
     validateID,
     validateURL,
 } from 'ytdl-core'
-const throttle = require('throttle');
+
+const throttle = require('throttle')
 const ytdl = require('ytdl-core')
 
 export const config = {
