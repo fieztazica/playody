@@ -1,17 +1,13 @@
 import { GetServerSideProps } from 'next'
-import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react'
 import { Button, Stack } from '@chakra-ui/react'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { theme } from '@/lib/theme'
+import { spotifyScopes } from '@/lib/config/spotify'
 
-interface Props {
-    providers: Awaited<ReturnType<typeof getProviders>>
-}
-
-const Login = ({ providers }: Props) => {
-    const { name: providerName, id: providerId } =
-        providers?.spotify as ClientSafeProvider
-
+const Login = () => {
+    const supabaseClient = useSupabaseClient()
     return (
-        <div className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-h-screen">
+        <div className='tw-flex tw-flex-col tw-justify-center tw-items-center tw-h-screen'>
             <Stack>
                 <Button
                     bgColor={'#18D860'}
@@ -20,10 +16,15 @@ const Login = ({ providers }: Props) => {
                     }}
                     onClick={(e) => {
                         e.preventDefault()
-                        signIn(providerId, { callbackUrl: '/' })
+                        supabaseClient.auth.signInWithOAuth({
+                            provider:"spotify",
+                            options: {
+                                scopes: spotifyScopes.join(" ")
+                            }
+                        })
                     }}
                 >
-                    Login with {providerName}
+                    Login with Spotify
                 </Button>
             </Stack>
         </div>
@@ -32,13 +33,13 @@ const Login = ({ providers }: Props) => {
 
 export default Login
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-    context
-) => {
-    const providers = await getProviders()
-    return {
-        props: {
-            providers,
-        },
-    }
-}
+// export const getServerSideProps: GetServerSideProps<Props> = async (
+//     context
+// ) => {
+//     const providers = await getProviders()
+//     return {
+//         props: {
+//             providers,
+//         },
+//     }
+// }

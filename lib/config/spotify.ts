@@ -1,6 +1,6 @@
 import SpotifyWebApi from 'spotify-web-api-node'
 
-const scopes = [
+const spotifyScopes = [
     'user-read-email',
     'user-read-private',
     'user-library-read',
@@ -13,11 +13,10 @@ const scopes = [
     'playlist-read-private',
     'playlist-read-collaborative',
     'streaming',
-].join(',')
-
+]
 const spotifyApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
 })
 
-export { spotifyApi, scopes }
+export { spotifyApi, spotifyScopes }

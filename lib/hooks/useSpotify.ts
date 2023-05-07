@@ -1,24 +1,32 @@
-import { ExtendedSession, TokenError } from '@/typings'
-import { signIn, useSession } from 'next-auth/react'
+// import { ExtendedSession, TokenError } from '@/typings'
 import { useEffect } from 'react'
-import { spotifyApi } from '../config/spotify'
+import { spotifyApi, spotifyScopes } from '../config/spotify'
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+
 
 const useSpotify = () => {
-    const { data: session } = useSession()
+    const session = useSession()
+    const supabaseClient = useSupabaseClient()
 
     useEffect(() => {
-        if (!session) return
+        (async () => {
+            if (!session) return
 
-        // if refresh token fails, redirect to log in
-        if (
-            (session as ExtendedSession).error ===
-            TokenError.RefreshAccessTokenError
-        ) {
-            signIn()
-        }
+            if (!session.provider_refresh_token) {
+                await supabaseClient.auth.signInWithOAuth({
+                    provider: 'spotify',
+                    options: {
+                        scopes: spotifyScopes.join(' '),
+                    },
+                })
+                return
+            }
 
-        spotifyApi.setAccessToken((session as ExtendedSession).accessToken)
-    }, [session])
+            if (session.provider_token) {
+                spotifyApi.setAccessToken(session?.provider_token)
+            }
+        })()
+    }, [session, supabaseClient.auth])
 
     return spotifyApi
 }

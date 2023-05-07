@@ -1,25 +1,27 @@
 import { Avatar, Button, Flex, Link, Stack, Text } from '@chakra-ui/react'
-import { signOut, useSession } from 'next-auth/react'
 import NextLink from 'next/link'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
+import { Database } from '@/typings/supabase'
 
 function DisplayUser() {
-    const { data: session, status } = useSession()
+    const  user  = useUser()
+    const supabaseClient = useSupabaseClient<Database>()
 
     return (
         <>
-            {status === 'authenticated' ? (
+            {user ? (
                 <Flex>
-                    <Avatar mr={5} />
+                    <Avatar mr={5} src={user.user_metadata.avatar_url ||undefined}/>
                     <Stack spacing={1} justifyItems={'center'} align={'left'}>
                         <Link w="fit-content">
                             <Text fontSize={'16'} fontWeight={'semibold'}>
-                                {session.user.name}
+                                {user.user_metadata.full_name}
                             </Text>
                         </Link>
                         <Link
                             w="fit-content"
                             onClick={() => {
-                                signOut()
+                                supabaseClient.auth.signOut()
                             }}
                         >
                             <Text fontSize={'16'}>Logout</Text>

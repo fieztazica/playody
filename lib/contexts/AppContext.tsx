@@ -1,22 +1,33 @@
-import { AppCtxType, TokenError, ExtendedSession } from '@/typings'
-import { signIn, useSession } from 'next-auth/react'
+import { AppCtxType } from '@/typings'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { Database } from '@/typings/supabase'
+import { createClient, Session } from '@supabase/supabase-js'
+import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
 export const AppCtx = createContext<AppCtxType | null>(null)
 
-export function AppCtxProvider({ children }: { children: React.ReactNode }) {
-    const { data: session } = useSession()
+export function AppCtxProvider({ children, initialSession }: { children: React.ReactNode, initialSession: Session }) {
+    const [supabaseClient] = useState(() => createBrowserSupabaseClient<Database>())
 
     const [theme, setTheme] = useState<'light' | 'dark'>('dark')
-    useEffect(() => {}, [])
 
     let sharedStates = {
         theme,
     }
 
-    return <AppCtx.Provider value={sharedStates}>{children}</AppCtx.Provider>
+    return (
+        <AppCtx.Provider value={sharedStates}>
+            <SessionContextProvider
+                supabaseClient={supabaseClient}
+                initialSession={initialSession}
+            >
+                {children}
+            </SessionContextProvider>
+        </AppCtx.Provider>
+    )
 }
 
 export function useAppStates() {
-    return useContext(AppCtx)
+    return useContext(AppCtx) as AppCtxType
 }

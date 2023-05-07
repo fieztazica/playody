@@ -41,7 +41,8 @@ function DisplaySong({ ...props }) {
                 // bg="yellow"
                 overflow={'hidden'}
             >
-                <p className={'tw-text-ellipsis tw-overflow-hidden tw-text-xl tw-font-bold'}>
+                <p className={'tw-text-ellipsis tw-overflow-hidden tw-text-xl tw-font-bold'}
+                   title={nowPlaying?.name || 'No Song Playing'}>
                     {nowPlaying?.name || 'No Song Playing'}
                 </p>
                 {/*<Text*/}
@@ -52,7 +53,8 @@ function DisplaySong({ ...props }) {
                 {/*>*/}
                 {/*    {nowPlaying?.name || 'No Song Playing'}*/}
                 {/*</Text>*/}
-                <p className={'tw-truncate hover:tw-text-clip'}>
+                <p className={'tw-truncate hover:tw-text-clip'}
+                   title={nowPlaying?.artists?.map((v) => v.name).join(', ') || 'No artist'}>
                     {nowPlaying?.artists?.map((v) => v.name).join(', ')}
                 </p>
                 {/*<Text*/}

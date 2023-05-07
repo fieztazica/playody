@@ -1,6 +1,4 @@
 import { NextPage } from 'next'
-import { Session, User } from 'next-auth'
-import { JWT } from 'next-auth/jwt'
 import { AppProps } from 'next/app'
 import {
     Dispatch,
@@ -9,23 +7,8 @@ import {
     RefObject,
     SetStateAction,
 } from 'react'
-
-export enum TokenError {
-    RefreshAccessTokenError = 'RefreshAccessTokenError',
-}
-
-export interface ExtendedToken extends JWT {
-    accessToken: string
-    refreshToken: string
-    accessTokenExpiresAt: number
-    user: User
-    error?: TokenError
-}
-
-export interface ExtendedSession extends Session {
-    accessToken: ExtendedToken['accessToken']
-    error: ExtendedToken['error']
-}
+import { Database } from '@/typings/supabase'
+import { Session, SupabaseClient } from '@supabase/supabase-js'
 
 export interface UserProfile {
     country: string
@@ -53,6 +36,7 @@ interface Image {
 
 export type AppCtxType = {
     theme: 'dark' | 'light'
+    // supabaseClient: SupabaseClient<Database>
 }
 
 export type AudioCtxType = {
@@ -97,6 +81,8 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode
 }
 
-export type AppPropsWithLayout = AppProps & {
+export type AppPropsWithLayout = AppProps<{
+    initialSession: Session
+}> & {
     Component: NextPageWithLayout
 }

@@ -6,14 +6,17 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "update-types": "npx supabase gen types typescript --linked > typings/supabase.ts"
     },
     "dependencies": {
         "@chakra-ui/react": "^2.5.5",
         "@emotion/react": "^11.10.6",
         "@emotion/styled": "^11.10.6",
         "@ffmpeg-installer/ffmpeg": "^1.1.0",
-        "@next-auth/firebase-adapter": "^2.0.1",
+        "@supabase/auth-helpers-nextjs": "^0.6.1",
+        "@supabase/auth-helpers-react": "^0.3.1",
+        "@supabase/supabase-js": "^2.21.0",
         "@types/node": "18.15.11",
         "@types/react": "18.0.35",
         "@types/react-dom": "18.0.11",
@@ -21,11 +24,10 @@
         "autoprefixer": "10.4.14",
         "eslint": "8.38.0",
         "eslint-config-next": "13.3.0",
-        "firebase-admin": "^11.8.0",
         "fluent-ffmpeg": "^2.1.2",
         "framer-motion": "^10.12.4",
+        "jsonwebtoken": "^9.0.0",
         "next": "13.3.0",
-        "next-auth": "^4.22.1",
         "postcss": "8.4.22",
         "react": "18.2.0",
         "react-dom": "18.2.0",
@@ -37,7 +39,9 @@
         "ytdl-core": "4.10.0"
     },
     "devDependencies": {
+        "@types/jsonwebtoken": "^9.0.2",
         "@types/spotify-web-api-node": "^5.0.7",
-        "postcss-import": "^15.1.0"
+        "postcss-import": "^15.1.0",
+        "supabase": "^1.55.1"
     }
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import useSpotify from '@/lib/hooks/useSpotify'
 import { Button, Input } from '@chakra-ui/react'
 import MainLayout from '@/components/layouts/MainLayout'
+import useSpotify from '@/lib/hooks/useSpotify'
 
 const Home = () => {
     const spotifyApi = useSpotify()
@@ -11,33 +11,33 @@ const Home = () => {
     const [query, setQuery] = useState<string>('')
 
     const findSong = () => {
-        if (query)
-            spotifyApi.search(query, ['track']).then((r) => {
+        if (query) {
+            spotifyApi.search(query, ['track']).then(r => {
                 console.log(r.body.tracks?.items)
                 setSearchResults(r.body.tracks?.items!)
             })
-        else setSearchResults([])
+        } else setSearchResults([])
     }
 
     return (
         <>
-            <main className="tw-flex tw-flex-col tw-items-center">
-                <div className="tw-w-full tw-p-2 tw-sticky tw-top-0 tw-bg-[rgba(0,0,0,0.1)]">
+            <main className='tw-flex tw-flex-col tw-items-center'>
+                <div className='tw-w-full tw-p-2 tw-sticky tw-top-0 tw-bg-[rgba(0,0,0,0.1)]'>
                     <Input
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         onBlur={() => findSong()}
-                        placeholder="Search spotify"
+                        placeholder='Search spotify'
                     />
                 </div>
-                <div className="p-5">
+                <div className='p-5'>
                     {searchResults.map((v, i) => (
-                        <div key={i.toString()} className={"tw-p-5"}>
+                        <div key={i.toString()} className={'tw-p-5'}>
                             <a href={v.external_urls.spotify}>{v.name}</a>
                             <Button
                                 ml={2}
                                 size={'xs'}
-                                onClick={() => console.log(v.album.uri)}
+                                onClick={() => console.log(v.id)}
                             >
                                 Play
                             </Button>

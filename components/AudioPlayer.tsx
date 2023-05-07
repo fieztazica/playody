@@ -1,5 +1,5 @@
-import { Box, Flex, Spacer, Stack } from '@chakra-ui/react'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { Flex, Spacer, Spinner } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 import DisplaySong from './DisplaySong'
 import AudioControl from './AudioControl'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
@@ -8,15 +8,21 @@ import { Track } from '@/typings'
 
 const exSongs: Track[] = [
     {
-        name: 'Making My Way',
-        src: 'https://cdn.discordapp.com/attachments/854996766154817559/1100978279063748660/M-TP_Making_My_Way_DEMO.mp3',
-        artists: [{ name: 'Son Tung M-TP' }, { name: 'Onionn.' }],
+        name: 'GOTTA GO',
+        src: 'SSojHpCIcdg',
+        artists: [{ name: 'Ducci' }],
         cover: 'https://cdn.discordapp.com/attachments/1085226397255094324/1100046203644821504/image.png',
     },
     {
-        name: 'Gotta Go',
-        src: 'https://cdn.discordapp.com/attachments/854996766154817559/1101416896659734629/DUCCI_GOTTA_GO_from_05_-_THE_MOIRAP_2023_Audio.mp3',
-        artists: [{ name: 'DUCCI' }],
+        name: 'Xích Thêm Chút - XTC Remix',
+        src: 'PNhYz6RmIr4',
+        artists: [{ name: 'RPT Groovie' }, { name: 'RPT Groovie' }, { name: 'RPT Groovie' }],
+        cover: 'https://cdn.discordapp.com/attachments/1085226397255094324/1100046203644821504/image.png',
+    },
+    {
+        name: 'Chìm Sâu',
+        src: 'Yw9Ra2UiVLw',
+        artists: [{ name: 'RPT MCK' }, { name: 'Trung Trần' }],
     },
 ]
 
@@ -33,16 +39,37 @@ function AudioPlayer() {
         playingIndex,
         setPlayingIndex,
         nextSong,
+        duration,
     } = useAudioCtx()
-
+    const [loading, setLoading] = useState<boolean>(false)
     const handleLoadedData = () => {
+        setLoading(false)
         setDuration(audioRef.current?.duration || 0)
         if (!isPause) audioRef.current?.play()
+    }
+
+    const handleLoadedMetadata = () => {
+        setDuration(audioRef.current?.duration || 0)
     }
 
     useEffect(() => {
         setQueue(exSongs)
     }, [])
+
+    useEffect(() => {
+        (async () => {
+            if (!audioRef || !audioRef.current) return
+            try {
+                setLoading(true)
+                const response = await fetch(`/api/yt/${queue?.[playingIndex]?.src}/audio?startTime=0`)
+                audioRef.current.src = URL.createObjectURL(await response.blob())
+            } catch (e) {
+                console.error(e)
+            } finally {
+                setLoading(false)
+            }
+        })()
+    }, [playingIndex])
 
     return (
         <>
@@ -51,10 +78,16 @@ function AudioPlayer() {
                 p={4}
                 align={'flex-end'}
                 bgColor={'rgba(0,0,0,1)'}
-                    boxShadow={
-                        'inset 0 10px 25px -25px #FF0080, inset 0 10px 20px -20px #7928CA'
-                    }
+                boxShadow={
+                    'inset 0 10px 25px -25px #FF0080, inset 0 10px 20px -20px #7928CA'
+                }
+                h={'full'}
+                className={'tw-relative'}
             >
+                {loading && <div className={'tw-absolute tw-top-0 tw-right-0 tw-z-10 tw-m-4'}>
+                    Loading {exSongs[playingIndex].name}
+                    <Spinner ml={2} />
+                </div>}
                 <DisplaySong />
                 <Spacer />
                 <AudioControl />
@@ -64,10 +97,9 @@ function AudioPlayer() {
             {!!queue.length && (
                 <audio
                     ref={audioRef}
-                    className="tw-hidden"
-                    // src="/api/yt/SSojHpCIcdg"
-                    src={queue?.[playingIndex]?.src}
+                    className='tw-hidden'
                     onLoadedData={handleLoadedData}
+                    onLoadedMetadata={handleLoadedMetadata}
                     onTimeUpdate={() =>
                         setCurrentTime(audioRef.current?.currentTime || 0)
                     }

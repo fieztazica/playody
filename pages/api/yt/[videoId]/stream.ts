@@ -8,10 +8,6 @@ const FFmpeg = require('fluent-ffmpeg')
 const fs = require('fs')
 FFmpeg.setFfmpegPath(ffmpegPath)
 
-type Data = {
-    name: string
-}
-
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse

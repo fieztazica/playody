@@ -52,67 +52,65 @@ function VolumeBar({ ...props }) {
     }, [volume])
 
     return (
-        <>
-            <Flex align={'end'} onMouseLeave={onClose} {...props}>
-                <Popover placement="top" isOpen={isOpen}>
-                    <PopoverTrigger>
-                        <IconButton
-                            fontSize={'2xl'}
-                            aria-label="Volume"
-                            icon={<VolumeIcon />}
-                            variant={isOpen ? 'solid' : 'ghost'}
-                            rounded={'full'}
-                            onClick={onVolumeButtonClick}
-                            onMouseEnter={onOpen}
-                        />
-                    </PopoverTrigger>
-                    <PopoverContent
-                        zIndex={4}
+        <Flex align={'end'} onMouseLeave={onClose} {...props}>
+            <Popover placement="top" isOpen={isOpen}>
+                <PopoverTrigger>
+                    <IconButton
+                        fontSize={'2xl'}
+                        aria-label="Volume"
+                        icon={<VolumeIcon />}
+                        variant={isOpen ? 'solid' : 'ghost'}
                         rounded={'full'}
-                        maxW="40px"
-                        bg="whiteAlpha.300"
-                        borderColor={'whiteAlpha.500'}
-                        // onBlur={onClose}
+                        onClick={onVolumeButtonClick}
+                        onMouseEnter={onOpen}
+                    />
+                </PopoverTrigger>
+                <PopoverContent
+                    zIndex={4}
+                    rounded={'full'}
+                    maxW="40px"
+                    bg="whiteAlpha.300"
+                    borderColor={'whiteAlpha.500'}
+                    // onBlur={onClose}
+                >
+                    <Box
+                        px={2}
+                        py={4}
+                        maxW="50px"
+                        h="fit-content"
+                        display={'flex'}
+                        justifyContent={'center'}
                     >
-                        <Box
-                            px={2}
-                            py={4}
-                            maxW="50px"
-                            h="fit-content"
-                            display={'flex'}
-                            justifyContent={'center'}
+                        <Slider
+                            value={sliderValue}
+                            onChange={(v) => setSliderValue(v)}
+                            onChangeEnd={(v) => setVolume(v)}
+                            orientation="vertical"
+                            max={100}
+                            min={0}
+                            minH={32}
+                            onMouseEnter={() => setShowTooltip(true)}
+                            onMouseLeave={() => setShowTooltip(false)}
                         >
-                            <Slider
-                                value={sliderValue}
-                                onChange={(v) => setSliderValue(v)}
-                                onChangeEnd={(v) => setVolume(v)}
-                                orientation="vertical"
-                                max={100}
-                                min={0}
-                                minH={32}
-                                onMouseEnter={() => setShowTooltip(true)}
-                                onMouseLeave={() => setShowTooltip(false)}
+                            <SliderTrack
+                                boxSize={2}
+                                rounded={'full'}
+                                bg="purple.900"
                             >
-                                <SliderTrack
-                                    boxSize={2}
-                                    rounded={'full'}
-                                    bg="purple.900"
-                                >
-                                    <SliderFilledTrack bg="pink.700" />
-                                </SliderTrack>
-                                <Tooltip
-                                    label={`${sliderValue}%`}
-                                    isOpen={showTooltip}
-                                    placement="left"
-                                >
-                                    <SliderThumb boxSize={4} />
-                                </Tooltip>
-                            </Slider>
-                        </Box>
-                    </PopoverContent>
-                </Popover>
-            </Flex>
-        </>
+                                <SliderFilledTrack bg="pink.700" />
+                            </SliderTrack>
+                            <Tooltip
+                                label={`${sliderValue}%`}
+                                isOpen={showTooltip}
+                                placement="left"
+                            >
+                                <SliderThumb boxSize={4} />
+                            </Tooltip>
+                        </Slider>
+                    </Box>
+                </PopoverContent>
+            </Popover>
+        </Flex>
     )
 }
 
