@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse, NextConfig } from 'next'
 import {
     getBasicInfo, getInfo,
     getURLVideoID,
@@ -9,6 +9,13 @@ import {
 } from 'ytdl-core'
 
 const ytdl = require('ytdl-core')
+
+export const config = {
+    api: {
+        bodyParser: false,
+        responseLimit: false,
+    },
+}
 
 export default async function handler(
     req: NextApiRequest,
