@@ -8,7 +8,7 @@ import {
     validateURL,
 } from 'ytdl-core'
 
-const throttle = require('throttle')
+const pump = require('pump')
 const ytdl = require('ytdl-core')
 
 export const config = {
@@ -50,23 +50,27 @@ export default async function handler(
             'Content-Range': byteRange,
             'Transfer-Encoding': 'chunked',
         }
-        res.writeHead(206, headers)
 
         const audioStream = ytdl(uri, {
             filter: 'audioonly',
             range: headers,
         })
 
-        audioStream.pipe(new throttle(128 * 1024)).pipe(res)
+        res.writeHead(206, headers)
+
+        // audioStream.pipe(new throttle(128 * 1024)).pipe(res)
+        pump(audioStream, res, function(err: any) {
+            console.log('pipe finished', err)
+        })
 
         res.on('close', () => {
             audioStream.destroy()
         })
 
-        audioStream.on('end', () => res.end())
+        // audioStream.on('end', () => res.end())
 
         // Handle errors
-        audioStream.on('error', (err: any) => console.error(`Error while streaming audio: ${err}`))
+        // audioStream.on('error', (err: any) => console.error(`Error while streaming audio: ${err}`))
         res.on('error', (err) => console.error(`Error while streaming response: ${err}`))
     } catch (err) {
         console.error(err)
