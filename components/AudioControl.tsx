@@ -71,6 +71,7 @@ function AudioControl({ ...props }) {
             spacing={2}
             w='full'
             p={2}
+            maxW={"md"}
             {...props}
         >
             <Stack direction={'row'} align={'center'}>

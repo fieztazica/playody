@@ -16,7 +16,6 @@ function DisplaySong({ ...props }) {
 
     return (
         <Stack
-            // bg="red"
             h='full'
             direction={'row'}
             align={'center'}
@@ -53,10 +52,16 @@ function DisplaySong({ ...props }) {
                 {/*>*/}
                 {/*    {nowPlaying?.name || 'No Song Playing'}*/}
                 {/*</Text>*/}
-                <p className={'tw-truncate hover:tw-text-clip'}
-                   title={nowPlaying?.artists?.map((v) => v.name).join(', ') || 'No artist'}>
-                    {nowPlaying?.artists?.map((v) => v.name).join(', ')}
-                </p>
+                <div className={'container'}>
+                    <div className={"tw-truncate tw-duration-300 hover:animated"}>
+                         <span
+                             title={nowPlaying?.artists?.map((v) => v.name).join(', ') || 'No artist'}>
+                            {nowPlaying?.artists?.map((v) => v.name).join(', ')}
+                        </span>
+                    </div>
+
+                </div>
+
                 {/*<Text*/}
                 {/*    noOfLines={1}*/}
                 {/*    fontSize={16}*/}

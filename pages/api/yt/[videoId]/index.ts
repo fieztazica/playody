@@ -1,26 +1,59 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {
-    getBasicInfo,
-    getURLVideoID,
-    getVideoID,
-    validateID,
-    validateURL,
-} from 'ytdl-core'
-const ytdl = require('ytdl-core')
+import ytdl from 'ytdl-core'
+
+export const config = {
+    api: {
+        bodyParser: false,
+        responseLimit: false,
+    },
+}
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse
+    res: NextApiResponse,
 ) {
     try {
         const { videoId } = req.query
 
-        const uri = `http://youtube.com/watch?v=${validateYoutube(
-            decodeURIComponent(videoId as string)
-        )}`
+        // Load audio stream from YouTube using ytdl-core
+        const stream = ytdl(`https://www.youtube.com/watch?v=${videoId}`, {
+            filter: 'audioonly',
+        })
 
-        downloadify(res, uri)
+        // Create array buffer to accumulate audio bytes
+        const chunks: Buffer[] = []
+        let totalBytes = 0
+
+        // Read audio data chunk by chunk and accumulate bytes
+        for await (const chunk of stream) {
+            chunks.push(chunk)
+            totalBytes += chunk.length
+        }
+
+        // Combine chunks into a single buffer
+        const buffer = Buffer.concat(chunks)
+
+        res.on('close', () => {
+            stream.destroy()
+        })
+
+        res.on('error', (err) => {
+            console.error(`> Response error`)
+            console.error(err)
+            stream.destroy()
+        })
+
+        stream.destroy()
+
+        // Send audio buffer to client as a binary response
+        res.setHeader('Content-Length', totalBytes)
+        res.setHeader('Content-Type', 'audio/mp3')
+        res.setHeader(
+            'Content-Disposition',
+            `attachment; filename="audio-${videoId}.mp3"`,
+        )
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
+        res.send(buffer)
     } catch (err) {
         console.error(err)
         if (!res.headersSent) {
@@ -28,36 +61,4 @@ export default async function handler(
             res.end('internal system error')
         }
     }
-}
-
-function validateYoutube(string: string) {
-    if (validateID(string)) return getVideoID(string)
-    if (!new URL(string) || !validateURL(string)) throw new Error('Not a URL')
-    return getURLVideoID(string)
-}
-
-async function downloadify(res: NextApiResponse, uri: string, opt?: any) {
-    opt = {
-        ...opt,
-        filter: 'audioonly',
-    }
-
-    const info = await getBasicInfo(uri)
-
-    if (!info) {
-        res.status(404).send('not found')
-        return
-    }
-
-    res.setHeader(
-        'Content-Disposition',
-        `attachment; filename="${encodeURIComponent(
-            info.videoDetails.title
-        )}.mp3"`
-    )
-    res.setHeader('Content-Type', 'audio/mpeg')
-
-    const audioStream = ytdl(uri, opt)
-
-    audioStream.pipe(res)
 }

@@ -2,11 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    .animated {
+        overflow: hidden;
+        width: fit-content;
+        white-space: nowrap;
+    }
 
+    .animated > * {
+        display: inline-block;
+        position: relative;
+        animation: move 15s linear infinite;
+    }
 
+    .animated > *.min {
+        min-width: 100%;
+    }
 
+    @keyframes move {
+        from {
+            transform: translateX(100%);
+        }
 
+        to {
+            transform: translateX(-150%);
+        }
+    }
 
+    /* Non-solution styles */
+
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    /*.animated {*/
+    /*    border: 0.1rem solid black;*/
+    /*}*/
+
+    .animated > * {
+        box-sizing: border-box;
+    }
+}
 
 html,
 body {
