@@ -58,6 +58,10 @@ export default async function handler(
 
         audioStream.pipe(res)
 
+        res.on('close', () => {
+            audioStream.destroy()
+        })
+
         audioStream.on('end', () => res.end())
 
         // Handle errors
