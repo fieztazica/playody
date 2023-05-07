@@ -61,7 +61,7 @@ function AudioPlayer() {
             if (!audioRef || !audioRef.current) return
             try {
                 setLoading(true)
-                const response = await fetch(`/api/yt/${queue?.[playingIndex]?.src}/audio?startTime=0`)
+                const response = await fetch(`/api/yt/${queue?.[playingIndex]?.src}/audio`)
                 audioRef.current.src = URL.createObjectURL(await response.blob())
             } catch (e) {
                 console.error(e)

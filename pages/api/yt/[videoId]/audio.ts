@@ -34,7 +34,7 @@ export default async function handler(
 
         // const audioDuration = (audioFormat.approxDurationMs / 1000).toFixed(0)
 
-        const byteRange = `bytes=${startTime}-${audioFormat.contentLength - 1}`
+        const byteRange = `bytes=${startTime || 0}-${audioFormat.contentLength - 1}`
         const headers = {
             'Content-Type': 'audio/webm',
             'Cache-Control': 'public, max-age=31536000',
