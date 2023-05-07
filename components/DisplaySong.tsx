@@ -53,13 +53,12 @@ function DisplaySong({ ...props }) {
                 {/*    {nowPlaying?.name || 'No Song Playing'}*/}
                 {/*</Text>*/}
                 <div className={'container'}>
-                    <div className={"tw-truncate tw-duration-300 hover:animated"}>
+                    <div className={'tw-truncate tw-duration-300 hover:animated'}>
                          <span
                              title={nowPlaying?.artists?.map((v) => v.name).join(', ') || 'No artist'}>
                             {nowPlaying?.artists?.map((v) => v.name).join(', ')}
                         </span>
                     </div>
-
                 </div>
 
                 {/*<Text*/}
