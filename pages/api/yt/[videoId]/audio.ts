@@ -7,7 +7,7 @@ import {
     validateID,
     validateURL,
 } from 'ytdl-core'
-
+const throttle = require('throttle');
 const ytdl = require('ytdl-core')
 
 export const config = {
@@ -56,7 +56,7 @@ export default async function handler(
             range: headers,
         })
 
-        audioStream.pipe(res)
+        audioStream.pipe(new throttle(128 * 1024)).pipe(res)
 
         res.on('close', () => {
             audioStream.destroy()
