@@ -30,8 +30,8 @@ function AudioControl({ ...props }) {
         playingIndex,
         setPlayingIndex,
         queue,
+        setPreviousIndexes,
     } = useAudioCtx()
-
 
     const handlePausePlayClick = () => {
         if (!isPause) {
@@ -44,6 +44,7 @@ function AudioControl({ ...props }) {
 
     const toggleNextSong = () => {
         setPlayingIndex(playingIndex + 1 >= queue.length ? 0 : playingIndex + 1)
+        setPreviousIndexes(a => [...a, playingIndex])
         // nextSong()
     }
 

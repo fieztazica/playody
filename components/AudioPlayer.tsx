@@ -11,6 +11,11 @@ const AUDIO_API_ROUTE = '/api/yt'
 
 const exSongs: Track[] = [
     {
+        name: 'Thôi Em Đừng Đi',
+        src: '6fzH7a3XQW0',
+        artists: [{ name: 'RPT MCK' }, { name: 'Trung Trần' }],
+    },
+    {
         name: 'GOTTA GO',
         src: 'SSojHpCIcdg',
         artists: [{ name: 'Ducci' }],

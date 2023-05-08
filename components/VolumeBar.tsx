@@ -44,7 +44,7 @@ function VolumeBar({ ...props }) {
         if (volume != 0) setTempVol(volume)
         // setSliderValue(volume)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [volume])
+    }, [volume, audioRef, audioRef.current])
 
     return (
         <HStack {...props}>
