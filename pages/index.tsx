@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Input } from '@chakra-ui/react'
-import MainLayout from '@/components/layouts/MainLayout'
 import useSpotify from '@/lib/hooks/useSpotify'
+import MainLayout from '@/components/layouts/MainLayout'
+import AudioWave from '@/components/rive/AudioWave'
 
 const Home = () => {
     const spotifyApi = useSpotify()
@@ -30,9 +31,11 @@ const Home = () => {
                         placeholder='Search spotify'
                     />
                 </div>
+                <AudioWave />
                 <div className='p-5'>
                     {searchResults.map((v, i) => (
-                        <div key={i.toString()} className={'tw-p-5'}>
+                        // eslint-disable-next-line react/jsx-key
+                        <div className={'tw-p-5'}>
                             <a href={v.external_urls.spotify}>{v.name}</a>
                             <Button
                                 ml={2}
@@ -43,6 +46,8 @@ const Home = () => {
                             </Button>
                         </div>
                     ))}
+                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, i) => (
+                        <div key={'i'} className={'tw-h-10 tw-w-full tw-my-4 tw-bg-black'}>{v}</div>))}
                 </div>
             </main>
         </>

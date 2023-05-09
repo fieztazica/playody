@@ -20,7 +20,6 @@ function DisplaySong({ ...props }) {
             direction={'row'}
             align={'center'}
             justifyContent={'left'}
-            maxW={'2xs'}
             w='full'
             {...props}
         >
@@ -29,18 +28,19 @@ function DisplaySong({ ...props }) {
                 alt={`${nowPlaying?.name}'s cover`}
                 title={`${nowPlaying?.name}'s cover`}
                 objectFit={'cover'}
-                w='6em'
-                h='6em'
+                maxW={{ base: '64px', md: '6em' }}
+                maxH={{ base: '64px', md: '6em' }}
                 boxShadow={'0 0 20px -15px white'}
-                display={{ base: 'none', md: 'flex' }}
+                // display={{ base: 'none', md: 'flex' }}
                 bg='rgba(255,255,255,0.1)'
+                className={'tw-aspect-square'}
             />
             <VStack
                 align='stretch'
                 // bg="yellow"
                 overflow={'hidden'}
             >
-                <p className={'tw-text-ellipsis tw-overflow-hidden tw-text-xl tw-font-bold'}
+                <p className={'tw-text-ellipsis tw-overflow-hidden tw-text-base tw-font-bold md:tw-text-xl'}
                    title={nowPlaying?.name || 'No Song Playing'}>
                     {nowPlaying?.name || 'No Song Playing'}
                 </p>
@@ -52,10 +52,10 @@ function DisplaySong({ ...props }) {
                 {/*>*/}
                 {/*    {nowPlaying?.name || 'No Song Playing'}*/}
                 {/*</Text>*/}
-                <div className={'container'}>
+                <div className={'container tw-hidden md:tw-block'}>
                     <div className={'tw-truncate tw-duration-300 hover:animated'}>
-                         <span
-                             title={nowPlaying?.artists?.map((v) => v.name).join(', ') || 'No artist'}>
+                         <span className={'tw-text-sm md:tw-text-base'}
+                               title={nowPlaying?.artists?.map((v) => v.name).join(', ') || 'No artist'}>
                             {nowPlaying?.artists?.map((v) => v.name).join(', ')}
                         </span>
                     </div>

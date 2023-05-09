@@ -31,7 +31,7 @@ function SeekBar() {
 
     return (
         <Stack direction={'row'} w='full' spacing={4} justifyContent={'center'}>
-            <Text minW={'max-content'}>
+            <Text fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
                 {currentMinutes.toString().padStart(2, '0')}:
                 {currentSeconds.toString().padStart(2, '0')}
             </Text>
@@ -48,7 +48,7 @@ function SeekBar() {
                 </SliderTrack>
                 <SliderThumb />
             </Slider>
-            <Text minW={'max-content'}>
+            <Text fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
                 {leftMinutes.toString().padStart(2, '0')}:
                 {leftSeconds.toString().padStart(2, '0')}
             </Text>

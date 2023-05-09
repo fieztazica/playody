@@ -1,4 +1,4 @@
-import { Flex, Spacer, Spinner } from '@chakra-ui/react'
+import { Flex, Grid, Spacer, Spinner } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import DisplaySong from './DisplaySong'
 import AudioControl from './AudioControl'
@@ -104,10 +104,15 @@ function AudioPlayer() {
                     />
                 )}
             </Head>
-            <Flex
-                direction={{ base: 'column', md: 'row' }}
+            <Grid
+                // direction={{ base: 'column', md: 'row' }}
+                templateColumns={{
+                    base: '1fr',
+                    md: 'repeat(3, 1fr)'
+                }}
                 p={4}
-                align={'flex-end'}
+                gap={6}
+                // align={'flex-end'}
                 bgColor={'rgba(0,0,0,1)'}
                 boxShadow={
                     'inset 0 10px 25px -25px #FF0080, inset 0 10px 20px -20px #7928CA'
@@ -121,11 +126,9 @@ function AudioPlayer() {
                     <Spinner ml={2} />
                 </div>}
                 <DisplaySong />
-                <Spacer />
                 <AudioControl />
-                <Spacer />
-                <VolumeBar display={{ base: 'none', md: 'inherit' }} />
-            </Flex>
+                <VolumeBar />
+            </Grid>
             {audioUrl && (
                 <audio
                     ref={audioRef}

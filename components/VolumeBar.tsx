@@ -47,53 +47,59 @@ function VolumeBar({ ...props }) {
     }, [volume, audioRef, audioRef.current])
 
     return (
-        <HStack {...props}>
-            <Slider
-                value={volume}
-                onChange={(v) => setVolume(v)}
-                // onChangeEnd={(v) => setVolume(v)}
-                orientation='horizontal'
-                max={100}
-                min={0}
-                maxW={'50'}
-                w={"full"}
-                minW={'20'}
-                onMouseEnter={() => setShowTooltip(true)}
-                onMouseLeave={() => setShowTooltip(false)}
-                // flexGrow={1}
-            >
-                <SliderTrack
-                    boxSize={2}
-                    rounded={'full'}
-                    bg='purple.900'
-                >
-                    <SliderFilledTrack bg='pink.700' />
-                </SliderTrack>
-                <Tooltip
-                    label={`${volume}%`}
-                    isOpen={showTooltip}
-                    placement='top'
-                >
-                    <SliderThumb boxSize={2} />
-                </Tooltip>
-            </Slider>
-            <Tooltip
-                label={volume == 0 ? 'Muted' : `${volume}%`}
-                // isOpen={showTooltip}
-                placement='top'
-            >
-                <IconButton
-                    fontSize={'2xl'}
-                    size={'sm'}
-                    aria-label='Volume'
-                    icon={<VolumeIcon />}
-                    variant={'ghost'}
-                    rounded={'full'}
-                    onClick={onVolumeButtonClick}
-                />
-            </Tooltip>
-
-        </HStack>
+        <div className={`tw-w-full tw-h-full tw-justify-end tw-items-end tw-hidden md:tw-flex`}>
+            <HStack align={"center"} justify={"center"} {...props}>
+                <div className={'tw-flex tw-w-fit tw-rounded-full tw-py-3 tw-px-2 hover:tw-bg-white/5 tw-duration-300'}>
+                    <Slider
+                        value={volume}
+                        onChange={(v) => setVolume(v)}
+                        // onChangeEnd={(v) => setVolume(v)}
+                        orientation='horizontal'
+                        max={100}
+                        min={0}
+                        maxW={'50'}
+                        w={'fit-content'}
+                        minW={'20'}
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                        // flexGrow={1}
+                    >
+                        <SliderTrack
+                            boxSize={2}
+                            rounded={'full'}
+                            bg='purple.900'
+                        >
+                            <SliderFilledTrack bg='pink.700' />
+                        </SliderTrack>
+                        <Tooltip
+                            label={`${volume}%`}
+                            isOpen={showTooltip}
+                            placement='top'
+                        >
+                            <SliderThumb boxSize={2} />
+                        </Tooltip>
+                    </Slider>
+                </div>
+                <div className={'tw-w-fit'}>
+                    <Tooltip
+                        label={volume == 0 ? 'Muted' : `${volume}%`}
+                        // isOpen={showTooltip}
+                        placement='top'
+                    >
+                        <IconButton
+                            w={'fit-content'}
+                            fontSize={'2xl'}
+                            size={'sm'}
+                            aria-label='Volume'
+                            icon={<VolumeIcon />}
+                            variant={'ghost'}
+                            rounded={'full'}
+                            onClick={onVolumeButtonClick}
+                        />
+                    </Tooltip>
+                </div>
+            </HStack>
+        </div>
     )
 }
 

@@ -67,19 +67,19 @@ function AudioControl({ ...props }) {
 
     return (
         <Stack
-            justifyItems={'center'}
+            justify={'center'}
             align={'center'}
             spacing={2}
             w='full'
+            h={'full'}
             p={2}
-            maxW={"md"}
             {...props}
         >
-            <Stack direction={'row'} align={'center'}>
+            <Stack direction={'row'} align={'center'} justify={"center"}>
                 <IconButton
                     color={loopMode !== 'none' ? 'pink.300' : undefined}
-                    fontSize={'lg'}
-                    size='sm'
+                    fontSize={{ base: 'xs', md: 'lg' }}
+                    size={{ base: 'xs', md: 'sm' }}
                     variant={'ghost'}
                     rounded={'full'}
                     icon={<LoopIcon />}
@@ -89,13 +89,14 @@ function AudioControl({ ...props }) {
                 />
                 <IconButton
                     rounded={'full'}
+                    size={{ base: 'xs', md: 'md' }}
                     icon={<BsFillSkipBackwardFill />}
                     aria-label='back button'
                     onClick={() => previousSong()}
                 />
                 <IconButton
-                    fontSize={'4xl'}
-                    size={'lg'}
+                    fontSize={{ base: 'xs', md: '4xl' }}
+                    size={{ base: 'xs', md: 'lg' }}
                     rounded={'full'}
                     icon={
                         !isPause ? <BsFillPauseFill /> : <BsFillPlayFill />
@@ -105,14 +106,15 @@ function AudioControl({ ...props }) {
                 />
                 <IconButton
                     rounded={'full'}
+                    size={{ base: 'xs', md: 'md' }}
                     icon={<BsSkipForwardFill />}
                     aria-label='next button'
                     onClick={toggleNextSong}
                 />
                 <IconButton
                     color={shuffle ? 'pink.300' : undefined}
-                    fontSize={'lg'}
-                    size='sm'
+                    fontSize={{ base: 'xs', md: 'lg' }}
+                    size={{ base: 'xs', md: 'sm' }}
                     variant={'ghost'}
                     rounded={'full'}
                     icon={<BsShuffle />}
