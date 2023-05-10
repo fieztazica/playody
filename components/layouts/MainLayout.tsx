@@ -16,6 +16,7 @@ import DisplayUser from '../DisplayUser'
 import SideBar from './SideBar'
 import { BiLeftArrow, BiRightArrow } from 'react-icons/bi'
 import LogoSvg from '@/components/LogoSvg'
+import { PlayodyTitle } from '@/components/PlayodyTitle'
 
 function MainLayout({ children }: { children: React.ReactNode }) {
 
@@ -23,7 +24,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
 
     return (
         <div className={'tw-h-screen tw-flex tw-flex-col'}>
-            <div className={'tw-block md:tw-hidden tw-p-2 tw-bg-[rgba(0,0,0,0.1)]'}>
+            <header className={'tw-block md:tw-hidden tw-p-2 tw-bg-[rgba(0,0,0,0.1)]'}>
                 <div className={'tw-flex tw-justify-between'}>
                     <div className={'tw-flex-none'}>
                         <IconButton
@@ -33,16 +34,14 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                         />
                     </div>
                     <div className={'tw-grow tw-flex tw-justify-center tw-items-center tw-overflow-x-hidden'}>
-                        <h1 className={'tw-text-2xl tw-font-bold tw-uppercase tw-drop-shadow-md tw-px-5 waving tw-shadow-amber-50'}>
-                            Playody
-                        </h1>
+                        <PlayodyTitle />
                     </div>
                     <div
                         className={'tw-flex-none tw-rounded-md tw-p-1 tw-bg-white/10 hover:tw-bg-white/20 tw-cursor-pointer'}>
                         <LogoSvg w={8} h={8} />
                     </div>
                 </div>
-            </div>
+            </header>
             <div className={'tw-grow tw-overflow-auto'}>
                 <Box
                     maxW={'sm'}
@@ -62,14 +61,15 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                 >
                     <SideBar />
                 </Box>
-                <div className={'tw-overflow-y-auto tw-grow'}>
-                    {isOpen && <div className={'tw-overflow-y-auto tw-grow tw-p-2 tw-bg-[rgba(0,0,0,0.1)]'}>
+                <div className={'tw-overflow-y-auto tw-grow tw-h-full tw-flex-col'}>
+                    {isOpen && <div onClick={onClose} className={'tw-p-2 tw-bg-[rgba(0,0,0,0.1)]'}>
                         <hr className={'tw-mb-2'} />
                         <SideBar />
                         <hr className={'tw-mt-2'} />
                     </div>}
-
-                    {children}
+                    <main className={'tw-grow tw-h-full'}>
+                        {children}
+                    </main>
                 </div>
             </div>
             <div className={'tw-bottom-0'}>

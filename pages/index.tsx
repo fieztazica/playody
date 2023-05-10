@@ -1,56 +1,32 @@
 import React, { useState } from 'react'
 import { Button, Input } from '@chakra-ui/react'
-import useSpotify from '@/lib/hooks/useSpotify'
 import MainLayout from '@/components/layouts/MainLayout'
-import AudioWave from '@/components/rive/AudioWave'
+import { PlayodyTitle } from '@/components/PlayodyTitle'
+import Head from 'next/head'
+import { NavBar } from '@/components/NavBar'
 
 const Home = () => {
-    const spotifyApi = useSpotify()
-    const [searchResults, setSearchResults] = useState<
-        SpotifyApi.TrackObjectFull[]
-    >([])
-    const [query, setQuery] = useState<string>('')
 
-    const findSong = () => {
-        if (query) {
-            spotifyApi.search(query, ['track']).then(r => {
-                console.log(r.body.tracks?.items)
-                setSearchResults(r.body.tracks?.items!)
-            })
-        } else setSearchResults([])
-    }
 
     return (
         <>
-            <main className='tw-flex tw-flex-col tw-items-center'>
-                <div className='tw-w-full tw-p-2 tw-sticky tw-top-0 tw-bg-[rgba(0,0,0,0.1)]'>
-                    <Input
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        onBlur={() => findSong()}
-                        placeholder='Search spotify'
-                    />
+            <Head>
+                <title>
+                    Home
+                </title>
+            </Head>
+            <div className='tw-flex tw-flex-col tw-items-center tw-h-full'>
+                <div className={'tw-hidden md:tw-flex tw-w-full'}>
+                    <NavBar />
                 </div>
-                <AudioWave />
-                <div className='p-5'>
-                    {searchResults.map((v, i) => (
-                        // eslint-disable-next-line react/jsx-key
-                        <div className={'tw-p-5'}>
-                            <a href={v.external_urls.spotify}>{v.name}</a>
-                            <Button
-                                ml={2}
-                                size={'xs'}
-                                onClick={() => console.log(v.id)}
-                            >
-                                Play
-                            </Button>
-                        </div>
-                    ))}
-                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, i) => (
-                        <div key={'i'} className={'tw-h-10 tw-w-full tw-my-4 tw-bg-black'}>{v}</div>))}
+                <div className={'tw-flex tw-items-center tw-justify-center tw-h-full'}>
+                    <PlayodyTitle />
                 </div>
-            </main>
+            </div>
+
+
         </>
+
     )
 }
 
