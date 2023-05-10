@@ -50,8 +50,8 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                     width={'3xs'}
                     resize={'horizontal'}
                     overflow={'auto'}
-                    p={5}
                     h='full'
+                    p={2}
                     float={'left'}
                     textOverflow={'ellipsis'}
                     bgColor={'rgba(0,0,0, 0.08)'}
