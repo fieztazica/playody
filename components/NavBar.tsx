@@ -16,7 +16,7 @@ export function NavBar(props: Props) {
 
     return (
         <nav
-            className='tw-w-full tw-p-2 tw-sticky tw-top-0 tw-bg-[rgba(0,0,0,0.1)] tw-flex tw-justify-between tw-gap-2'>
+            className='tw-w-full tw-p-2 tw-sticky tw-top-0 tw-bg-black/20 tw-flex tw-justify-between tw-gap-2 tw-backdrop-blur-sm tw-z-10'>
             <div className={'tw-flex tw-gap-2 tw-w-full md:tw-w-fit'}>
                 <IconButton
                     display={{ base: 'none', md: 'flex' }}

@@ -19,7 +19,8 @@ const Login = () => {
                         supabaseClient.auth.signInWithOAuth({
                             provider:"spotify",
                             options: {
-                                scopes: spotifyScopes.join(" ")
+                                scopes: spotifyScopes.join(" "),
+                                redirectTo: process.env.NODE_ENV === "production" ? "https://playody.owlvernyte.tk" : "http://localhost:3000"
                             }
                         })
                     }}

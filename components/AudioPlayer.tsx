@@ -105,14 +105,12 @@ function AudioPlayer() {
                 )}
             </Head>
             <Grid
-                // direction={{ base: 'column', md: 'row' }}
                 templateColumns={{
                     base: '1fr',
                     md: 'repeat(3, 1fr)'
                 }}
                 p={4}
                 gap={6}
-                // align={'flex-end'}
                 bgColor={'rgba(0,0,0,1)'}
                 boxShadow={
                     'inset 0 10px 25px -25px #FF0080, inset 0 10px 20px -20px #7928CA'
@@ -120,7 +118,6 @@ function AudioPlayer() {
                 zIndex={5}
                 h={'full'}
                 className={'tw-relative'}
-                // gap={'20'}
             >
                 {loading && <div className={'tw-absolute tw-top-0 tw-right-0 tw-m-4'}>
                     <Spinner ml={2} />

@@ -19,7 +19,7 @@ const Home = () => {
                 <div className={'tw-hidden md:tw-flex tw-w-full'}>
                     <NavBar />
                 </div>
-                <div className={'tw-flex tw-items-center tw-justify-center tw-h-full'}>
+                <div className={'tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-full'}>
                     <PlayodyTitle />
                 </div>
             </div>

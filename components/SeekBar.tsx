@@ -30,7 +30,7 @@ function SeekBar() {
     }
 
     return (
-        <Stack direction={'row'} w='full' spacing={4} justifyContent={'center'}>
+        <Stack direction={'row'} w='full' spacing={4} justify={'center'} align={"center"}>
             <Text fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
                 {currentMinutes.toString().padStart(2, '0')}:
                 {currentSeconds.toString().padStart(2, '0')}

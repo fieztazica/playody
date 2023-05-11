@@ -1,6 +1,7 @@
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
 import { LoopMode } from '@/typings'
 import {
+    ButtonGroup,
     IconButton,
     Stack,
 
@@ -51,7 +52,7 @@ function AudioControl({ ...props }) {
     const LoopIcon = loopMode === 'song' ? BsRepeat1 : BsRepeat
 
     const toggleLoopMode = () => {
-        const loopModes: ['none', 'song', 'queue'] = ['none', 'song', 'queue']
+        const loopModes: ['none', 'queue', 'song'] = ['none', 'queue', 'song']
 
         const currentLoopIndex = loopModes.indexOf(loopMode)
 
@@ -68,6 +69,7 @@ function AudioControl({ ...props }) {
     return (
         <Stack
             justify={'center'}
+            direction={"column"}
             align={'center'}
             spacing={2}
             w='full'
@@ -75,11 +77,10 @@ function AudioControl({ ...props }) {
             p={2}
             {...props}
         >
-            <Stack direction={'row'} align={'center'} justify={"center"}>
+            <ButtonGroup alignItems={'center'}>
                 <IconButton
                     color={loopMode !== 'none' ? 'pink.300' : undefined}
-                    fontSize={{ base: 'xs', md: 'lg' }}
-                    size={{ base: 'xs', md: 'sm' }}
+                    size={"sm"}
                     variant={'ghost'}
                     rounded={'full'}
                     icon={<LoopIcon />}
@@ -88,40 +89,38 @@ function AudioControl({ ...props }) {
                     title={`${loopMode}`}
                 />
                 <IconButton
+                    size={"sm"}
                     rounded={'full'}
-                    size={{ base: 'xs', md: 'md' }}
                     icon={<BsFillSkipBackwardFill />}
                     aria-label='back button'
                     onClick={() => previousSong()}
                 />
                 <IconButton
-                    fontSize={{ base: 'xs', md: '4xl' }}
-                    size={{ base: 'xs', md: 'lg' }}
                     rounded={'full'}
                     icon={
                         !isPause ? <BsFillPauseFill /> : <BsFillPlayFill />
                     }
                     onClick={handlePausePlayClick}
                     aria-label='pause/resume button'
+                    w={'fit-content'}
                 />
                 <IconButton
+                    size={"sm"}
                     rounded={'full'}
-                    size={{ base: 'xs', md: 'md' }}
                     icon={<BsSkipForwardFill />}
                     aria-label='next button'
                     onClick={toggleNextSong}
                 />
                 <IconButton
                     color={shuffle ? 'pink.300' : undefined}
-                    fontSize={{ base: 'xs', md: 'lg' }}
-                    size={{ base: 'xs', md: 'sm' }}
+                    size={"sm"}
                     variant={'ghost'}
                     rounded={'full'}
                     icon={<BsShuffle />}
                     aria-label='shuffle button'
                     onClick={() => setShuffle(!shuffle)}
                 />
-            </Stack>
+            </ButtonGroup>
             <SeekBar />
         </Stack>
     )

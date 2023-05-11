@@ -1,30 +1,56 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useSpotify from '@/lib/hooks/useSpotify'
-import { Button, IconButton, Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
-import AudioWave from '@/components/rive/AudioWave'
+import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react'
 import MainLayout from '@/components/layouts/MainLayout'
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { RiSearchLine } from 'react-icons/ri'
 import { useRouter } from 'next/router'
-import { PlayodyTitle } from '@/components/PlayodyTitle'
 import Head from 'next/head'
 import { NavBar } from '@/components/NavBar'
+import { TrackCard } from '@/components/TrackCard'
 
 const Search = () => {
     const spotifyApi = useSpotify()
     const [searchResults, setSearchResults] = useState<
         SpotifyApi.TrackObjectFull[]
     >([])
-    const [query, setQuery] = useState<string>('')
     const router = useRouter()
+    const [query, setQuery] = useState<string>('')
 
-    const findSong = () => {
+    useEffect(() => {
+        setQuery(decodeURIComponent(router.query.q as string || ''))
+    }, [router])
+
+    useEffect(() => {
+        query ?
+            router.push({
+                pathname: '/search',
+                query: {
+                    q: encodeURIComponent(query),
+                },
+            }, undefined, { shallow: true })
+            :
+            router.push({
+                pathname: '/search',
+            }, undefined, { shallow: true })
+
+        const timer = setTimeout(() => {
+            findSong(query)
+        }, 2000)
+
+        return () => {
+            clearTimeout(timer)
+        }
+    }, [query])
+
+    function findSong(query: string) {
         if (query) {
             spotifyApi.search(query, ['track']).then(r => {
                 console.log(r.body.tracks?.items)
                 setSearchResults(r.body.tracks?.items!)
             })
-        } else setSearchResults([])
+        } else {
+            setSearchResults([])
+        }
     }
 
     return (
@@ -41,31 +67,16 @@ const Search = () => {
                             <RiSearchLine />
                         </InputLeftElement>
                         <Input
-                            value={query}
+                            value={query || ''}
                             onChange={(e) => setQuery(e.target.value)}
-                            onBlur={() => findSong()}
                             w={{ base: 'full', md: 300 }}
                             placeholder='Want to play anything?'
                         />
                     </InputGroup>
                 </NavBar>
-                <div className='p-5'>
-                    {searchResults.map((v, i) => (
-                        // eslint-disable-next-line react/jsx-key
-                        <div className={'tw-p-5'}>
-                            <a href={v.external_urls.spotify}>{v.name}</a>
-                            <Button
-                                ml={2}
-                                size={'xs'}
-                                onClick={() => console.log(v.id)}
-                            >
-                                Play
-                            </Button>
-                        </div>
-                    ))}
-                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, i) => (
-                        <div key={'i'} className={'tw-h-10 tw-w-full tw-my-4 tw-bg-black'}>{v}</div>))}
-                </div>
+                <Stack direction={'column'} p={2} w={'full'}>
+                    {searchResults.map((v, i) => (<TrackCard key={v.id} track={v} />))}
+                </Stack>
             </div>
         </>
     )
