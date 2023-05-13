@@ -47,8 +47,7 @@ function VolumeBar({ ...props }) {
     }, [volume, audioRef, audioRef.current])
 
     return (
-        <div className={`tw-w-full tw-h-full tw-justify-end tw-items-end tw-hidden md:tw-flex`}>
-            <HStack align={"center"} justify={"center"} {...props}>
+            <HStack align={"center"} justify={"center"} spacing={1} {...props}>
                 <div className={'tw-flex tw-w-fit tw-rounded-full tw-py-3 tw-px-2 hover:tw-bg-white/5 tw-duration-300'}>
                     <Slider
                         value={volume}
@@ -99,7 +98,6 @@ function VolumeBar({ ...props }) {
                     </Tooltip>
                 </div>
             </HStack>
-        </div>
     )
 }
 

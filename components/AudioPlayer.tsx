@@ -3,36 +3,10 @@ import { useEffect, useState } from 'react'
 import DisplaySong from './DisplaySong'
 import AudioControl from './AudioControl'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
-import VolumeBar from './VolumeBar'
-import { Track } from '@/typings'
 import Head from 'next/head'
+import { AudioRightBox } from '@/components/AudioRightBox'
 
 const AUDIO_API_ROUTE = '/api/yt'
-
-const exSongs: Track[] = [
-    {
-        name: 'Thôi Em Đừng Đi',
-        src: '6fzH7a3XQW0',
-        artists: [{ name: 'RPT MCK' }, { name: 'Trung Trần' }],
-    },
-    {
-        name: 'GOTTA GO',
-        src: 'SSojHpCIcdg',
-        artists: [{ name: 'Ducci' }],
-        cover: 'https://cdn.discordapp.com/attachments/1085226397255094324/1100046203644821504/image.png',
-    },
-    {
-        name: 'Xích Thêm Chút - XTC Remix',
-        src: 'PNhYz6RmIr4',
-        artists: [{ name: 'RPT Groovie' }, { name: 'RPT MCK' }, { name: 'tlinh' }],
-        cover: 'https://cdn.discordapp.com/attachments/1085226397255094324/1100046203644821504/image.png',
-    },
-    {
-        name: 'Chìm Sâu',
-        src: 'Yw9Ra2UiVLw',
-        artists: [{ name: 'RPT MCK' }, { name: 'Trung Trần' }],
-    },
-]
 
 function AudioPlayer() {
     const {
@@ -63,7 +37,7 @@ function AudioPlayer() {
             setLoading(true)
             // Load audio from API route
             const res = await fetch(`${AUDIO_API_ROUTE}/${videoId}`)
-            if (res.status !== 200) return;
+            if (res.status !== 200) return
             const buffer = await res.arrayBuffer()
             const audioUrl = URL.createObjectURL(new Blob([buffer]))
             setAudioUrl(audioUrl)
@@ -74,13 +48,23 @@ function AudioPlayer() {
         }
     }
 
+    // useEffect(() => {
+    //     if (isPause) {
+    //         setIsPause(!isPause)
+    //         audioRef.current?.play()
+    //     }
+    // }, [audioUrl])
+
+
     // const handleLoadedMetadata = () => {
     //     setDuration(audioRef.current?.duration || 0)
     // }
 
-    useEffect(() => {
-        setQueue(exSongs)
-    }, [])
+    // useEffect(() => {
+    //     if (queue)
+    //         handleLoadAudio(queue?.[playingIndex]?.src)
+    //     else setAudioUrl(null)
+    // }, [queue])
 
     // useEffect(() => {
     //     if (isPause) setAudioUrl(null)
@@ -88,9 +72,11 @@ function AudioPlayer() {
     // }, [isPause])
 
     useEffect(() => {
-        if (queue)
+        if (!queue || playingIndex == undefined) return
+        if (queue.length) {
             handleLoadAudio(queue?.[playingIndex]?.src)
-    }, [playingIndex])
+        } else setAudioUrl(null)
+    }, [playingIndex, queue])
 
     return (
         <>
@@ -107,7 +93,7 @@ function AudioPlayer() {
             <Grid
                 templateColumns={{
                     base: '1fr',
-                    md: 'repeat(3, 1fr)'
+                    md: 'repeat(3, 1fr)',
                 }}
                 p={4}
                 gap={6}
@@ -124,9 +110,9 @@ function AudioPlayer() {
                 </div>}
                 <DisplaySong />
                 <AudioControl />
-                <VolumeBar />
+                <AudioRightBox />
             </Grid>
-            {audioUrl && (
+            {queue.length && audioUrl && (
                 <audio
                     ref={audioRef}
                     src={audioUrl}
@@ -136,6 +122,8 @@ function AudioPlayer() {
                     onTimeUpdate={() =>
                         setCurrentTime(audioRef.current?.currentTime || 0)
                     }
+                    onPlay={() => setIsPause(false)}
+                    onPause={() => setIsPause(true)}
                     onEnded={() => nextSong()}
                 />
             )}

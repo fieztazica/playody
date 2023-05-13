@@ -3,12 +3,14 @@ import * as React from 'react'
 import { Card, CardBody } from '@chakra-ui/card'
 import { Box, Flex, Heading, Icon, IconButton, Image, Link, Stack, Text, Tooltip } from '@chakra-ui/react'
 import { BsFillPlayFill } from 'react-icons/bs'
+import { Track } from '@/typings'
 
 type Props = {
-    track: SpotifyApi.TrackObjectFull
+    track: SpotifyApi.TrackObjectFull | Track
+    onClickCover?: () => void
 };
 
-export function TrackCard({ track, ...props }: Props) {
+export function TrackCard({ track, onClickCover, ...props }: Props) {
     const trackDuration = track.duration_ms / 1000
     const trackDurationMins = Math.floor(trackDuration / 60)
     const trackDurationSecs = Math.floor(trackDuration - trackDurationMins * 60)
@@ -25,6 +27,7 @@ export function TrackCard({ track, ...props }: Props) {
                   }
               }
               role={'group'}
+              {...props}
         >
             <Tooltip label={`Play ${track.name}`}>
                 <Box
@@ -35,6 +38,7 @@ export function TrackCard({ track, ...props }: Props) {
                     }}
                     mr={2}
                     cursor={'pointer'}
+                    onClick={onClickCover}
                 >
                     <Box
                         sx={{

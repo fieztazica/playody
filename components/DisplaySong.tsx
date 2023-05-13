@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 
 function DisplaySong({ ...props }) {
     const { queue, playingIndex } = useAudioCtx()
-    const nowPlaying = queue[playingIndex]
+    const nowPlaying = playingIndex != undefined ?  queue[playingIndex] : undefined
 
     return (
         <Stack
@@ -24,7 +24,7 @@ function DisplaySong({ ...props }) {
             {...props}
         >
             <Image
-                src={nowPlaying?.cover}
+                src={nowPlaying?.album.images[0].url}
                 alt={`${nowPlaying?.name}'s cover`}
                 title={`${nowPlaying?.name}'s cover`}
                 objectFit={'cover'}

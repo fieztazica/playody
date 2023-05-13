@@ -44,6 +44,7 @@ function AudioControl({ ...props }) {
     }
 
     const toggleNextSong = () => {
+        if (playingIndex == undefined) return;
         setPlayingIndex(playingIndex + 1 >= queue.length ? 0 : playingIndex + 1)
         setPreviousIndexes(a => [...a, playingIndex])
         // nextSong()

@@ -7,8 +7,10 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { NavBar } from '@/components/NavBar'
 import { TrackCard } from '@/components/TrackCard'
+import { useAudioCtx } from '@/lib/contexts/AudioContext'
 
 const Search = () => {
+    const { addToQueue } = useAudioCtx()
     const spotifyApi = useSpotify()
     const [searchResults, setSearchResults] = useState<
         SpotifyApi.TrackObjectFull[]
@@ -53,6 +55,12 @@ const Search = () => {
         }
     }
 
+    function handleDoubleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>, trackId: string) {
+        if (event.detail == 2) {
+            addToQueue(trackId)
+        }
+    }
+
     return (
         <>
             <Head>
@@ -62,20 +70,25 @@ const Search = () => {
             </Head>
             <div className='tw-flex tw-flex-col tw-items-center'>
                 <NavBar>
-                    <InputGroup>
+                    <InputGroup key={"Search Group"}>
                         <InputLeftElement>
                             <RiSearchLine />
                         </InputLeftElement>
                         <Input
+                            type={"text"}
+                            name={"search"}
                             value={query || ''}
                             onChange={(e) => setQuery(e.target.value)}
                             w={{ base: 'full', md: 300 }}
-                            placeholder='Want to play anything?'
+                            placeholder='Play a melody'
                         />
                     </InputGroup>
                 </NavBar>
                 <Stack direction={'column'} p={2} w={'full'}>
-                    {searchResults.map((v, i) => (<TrackCard key={v.id} track={v} />))}
+                    {searchResults.map((v) => (
+                        <div key={v.id} onClick={(e) => handleDoubleClick(e, v.id)}><TrackCard track={v}
+                                                                                               onClickCover={() => addToQueue(v.id)} />
+                        </div>))}
                 </Stack>
             </div>
         </>

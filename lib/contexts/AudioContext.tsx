@@ -1,5 +1,6 @@
 import { AudioCtxType, LoopMode, Track } from '@/typings'
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { ApiResConvertSuccess, ApiResError } from '@/typings/apiRes'
 
 export const AudioCtx = createContext<AudioCtxType | null>(null)
 
@@ -12,7 +13,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
     const [loopMode, setLoopMode] = useState<LoopMode>('none')
     const [shuffle, setShuffle] = useState<boolean>(false)
     const [queue, setQueue] = useState<Track[]>([])
-    const [playingIndex, setPlayingIndex] = useState<number>(0)
+    const [playingIndex, setPlayingIndex] = useState<number>()
     const [previousIndexes, setPreviousIndexes] = useState<number[]>([])
 
     const getRandomIndexInQueue = () => {
@@ -36,7 +37,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
 
     const nextSong = () => {
         if (queue && queue.length && audioRef.current) {
-            if (isPause) return
+            if (isPause || !playingIndex) return
             switch (loopMode) {
                 case 'none':
                     setPreviousIndexes((v) => [playingIndex, ...v])
@@ -49,14 +50,14 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
                         setIsPause(true)
                     }
                     if (!shuffle) {
-                        setPlayingIndex((v) => v + 1)
+                        setPlayingIndex((v) => v as number + 1)
                     } else setPlayingIndex(getRandomIndexInQueue())
                     console.log(previousIndexes)
                     break
                 case 'queue':
                     setPreviousIndexes((v) => [playingIndex, ...v])
                     if (!shuffle) {
-                        setPlayingIndex((v) => v + 1)
+                        setPlayingIndex((v) => v as number + 1)
                     } else setPlayingIndex(getRandomIndexInQueue())
                     break
                 case 'song':
@@ -68,9 +69,29 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
+    const addToQueue = async (trackId: string) => {
+        const res: ApiResConvertSuccess | ApiResError = await fetch(`/api/spotify/convert?trackId=${trackId}`).then(r => r.json())
+
+        if ('error' in res) throw new Error(res.message, (res as ApiResError).error)
+
+        const spotifyData = (res as ApiResConvertSuccess).data.spotify
+
+        const topVideo = (res as ApiResConvertSuccess).data.videos[0]
+
+        const track: Track = {
+            name: spotifyData.name,
+            src: topVideo.id,
+            artists: spotifyData.artists,
+            album: spotifyData.album,
+            duration_ms: spotifyData.duration_ms,
+        }
+
+        setQueue(q => [...q, track])
+    }
+
     useEffect(() => {
         const volumeSto = Number.parseInt(
-            localStorage.getItem('app-volume') || `50`
+            localStorage.getItem('app-volume') || `50`,
         )
         if (volumeSto) setVolume(volumeSto)
     }, [])
@@ -84,12 +105,35 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
             setIsPause(true)
         }
 
-        if (playingIndex >= queue.length || playingIndex < 0) setPlayingIndex(0)
+        if (queue.length && !playingIndex) setPlayingIndex(0)
+
+        if (playingIndex && (playingIndex >= queue.length || playingIndex < 0)) setPlayingIndex(0)
+
+        if (playingIndex != undefined)
+            console.log(queue[playingIndex])
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [queue, playingIndex, volume])
 
-    let sharedStates = {
+    // useEffect(() => {
+    //     if (!isPause) {
+    //         audioRef.current?.pause()
+    //     } else {
+    //         audioRef.current?.play()
+    //     }
+    // }, [isPause])
+
+    // useEffect(() => {
+    //     // Pause and clean up on unmount
+    //     return () => {
+    //         //@ts-ignore
+    //         audioRef.current.pause();
+    //         // clearInterval(intervalRef.current);
+    //     }
+    // }, []);
+
+
+    let sharedStates: AudioCtxType = {
         audioRef,
         currentTime,
         setCurrentTime,
@@ -111,6 +155,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         setPreviousIndexes,
         nextSong,
         previousSong,
+        addToQueue,
     }
 
     return (
