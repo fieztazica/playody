@@ -1,4 +1,6 @@
-interface ApiResError {
+import ytsr from 'ytsr'
+
+interface ApiResError{
     message: string,
     error?: any
 }
@@ -6,4 +8,14 @@ interface ApiResError {
 interface ApiResSuccess {
     message?: string,
     data?: any
+}
+
+interface ApiResConvertData {
+    spotify: SpotifyApi.SingleTrackResponse,
+    youtube: ytsr.Result,
+    videos: ytsr.Video[]
+}
+
+interface ApiResConvertSuccess extends ApiResSuccess {
+    data: ApiResConvertData
 }

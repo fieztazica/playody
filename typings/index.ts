@@ -55,24 +55,21 @@ export type AudioCtxType = {
     setQueue: Dispatch<SetStateAction<Track[]>>
     shuffle: boolean
     setShuffle: Dispatch<SetStateAction<boolean>>
-    playingIndex: number
-    setPlayingIndex: Dispatch<SetStateAction<number>>
+    playingIndex?: number
+    setPlayingIndex: Dispatch<SetStateAction<number | undefined>>
     previousIndexes: number[]
     setPreviousIndexes: Dispatch<SetStateAction<number[]>>
     nextSong: () => void
-    previousSong: () => void
+    previousSong: () => void,
+    addToQueue: (trackId: string) => Promise<void>
 }
 
-export type Track = {
+export interface Track {
     name: string
     src: string
-    cover?: string
-    artists?: Artist[]
-    album?: string
-}
-
-export type Artist = {
-    name: string
+    artists: (SpotifyApi.ArtistObjectSimplified | SpotifyApi.ArtistObjectFull)[]
+    album: SpotifyApi.AlbumObjectFull | SpotifyApi.AlbumObjectSimplified
+    duration_ms: number
 }
 
 export type LoopMode = 'queue' | 'song' | 'none'
