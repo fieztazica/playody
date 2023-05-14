@@ -67,6 +67,26 @@
     }
 }
 
+/* width */
+::-webkit-scrollbar {
+    @apply tw-p-1 tw-w-2;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    @apply tw-rounded-full tw-bg-white/0 tw-my-1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    @apply tw-rounded-full tw-bg-white/20 tw-cursor-pointer;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    @apply tw-bg-white/30;
+}
+
 html,
 body {
     @apply tw-h-full;

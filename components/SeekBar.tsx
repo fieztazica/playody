@@ -30,12 +30,13 @@ function SeekBar() {
     }
 
     return (
-        <Stack direction={'row'} w='full' spacing={4} justify={'center'} align={"center"}>
-            <Text fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
+        <Stack key={"SeekBarComponent"} direction={'row'} w='full' spacing={4} justify={'center'} align={"center"}>
+            <Text key={"time_consumed"} fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
                 {currentMinutes.toString().padStart(2, '0')}:
                 {currentSeconds.toString().padStart(2, '0')}
             </Text>
             <Slider
+                key={"seek_bar"}
                 colorScheme='pink'
                 aria-label='slider-time'
                 max={duration}
@@ -48,7 +49,7 @@ function SeekBar() {
                 </SliderTrack>
                 <SliderThumb />
             </Slider>
-            <Text fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
+            <Text key={"time_left"} fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
                 {leftMinutes.toString().padStart(2, '0')}:
                 {leftSeconds.toString().padStart(2, '0')}
             </Text>

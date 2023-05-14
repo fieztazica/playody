@@ -8,6 +8,7 @@ import Head from 'next/head'
 import { NavBar } from '@/components/NavBar'
 import { TrackCard } from '@/components/TrackCard'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
+import SearchBar from '@/components/SearchBar'
 
 const Search = () => {
     const { addToQueue } = useAudioCtx()
@@ -42,6 +43,7 @@ const Search = () => {
         return () => {
             clearTimeout(timer)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [query])
 
     function findSong(query: string) {
@@ -61,6 +63,11 @@ const Search = () => {
         }
     }
 
+    function handleOnQuery(event: React.ChangeEvent<HTMLInputElement>) {
+        event.preventDefault()
+        setQuery(event.target.value)
+    }
+
     return (
         <>
             <Head>
@@ -70,24 +77,13 @@ const Search = () => {
             </Head>
             <div className='tw-flex tw-flex-col tw-items-center'>
                 <NavBar>
-                    <InputGroup key={"Search Group"}>
-                        <InputLeftElement>
-                            <RiSearchLine />
-                        </InputLeftElement>
-                        <Input
-                            type={"text"}
-                            name={"search"}
-                            value={query || ''}
-                            onChange={(e) => setQuery(e.target.value)}
-                            w={{ base: 'full', md: 300 }}
-                            placeholder='Play a melody'
-                        />
-                    </InputGroup>
+                    <SearchBar query={query} onChange={handleOnQuery} />
                 </NavBar>
-                <Stack direction={'column'} p={2} w={'full'}>
+                <Stack key={'seach_results'} direction={'column'} w={'full'}>
                     {searchResults.map((v) => (
-                        <div key={v.id} onClick={(e) => handleDoubleClick(e, v.id)}><TrackCard track={v}
-                                                                                               onClickCover={() => addToQueue(v.id)} />
+                        <div key={`search_result_${v.id}`} onClick={(e) => handleDoubleClick(e, v.id)}>
+                            <TrackCard track={v}
+                                       onClickCover={() => addToQueue(v.id)} />
                         </div>))}
                 </Stack>
             </div>

@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 
 function DisplaySong({ ...props }) {
     const { queue, playingIndex } = useAudioCtx()
-    const nowPlaying = playingIndex != undefined ?  queue[playingIndex] : undefined
+    const nowPlaying = playingIndex != null ?  queue[playingIndex] : null
 
     return (
         <Stack

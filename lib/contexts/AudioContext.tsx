@@ -13,7 +13,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
     const [loopMode, setLoopMode] = useState<LoopMode>('none')
     const [shuffle, setShuffle] = useState<boolean>(false)
     const [queue, setQueue] = useState<Track[]>([])
-    const [playingIndex, setPlayingIndex] = useState<number>()
+    const [playingIndex, setPlayingIndex] = useState<number | null>(null)
     const [previousIndexes, setPreviousIndexes] = useState<number[]>([])
 
     const getRandomIndexInQueue = () => {
@@ -37,7 +37,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
 
     const nextSong = () => {
         if (queue && queue.length && audioRef.current) {
-            if (isPause || !playingIndex) return
+            if (isPause || playingIndex === null) return
             switch (loopMode) {
                 case 'none':
                     setPreviousIndexes((v) => [playingIndex, ...v])
@@ -109,7 +109,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
 
         if (playingIndex && (playingIndex >= queue.length || playingIndex < 0)) setPlayingIndex(0)
 
-        if (playingIndex != undefined)
+        if (playingIndex !== null)
             console.log(queue[playingIndex])
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

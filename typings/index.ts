@@ -55,8 +55,8 @@ export type AudioCtxType = {
     setQueue: Dispatch<SetStateAction<Track[]>>
     shuffle: boolean
     setShuffle: Dispatch<SetStateAction<boolean>>
-    playingIndex?: number
-    setPlayingIndex: Dispatch<SetStateAction<number | undefined>>
+    playingIndex: number | null
+    setPlayingIndex: Dispatch<SetStateAction<number | null>>
     previousIndexes: number[]
     setPreviousIndexes: Dispatch<SetStateAction<number[]>>
     nextSong: () => void

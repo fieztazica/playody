@@ -24,7 +24,6 @@ function AudioControl({ ...props }) {
         audioRef,
         loopMode,
         setLoopMode,
-        nextSong,
         previousSong,
         setShuffle,
         shuffle,
@@ -44,10 +43,9 @@ function AudioControl({ ...props }) {
     }
 
     const toggleNextSong = () => {
-        if (playingIndex == undefined) return;
+        if (playingIndex === null) return;
         setPlayingIndex(playingIndex + 1 >= queue.length ? 0 : playingIndex + 1)
         setPreviousIndexes(a => [...a, playingIndex])
-        // nextSong()
     }
 
     const LoopIcon = loopMode === 'song' ? BsRepeat1 : BsRepeat

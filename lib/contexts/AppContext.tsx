@@ -1,5 +1,5 @@
 import { AppCtxType } from '@/typings'
-import { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Database } from '@/typings/supabase'
 import { createClient, Session } from '@supabase/supabase-js'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'

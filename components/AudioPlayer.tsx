@@ -21,7 +21,6 @@ function AudioPlayer() {
         playingIndex,
         setPlayingIndex,
         nextSong,
-        duration,
     } = useAudioCtx()
     const [loading, setLoading] = useState<boolean>(false)
     const [audioUrl, setAudioUrl] = useState<string | null>(null)
@@ -39,8 +38,9 @@ function AudioPlayer() {
             const res = await fetch(`${AUDIO_API_ROUTE}/${videoId}`)
             if (res.status !== 200) return
             const buffer = await res.arrayBuffer()
-            const audioUrl = URL.createObjectURL(new Blob([buffer]))
-            setAudioUrl(audioUrl)
+            const url = URL.createObjectURL(new Blob([buffer]))
+            if (audioUrl != url)
+                setAudioUrl(url)
         } catch (e) {
             console.error(e)
         } finally {
@@ -72,7 +72,7 @@ function AudioPlayer() {
     // }, [isPause])
 
     useEffect(() => {
-        if (!queue || playingIndex == undefined) return
+        if (!queue || playingIndex === null) return
         if (queue.length) {
             handleLoadAudio(queue?.[playingIndex]?.src)
         } else setAudioUrl(null)
@@ -91,6 +91,7 @@ function AudioPlayer() {
                 )}
             </Head>
             <Grid
+                key={'AudioPlayer'}
                 templateColumns={{
                     base: '1fr',
                     md: 'repeat(3, 1fr)',
@@ -112,7 +113,7 @@ function AudioPlayer() {
                 <AudioControl />
                 <AudioRightBox />
             </Grid>
-            {queue.length && audioUrl && (
+            {audioUrl && (
                 <audio
                     ref={audioRef}
                     src={audioUrl}
