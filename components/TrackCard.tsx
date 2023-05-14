@@ -23,7 +23,14 @@ export function TrackCard({ track, onClickCover, ...props }: Props) {
               bgColor={'rgba(0,0,0,0.2)'}
               _hover={
                   {
-                      bgColor: 'rgba(0,0,0,0.5)',
+                      bgColor: 'rgba(255,255,255,0.05)',
+                      boxShadow: "inset 0 0 15px -8px #fff"
+                  }
+              }
+              _active={
+                  {
+                      bgColor: 'rgba(255,255,255,0.1)',
+                      boxShadow: "inset 0 0 15px -5px #fff"
                   }
               }
               role={'group'}

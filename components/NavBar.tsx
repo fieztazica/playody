@@ -15,11 +15,9 @@ type Props = {
 
 export function NavBar({ mobile = false, children, ...props }: Props) {
     const router = useRouter()
-// tw-sticky tw-top-0 tw-backdrop-blur-sm tw-z-10 tw-h-fit tw-mb-2
-    // tw-hidden md:tw-flex
     return (
         <nav
-            className={`tw-w-full tw-sticky tw-top-0 tw-backdrop-blur-sm tw-z-10 tw-mb-2 ${mobile ? `tw-hidden md:tw-flex` : 'tw-flex'}`}>
+            className={`tw-w-full tw-sticky tw-top-0 tw-backdrop-blur-sm tw-z-10 tw-mb-2 ${mobile ? `tw-hidden md:tw-block` : 'tw-block'}`}>
             <div
                 className='tw-w-full tw-p-2 tw-bg-black/20 tw-flex tw-justify-between tw-gap-2 tw-rounded-md'>
                 <div className={'tw-flex tw-gap-2 tw-w-full md:tw-w-fit'}>

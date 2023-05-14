@@ -19,7 +19,6 @@ const Home = () => {
             <div className='tw-flex tw-flex-col tw-items-center'>
                 <NavBar mobile/>
                 <div className={'tw-flex tw-flex-col tw-items-center tw-justify-center'}>
-                    <PlayodyTitle />
                     {
                         new Array(50).fill(0).map((v, i) => (<Link key={`search ${i}`} as={NextLink} href={'/search'}>
                             Search some thing to play

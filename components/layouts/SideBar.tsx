@@ -4,6 +4,7 @@ import NextLink from 'next/link'
 import { RiHomeFill, RiHomeLine, RiSearchLine, RiSearchFill } from 'react-icons/ri'
 import { IconType } from 'react-icons'
 import React from 'react'
+import { usePathname } from 'next/navigation'
 
 type NavLinkType = {
     icon: IconType;
@@ -37,12 +38,13 @@ const navLinks: NavLinkType[] = [
 ]
 
 const NavLink = ({ active, icon, activeIcon, href, children, title, ...props }: NavLinkProps) => {
+    const leftIcon = active ? activeIcon : icon
 
     return (<NextLink href={href}>
         <div
-            className={`tw-flex tw-space-x-2 tw-items-center tw-group tw-px-2 tw-py-1 hover:tw-bg-white/10 active:tw-bg-white/20 tw-rounded-md`}>
-            {icon && <Icon as={icon} />}
-            <span className={'group-hover:tw-underline'}>
+            className={`tw-flex tw-space-x-2 tw-items-center tw-group tw-px-2 tw-py-1 hover:tw-bg-white/10 active:tw-bg-white/20 tw-rounded-md ${active ? 'tw-font-bold' : ''}`}>
+            {(icon && activeIcon) && <Icon as={leftIcon} />}
+            <span className={`${active ? 'tw-font-bold' : ''}`}>
                 {title}
             </span>
         </div>
@@ -50,6 +52,8 @@ const NavLink = ({ active, icon, activeIcon, href, children, title, ...props }: 
 }
 
 function SideBar() {
+    const pathname = usePathname()
+
     return (
         <>
             <div className={'tw-p-2 tw-rounded-md tw-bg-black/20'}>
@@ -61,7 +65,7 @@ function SideBar() {
                     navLinks.map(v => {
                         return (
                             <div key={`${v.title} nav link`}>
-                                <NavLink active={false} {...v} />
+                                <NavLink active={pathname == v.href} {...v} />
                             </div>
                         )
                     })
@@ -69,7 +73,7 @@ function SideBar() {
                 <Divider />
                 {new Array(50).fill(0).map((v, i) => (
                     <div key={`${i} nav link`}>
-                        <NavLink active={false} title={`Playlist #${i}`} href={`#`}/>
+                        <NavLink active={false} title={`Playlist #${i}`} href={`#`} />
                     </div>
                 ))}
             </div>
