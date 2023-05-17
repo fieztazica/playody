@@ -40,13 +40,13 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                     className={'tw-h-full tw-w-full tw-max-w-xs tw-hidden md:tw-flex tw-float-left tw-flex-col tw-space-y-2 tw-resize-x tw-py-2 tw-pl-2'}>
                     <SideBar />
                 </div>
-                <div className={'tw-overflow-y-auto tw-grow tw-h-full tw-flex-col'}>
+                <div className={'tw-overflow-y-auto tw-grow tw-h-full tw-flex-col tw-p-2'}>
                     {isOpen &&
-                        <div onClick={onClose} className={'md:tw-hidden tw-flex tw-flex-col tw-space-y-2 tw-p-2'}>
+                        <div onClick={onClose} className={'md:tw-hidden tw-flex tw-flex-col tw-space-y-2 '}>
                             <SideBar />
                         </div>
                     }
-                    <main className={'tw-grow tw-h-full tw-p-2 tw-rounded-md'}>
+                    <main className={'tw-grow tw-h-full tw-rounded-md'}>
                         {children}
                     </main>
                 </div>
