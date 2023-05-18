@@ -64,13 +64,7 @@ export type AudioCtxType = {
     addToQueue: (trackId: string) => Promise<void>
 }
 
-export interface Track {
-    name: string
-    src: string
-    artists: (SpotifyApi.ArtistObjectSimplified | SpotifyApi.ArtistObjectFull)[]
-    album: SpotifyApi.AlbumObjectFull | SpotifyApi.AlbumObjectSimplified
-    duration_ms: number
-}
+export type Track = Database["public"]["Tables"]["tracks"]["Row"]
 
 export type LoopMode = 'queue' | 'song' | 'none'
 

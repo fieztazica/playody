@@ -85,8 +85,10 @@ export interface Database {
           artists: string[] | null
           author: string | null
           created_at: string | null
+          duration_s: number | null
           genres: string[] | null
           id: string
+          image_url: string | null
           is_verified: boolean
           name: string | null
           src: string | null
@@ -95,8 +97,10 @@ export interface Database {
           artists?: string[] | null
           author?: string | null
           created_at?: string | null
+          duration_s?: number | null
           genres?: string[] | null
           id: string
+          image_url?: string | null
           is_verified?: boolean
           name?: string | null
           src?: string | null
@@ -105,8 +109,10 @@ export interface Database {
           artists?: string[] | null
           author?: string | null
           created_at?: string | null
+          duration_s?: number | null
           genres?: string[] | null
           id?: string
+          image_url?: string | null
           is_verified?: boolean
           name?: string | null
           src?: string | null
