@@ -9,11 +9,11 @@ export const AppCtx = createContext<AppCtxType | null>(null)
 
 export function AppCtxProvider({ children, initialSession }: { children: React.ReactNode, initialSession: Session }) {
     const [supabaseClient] = useState(() => createBrowserSupabaseClient<Database>())
-
-    const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+    const [navBarChildren, setNavBarChildren] = useState<React.ReactNode>(null);
+    // const [theme, setTheme] = useState<'light' | 'dark'>('dark')
 
     let sharedStates = {
-        theme,
+        // theme,
     }
 
     return (

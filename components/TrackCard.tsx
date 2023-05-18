@@ -30,7 +30,7 @@ export function TrackCard({ track, onClickCover, ...props }: Props) {
               _active={
                   {
                       bgColor: 'rgba(255,255,255,0.1)',
-                      boxShadow: "inset 0 0 15px -5px #fff"
+                      boxShadow: "inset 0 0 15px -5px #fff",
                   }
               }
               role={'group'}

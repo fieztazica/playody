@@ -75,13 +75,13 @@ const Search = () => {
                     Search
                 </title>
             </Head>
+            <NavBar>
+                <SearchBar query={query} onChange={handleOnQuery} />
+            </NavBar>
             <div className='tw-flex tw-flex-col tw-items-center'>
-                <NavBar>
-                    <SearchBar query={query} onChange={handleOnQuery} />
-                </NavBar>
-                <Stack key={'seach_results'} direction={'column'} w={'full'}>
+                <Stack key={'search_results'} direction={'column'} w={'full'}>
                     {searchResults.map((v) => (
-                        <div key={`search_result_${v.id}`} onClick={(e) => handleDoubleClick(e, v.id)}>
+                        <div key={`search_result_${v.id}`} title={"Double click to add the song to queue"} onClick={(e) => handleDoubleClick(e, v.id)}>
                             <TrackCard track={v}
                                        onClickCover={() => addToQueue(v.id)} />
                         </div>))}
@@ -92,7 +92,7 @@ const Search = () => {
 }
 
 Search.getLayout = (page: React.ReactElement) => {
-    return <MainLayout>{page}</MainLayout>
+    return <MainLayout navbar={false}>{page}</MainLayout>
 }
 
 export default Search

@@ -1,10 +1,11 @@
 import { Box, Divider, Icon, Link, Stack } from '@chakra-ui/react'
 import DisplayUser from '../DisplayUser'
 import NextLink from 'next/link'
-import { RiHomeFill, RiHomeLine, RiSearchLine, RiSearchFill } from 'react-icons/ri'
+import { RiHomeFill, RiHomeLine, RiSearchLine, RiSearchFill, RiUpload2Fill, RiUpload2Line } from 'react-icons/ri'
 import { IconType } from 'react-icons'
 import React from 'react'
 import { usePathname } from 'next/navigation'
+import { MdQueueMusic, MdOutlineQueueMusic } from 'react-icons/md'
 
 type NavLinkType = {
     icon: IconType;
@@ -35,6 +36,18 @@ const navLinks: NavLinkType[] = [
         icon: RiSearchLine,
         activeIcon: RiSearchFill,
     },
+    {
+        title: 'Upload',
+        href: '/upload',
+        icon: RiUpload2Line,
+        activeIcon: RiUpload2Fill,
+    },
+    {
+        title: 'Queue',
+        href: '/queue',
+        icon: MdQueueMusic,
+        activeIcon: MdOutlineQueueMusic,
+    },
 ]
 
 const NavLink = ({ active, icon, activeIcon, href, children, title, ...props }: NavLinkProps) => {
@@ -64,7 +77,8 @@ function SideBar() {
                 {
                     navLinks.map(v => {
                         return (
-                            <div key={`${v.title} nav link`}>
+                            <div key={`${v.title} nav link`}
+                                 className={v.title == 'Queue' ? 'tw-block md:tw-hidden' : undefined}>
                                 <NavLink active={pathname == v.href} {...v} />
                             </div>
                         )

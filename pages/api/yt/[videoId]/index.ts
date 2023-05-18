@@ -50,7 +50,7 @@ export default async function handler(
         res.setHeader('Content-Type', 'audio/mp3')
         res.setHeader(
             'Content-Disposition',
-            `attachment; filename="audio-${videoId}.mp3"`,
+            `attachment; filename="${videoId}.mp3"`,
         )
         res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
         res.send(buffer)

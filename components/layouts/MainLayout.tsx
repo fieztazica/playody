@@ -10,8 +10,9 @@ import { BiLeftArrow, BiRightArrow } from 'react-icons/bi'
 import LogoSvg from '@/components/LogoSvg'
 import { PlayodyTitle } from '@/components/PlayodyTitle'
 import React from 'react'
+import { NavBar } from '@/components/NavBar'
 
-function MainLayout({ children }: { children: React.ReactNode }) {
+function MainLayout({ children, navbar = true }: { children: React.ReactNode, navbar?: boolean }) {
     const { isOpen, onClose, onToggle } = useDisclosure()
 
     return (
@@ -47,6 +48,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                         </div>
                     }
                     <main className={'tw-grow tw-h-full tw-rounded-md'}>
+                        {navbar && <NavBar/>}
                         {children}
                     </main>
                 </div>

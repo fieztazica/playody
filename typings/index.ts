@@ -35,7 +35,7 @@ interface Image {
 }
 
 export type AppCtxType = {
-    theme: 'dark' | 'light'
+    // theme: 'dark' | 'light'
     // supabaseClient: SupabaseClient<Database>
 }
 

@@ -3,7 +3,6 @@ import { Button, Input, Link } from '@chakra-ui/react'
 import MainLayout from '@/components/layouts/MainLayout'
 import { PlayodyTitle } from '@/components/PlayodyTitle'
 import Head from 'next/head'
-import { NavBar } from '@/components/NavBar'
 import NextLink from 'next/link'
 
 const Home = () => {
@@ -16,15 +15,12 @@ const Home = () => {
                     Home
                 </title>
             </Head>
-            <div className='tw-flex tw-flex-col tw-items-center'>
-                <NavBar mobile/>
-                <div className={'tw-flex tw-flex-col tw-items-center tw-justify-center'}>
-                    {
-                        new Array(50).fill(0).map((v, i) => (<Link key={`search ${i}`} as={NextLink} href={'/search'}>
-                            Search some thing to play
-                        </Link>))
-                    }
-                </div>
+            <div className='tw-flex tw-flex-col tw-items-center tw-justify-center'>
+                {
+                    new Array(50).fill(0).map((v, i) => (<Link key={`search ${i}`} as={NextLink} href={'/search'}>
+                        Search some thing to play
+                    </Link>))
+                }
             </div>
 
 

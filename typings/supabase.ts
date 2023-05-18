@@ -34,6 +34,29 @@ export interface Database {
   }
   public: {
     Tables: {
+      playlists: {
+        Row: {
+          author: string | null
+          created_at: string | null
+          id: number
+          name: string | null
+          trackIds: string[] | null
+        }
+        Insert: {
+          author?: string | null
+          created_at?: string | null
+          id?: number
+          name?: string | null
+          trackIds?: string[] | null
+        }
+        Update: {
+          author?: string | null
+          created_at?: string | null
+          id?: number
+          name?: string | null
+          trackIds?: string[] | null
+        }
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -41,7 +64,6 @@ export interface Database {
           id: string
           updated_at: string | null
           username: string | null
-          website: string | null
         }
         Insert: {
           avatar_url?: string | null
@@ -49,7 +71,6 @@ export interface Database {
           id: string
           updated_at?: string | null
           username?: string | null
-          website?: string | null
         }
         Update: {
           avatar_url?: string | null
@@ -57,7 +78,38 @@ export interface Database {
           id?: string
           updated_at?: string | null
           username?: string | null
-          website?: string | null
+        }
+      }
+      tracks: {
+        Row: {
+          artists: string[] | null
+          author: string | null
+          created_at: string | null
+          genres: string[] | null
+          id: string
+          is_verified: boolean
+          name: string | null
+          src: string | null
+        }
+        Insert: {
+          artists?: string[] | null
+          author?: string | null
+          created_at?: string | null
+          genres?: string[] | null
+          id: string
+          is_verified?: boolean
+          name?: string | null
+          src?: string | null
+        }
+        Update: {
+          artists?: string[] | null
+          author?: string | null
+          created_at?: string | null
+          genres?: string[] | null
+          id?: string
+          is_verified?: boolean
+          name?: string | null
+          src?: string | null
         }
       }
     }
