@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import useSpotify from '@/lib/hooks/useSpotify'
 import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react'
 import MainLayout from '@/components/MainLayout'
 import { RiSearchLine } from 'react-icons/ri'
@@ -9,12 +8,12 @@ import { NavBar } from '@/components/NavBar'
 import { TrackCard } from '@/components/TrackCard'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
 import SearchBar from '@/components/SearchBar'
+import { Track } from '@/typings'
 
 const Search = () => {
     const { addToQueue } = useAudioCtx()
-    const spotifyApi = useSpotify()
     const [searchResults, setSearchResults] = useState<
-        SpotifyApi.TrackObjectFull[]
+        Track[]
     >([])
     const router = useRouter()
     const [query, setQuery] = useState<string>('')
@@ -48,10 +47,7 @@ const Search = () => {
 
     function findSong(query: string) {
         if (query) {
-            spotifyApi.search(query, ['track']).then(r => {
-                console.log(r.body.tracks?.items)
-                setSearchResults(r.body.tracks?.items!)
-            })
+           
         } else {
             setSearchResults([])
         }
