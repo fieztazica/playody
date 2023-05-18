@@ -12,23 +12,23 @@ const useAudioPlayer = (videoId: string): UseAudioPlayerResult => {
     const [error, setError] = useState<string | null>(null)
 
     const loadAudio = async () => {
-        if (!videoId)
-            throw new Error('No videoId provided')
+        // if (!videoId)
+        //     throw new Error('No videoId provided')
 
-        // Fetch the transcoded audio stream from the API route
-        const res = await fetch(`/api/yt/${videoId}`)
+        // // Fetch the transcoded audio stream from the API route
+        // const res = await fetch(`/api/yt/${videoId}`)
 
-        if (!res.ok)
-            throw new Error('Failed to fetch audio')
+        // if (!res.ok)
+        //     throw new Error('Failed to fetch audio')
 
-        // Create a new blob from the response body
-        const blob = await res.blob()
+        // // Create a new blob from the response body
+        // const blob = await res.blob()
 
-        // Create a new URL for the blob
-        const url = URL.createObjectURL(blob)
+        // // Create a new URL for the blob
+        // const url = URL.createObjectURL(blob)
 
-        // Set the audio URL and turn off the loading flag
-        setAudioUrl(url)
+        // // Set the audio URL and turn off the loading flag
+        // setAudioUrl(url)
     }
 
     useEffect(() => {

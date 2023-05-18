@@ -4,7 +4,7 @@ import {
     useDisclosure,
     IconButton,
 } from '@chakra-ui/react'
-import AudioPlayer from '../AudioPlayer'
+import AudioPlayer from './AudioPlayer'
 import SideBar from './SideBar'
 import { BiLeftArrow, BiRightArrow } from 'react-icons/bi'
 import LogoSvg from '@/components/LogoSvg'

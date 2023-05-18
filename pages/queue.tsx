@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
 import { TrackCard } from '@/components/TrackCard'
-import MainLayout from '@/components/layouts/MainLayout'
+import MainLayout from '@/components/MainLayout'
 import Head from 'next/head'
 import { NavBar } from '@/components/NavBar'
 import { PlayodyTitle } from '@/components/PlayodyTitle'

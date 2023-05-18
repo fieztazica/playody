@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Input, Link } from '@chakra-ui/react'
-import MainLayout from '@/components/layouts/MainLayout'
+import MainLayout from '@/components/MainLayout'
 import { PlayodyTitle } from '@/components/PlayodyTitle'
 import Head from 'next/head'
 import NextLink from 'next/link'

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useSpotify from '@/lib/hooks/useSpotify'
 import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react'
-import MainLayout from '@/components/layouts/MainLayout'
+import MainLayout from '@/components/MainLayout'
 import { RiSearchLine } from 'react-icons/ri'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -80,11 +80,11 @@ const Search = () => {
             </NavBar>
             <div className='tw-flex tw-flex-col tw-items-center'>
                 <Stack key={'search_results'} direction={'column'} w={'full'}>
-                    {searchResults.map((v) => (
+                    {/* {searchResults.map((v) => (
                         <div key={`search_result_${v.id}`} title={"Double click to add the song to queue"} onClick={(e) => handleDoubleClick(e, v.id)}>
                             <TrackCard track={v}
                                        onClickCover={() => addToQueue(v.id)} />
-                        </div>))}
+                        </div>))} */}
                 </Stack>
             </div>
         </>

@@ -1,6 +1,6 @@
 // @flow
 import { useState } from 'react'
-import MainLayout from '@/components/layouts/MainLayout'
+import MainLayout from '@/components/MainLayout'
 import {
     Button,
     Container,

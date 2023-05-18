@@ -70,23 +70,23 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
     }
 
     const addToQueue = async (trackId: string) => {
-        const res: ApiResConvertSuccess | ApiResError = await fetch(`/api/spotify/convert?trackId=${trackId}`).then(r => r.json())
+        // const res: ApiResConvertSuccess | ApiResError = await fetch(`/api/spotify/convert?trackId=${trackId}`).then(r => r.json())
 
-        if ('error' in res) throw new Error(res.message, (res as ApiResError).error)
+        // if ('error' in res) throw new Error(res.message, (res as ApiResError).error)
 
-        const spotifyData = (res as ApiResConvertSuccess).data.spotify
+        // const spotifyData = (res as ApiResConvertSuccess).data.spotify
 
-        const topVideo = (res as ApiResConvertSuccess).data.videos[0]
+        // const topVideo = (res as ApiResConvertSuccess).data.videos[0]
 
-        const track: Track = {
-            name: spotifyData.name,
-            src: topVideo.id,
-            artists: spotifyData.artists,
-            album: spotifyData.album,
-            duration_ms: spotifyData.duration_ms,
-        }
+        // const track: Track = {
+        //     name: spotifyData.name,
+        //     src: topVideo.id,
+        //     artists: spotifyData.artists,
+        //     album: spotifyData.album,
+        //     duration_ms: spotifyData.duration_ms,
+        // }
 
-        setQueue(q => [...q, track])
+        // setQueue(q => [...q, track])
     }
 
     useEffect(() => {

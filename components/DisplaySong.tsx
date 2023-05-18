@@ -24,7 +24,7 @@ function DisplaySong({ ...props }) {
             {...props}
         >
             <Image
-                src={nowPlaying?.album.images[0].url}
+                // src={nowPlaying?.album.images[0].url}
                 alt={`${nowPlaying?.name}'s cover`}
                 title={`${nowPlaying?.name}'s cover`}
                 objectFit={'cover'}
@@ -54,10 +54,10 @@ function DisplaySong({ ...props }) {
                 {/*</Text>*/}
                 <div className={'container tw-hidden md:tw-block'}>
                     <div className={'tw-truncate tw-duration-300 hover:animated'}>
-                         <span className={'tw-text-sm md:tw-text-base'}
+                         {/* <span className={'tw-text-sm md:tw-text-base'}
                                title={nowPlaying?.artists?.map((v) => v.name).join(', ') || 'No artist'}>
                             {nowPlaying?.artists?.map((v) => v.name).join(', ')}
-                        </span>
+                        </span> */}
                     </div>
                 </div>
 

@@ -1,5 +1,5 @@
 import { Box, Divider, Icon, Link, Stack } from '@chakra-ui/react'
-import DisplayUser from '../DisplayUser'
+import DisplayUser from './DisplayUser'
 import NextLink from 'next/link'
 import { RiHomeFill, RiHomeLine, RiSearchLine, RiSearchFill, RiUpload2Fill, RiUpload2Line } from 'react-icons/ri'
 import { IconType } from 'react-icons'

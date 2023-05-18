@@ -74,7 +74,7 @@ function AudioPlayer() {
     useEffect(() => {
         if (!queue || playingIndex === null) return
         if (queue.length) {
-            handleLoadAudio(queue?.[playingIndex]?.src)
+            // handleLoadAudio(queue?.[playingIndex]?.src)
         } else setAudioUrl(null)
     }, [playingIndex, queue])
 
