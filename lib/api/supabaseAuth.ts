@@ -15,16 +15,6 @@ const getProviderToken = async (req: NextApiRequest,
         throw res.status(403).json({
             message: 'session is not defined',
         })
-
-    // Retrieve provider_token & logged in user's third-party id from metadata
-    const { provider_token } = session
-
-    if (!provider_token)
-        throw res.status(403).json({
-            message: 'provider_token not provided',
-        })
-
-    return provider_token
 }
 
 export { getProviderToken }
