@@ -73,7 +73,7 @@ function SideBar() {
                 <DisplayUser />
             </div>
             <div
-                className={'tw-p-2 tw-rounded-md tw-bg-black/20 tw-h-full tw-grow tw-flex tw-flex-col tw-space-y-2 tw-overflow-y-auto'}>
+                className={'tw-p-2 tw-rounded-md tw-bg-black/20 tw-h-full tw-grow tw-flex tw-flex-col tw-space-y-1 tw-overflow-y-auto'}>
                 {
                     navLinks.map(v => {
                         return (

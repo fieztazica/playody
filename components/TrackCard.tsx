@@ -87,7 +87,6 @@ export function TrackCard({ track, onClickCover, ...props }: Props) {
                                     .map<React.ReactNode>((v, i) => (
                                         <Link
                                             key={`artist-${v}-${i}`}
-                                            isExternal={true}
                                         >
                                             {v}
                                         </Link>

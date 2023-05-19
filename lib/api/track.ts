@@ -3,7 +3,7 @@ import { SupabaseClient } from '@supabase/supabase-js'
 import { Database } from '@/typings/supabase'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
-export type TrackInsert = Database["public"]["Tables"]["tracks"]["Insert"]
+export type TrackInsert = Database['public']['Tables']['tracks']['Insert']
 
 class TrackApi {
     req: NextApiRequest
@@ -17,7 +17,9 @@ class TrackApi {
     }
 
     async post(body: TrackInsert) {
+        const audio = new Audio(body.src || undefined)
         return (await this.supabase.from('tracks').insert({
+            duration_s: audio.duration,
             ...body,
         }).select())
     }

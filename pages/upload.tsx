@@ -14,11 +14,8 @@ import {
 import { RiAddFill } from 'react-icons/ri'
 import Head from 'next/head'
 import { BiUpload } from 'react-icons/bi'
-import FileUpload from '@/components/FileUpload'
-import { useAppStates } from '@/lib/contexts/AppContext'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
-import { Track } from '@/typings'
 import { TrackInsert } from '@/lib/api/track'
 
 type Props = {}
@@ -30,7 +27,7 @@ const UploadBox = ({ children, loading, onClick, ...props }: {
 }) => {
 
     return <div onClick={loading ? undefined : onClick}
-                className={`tw-p-4 tw-h-32 tw-w-32 tw-border tw-rounded-md tw-group tw-flex tw-items-center tw-justify-center ${loading ? 'tw-cursor-not-allowed' : 'tw-cursor-pointer'}`}>
+                className={`tw-overflow-hidden tw-h-32 tw-w-32 tw-border tw-rounded-md tw-group tw-flex tw-items-center tw-justify-center ${loading ? 'tw-cursor-not-allowed' : 'tw-cursor-pointer'}`}>
         <div className={'tw-flex tw-flex-col tw-justify-center tw-items-center'}>
 
             {
@@ -53,7 +50,7 @@ const Upload = (props: Props) => {
     const [artists, setArtists] = useState<string[]>([''])
     const [srcUrl, setSrcUrl] = useState('')
     const [imageUrl, setImageUrl] = useState('')
-    const [imageUploading, setImageUploading] = useState(true)
+    const [imageUploading, setImageUploading] = useState(false)
     const [srcUploading, setSrcUploading] = useState(false)
     const [submitting, setSubmitting] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
@@ -70,6 +67,22 @@ const Upload = (props: Props) => {
         setArtists((a) => [...a, ''])
     }
 
+    function onGenresChange(value: string, id: number) {
+        setGenres((a) => {
+            const newArray = [...a]
+            newArray[id] = value
+            return newArray
+        })
+    }
+
+    function onArtistsChange(value: string, id: number) {
+        setArtists((a) => {
+            const newArray = [...a]
+            newArray[id] = value
+            return newArray
+        })
+    }
+
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
         if (!user) return
@@ -80,8 +93,8 @@ const Upload = (props: Props) => {
                 src: srcUrl,
                 image_url: imageUrl,
                 name: songName,
-                genres: genres.filter(v => v.length <= 0).length <= 0 ? null : genres.filter(v => v.length <= 0),
-                artists: artists.filter(v => v.length <= 0).length <= 0 ? null : artists.filter(v => v.length <= 0),
+                genres: genres.filter(v => v.length > 0),
+                artists: artists.filter(v => v.length > 0),
                 author: user.id,
             }
 
@@ -101,12 +114,22 @@ const Upload = (props: Props) => {
 
             console.log((jsonData as ApiResSuccess).data)
 
+            setArtists([''])
+            setGenres([''])
+            setSongName('')
+            setImageUrl('')
+            setSrcUrl('')
+            alert("Uploaded! Please wait for verification process")
         } catch (e: any) {
             console.error(e)
             setError((e as ApiResError).error.message)
         } finally {
             setSubmitting(false)
             setError(null)
+            // @ts-ignore
+            imageUploadRef.current.value = null
+            // @ts-ignore
+            srcUploadRef.current.value = null
         }
     }
 
@@ -119,24 +142,78 @@ const Upload = (props: Props) => {
             }
 
             const file = event.target.files[0]
-            const fileExt = file.name.split('.').pop()
-            const fileName = `${user.id}.${fileExt}`
-            const filePath = `${user.id}/${fileName}`
+            const fileNameArray = file.name.split('.')
+            const fileExt = fileNameArray.pop()
+            const fileName = fileNameArray.join("").replace(/[^A-Z0-9]+/ig, "_")
+            const filePath = `${user.id}/${encodeURI(fileName)}.${fileExt}`
 
-            let { error: uploadError } = await supabase.storage
+            let { error: uploadError, data: uploadData } = await supabase.storage
                 .from('images')
-                .upload(filePath, file, { upsert: true })
+                .upload(filePath, file, { upsert: false })
 
             if (uploadError) {
                 throw uploadError
             }
 
-            // onUpload(filePath)
+            if (uploadData) {
+                const { data: publicImageData } = supabase
+                    .storage
+                    .from('images')
+                    .getPublicUrl(uploadData.path)
+
+                setImageUrl(publicImageData.publicUrl)
+            }
         } catch (error) {
-            alert('Error uploading avatar!')
+            alert('Error uploading image!')
             console.log(error)
         } finally {
             setImageUploading(false)
+            // @ts-ignore
+            imageUploadRef.current.value = null
+            // @ts-ignore
+            srcUploadRef.current.value = null
+        }
+    }
+
+    const uploadSrc: ChangeEventHandler<HTMLInputElement> = async (event) => {
+        try {
+            setSrcUploading(true)
+
+            if (!event.target.files || event.target.files.length === 0) {
+                throw new Error('You must select an audio to upload.')
+            }
+
+            const file = event.target.files[0]
+            const fileNameArray = file.name.split('.')
+            const fileExt = fileNameArray.pop()
+            const fileName = fileNameArray.join("").replace(/[^A-Z0-9]+/ig, "_")
+            const filePath = `${user.id}/${encodeURI(fileName)}.${fileExt}`
+
+            let { error: uploadError, data: uploadData } = await supabase.storage
+                .from('audio')
+                .upload(filePath, file, { upsert: false })
+
+            if (uploadError) {
+                throw uploadError
+            }
+
+            if (uploadData) {
+                const { data: publicData } = supabase
+                    .storage
+                    .from('audio')
+                    .getPublicUrl(uploadData.path)
+
+                setSrcUrl(publicData.publicUrl)
+            }
+        } catch (error) {
+            alert('Error uploading audio!')
+            console.log(error)
+        } finally {
+            setSrcUploading(false)
+            // @ts-ignore
+            imageUploadRef.current.value = null
+            // @ts-ignore
+            srcUploadRef.current.value = null
         }
     }
 
@@ -150,7 +227,10 @@ const Upload = (props: Props) => {
                     <Stack>
                         <FormControl isRequired>
                             <FormLabel>Song name</FormLabel>
-                            <Input placeholder='Song name' />
+                            <Input value={songName} placeholder='Song name' onChange={(e) => {
+                                e.preventDefault()
+                                setSongName(e.target.value)
+                            }} />
                         </FormControl>
                         <FormControl isRequired>
                             <FormLabel>Genres</FormLabel>
@@ -159,6 +239,11 @@ const Upload = (props: Props) => {
                                     <Input
                                         key={`genre-${i}`}
                                         placeholder={`genre #${i + 1}`}
+                                        value={genres[i]}
+                                        onChange={(e) => {
+                                            e.preventDefault()
+                                            onGenresChange(e.target.value, i)
+                                        }}
                                     />
                                 ))}
                                 {genres.length < 2 && (
@@ -179,6 +264,11 @@ const Upload = (props: Props) => {
                                     <Input
                                         key={`artist-${i}`}
                                         placeholder={`artist #${i + 1}`}
+                                        value={artists[i]}
+                                        onChange={(e) => {
+                                            e.preventDefault()
+                                            onArtistsChange(e.target.value, i)
+                                        }}
                                     />
                                 ))}
                                 {artists.length < 4 && (
@@ -195,26 +285,29 @@ const Upload = (props: Props) => {
                         <FormControl isRequired>
                             <FormLabel>Image</FormLabel>
                             <UploadBox loading={imageUploading} onClick={() => imageUploadRef.current?.click()}>
-                                {imageUrl && <Image src={imageUrl} />}
+                                {imageUrl && <Image alt={'track\'s image'} src={imageUrl} />}
                             </UploadBox>
                             <input
                                 ref={imageUploadRef}
                                 hidden
                                 type={'file'}
                                 accept={'image/png, image/jpeg'}
+                                onChange={uploadImage}
                             />
                         </FormControl>
                         <FormControl isRequired>
                             <FormLabel>Source</FormLabel>
                             <UploadBox loading={srcUploading} onClick={() => srcUploadRef.current?.click()}>
-                                {srcUrl && `${srcUrl}`}
+                                {srcUrl && <p title={srcUrl} className={'tw-truncate tw-w-120px'}>
+                                    {srcUrl}
+                                </p>}
                             </UploadBox>
                             <input
                                 ref={srcUploadRef}
                                 hidden
                                 type={'file'}
                                 accept={'audio/mpeg, audio/x-wav'}
-
+                                onChange={uploadSrc}
                             />
                         </FormControl>
                         {
