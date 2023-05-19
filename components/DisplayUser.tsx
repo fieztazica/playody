@@ -9,7 +9,7 @@ function DisplayUser() {
     const supabaseClient = useSupabaseClient<Database>()
     const router = useRouter()
     const hostname = process.env.NODE_ENV === 'production' ?
-        'https://playody.owlvernyte.tk' :
+        'https://playody.vercel.app' :
         'http://localhost:3000'
     const redirect = router.route !== '/' ? `?redirect=${encodeURIComponent(`${hostname}${router.route}`)}` : ''
 

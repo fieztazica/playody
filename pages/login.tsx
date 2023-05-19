@@ -12,7 +12,7 @@ const Login = () => {
     const router = useRouter()
     const queryRedirect = router.query['redirect']
     const hostname = process.env.NODE_ENV === 'production' ?
-        'https://playody.owlvernyte.tk' :
+        'https://playody.vercel.app' :
         'http://localhost:3000'
     const redirect =
         queryRedirect ? decodeURIComponent(queryRedirect as string) : hostname
