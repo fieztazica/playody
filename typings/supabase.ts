@@ -99,7 +99,7 @@ export interface Database {
           created_at?: string | null
           duration_s?: number | null
           genres?: string[] | null
-          id: string
+          id?: string
           image_url?: string | null
           is_verified?: boolean
           name?: string | null
