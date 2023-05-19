@@ -11,11 +11,11 @@ const Login = () => {
     const supabaseClient = useSupabaseClient()
     const router = useRouter()
     const queryRedirect = router.query['redirect']
-    const hostname = process.env.NODE_ENV === 'production' ?
-        'https://playody.vercel.app' :
+    const hostname = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'development' ?
+        `https://${process.env.NEXT_PUBLIC_VERCEL_URL || 'localhost:3000'}` :
         'http://localhost:3000'
     const redirect =
-        queryRedirect ? decodeURIComponent(queryRedirect as string) : hostname
+        (queryRedirect && typeof queryRedirect == 'string') ? decodeURIComponent(queryRedirect) : hostname
 
     return (
         <>
