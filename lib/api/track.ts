@@ -17,9 +17,7 @@ class TrackApi {
     }
 
     async post(body: TrackInsert) {
-        const audio = new Audio(body.src || undefined)
         return (await this.supabase.from('tracks').insert({
-            duration_s: audio.duration,
             ...body,
         }).select())
     }

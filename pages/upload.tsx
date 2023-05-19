@@ -1,5 +1,13 @@
 // @flow
-import { ChangeEventHandler, FormEvent, ReactNode, useRef, useState } from 'react'
+import {
+    ChangeEventHandler,
+    FormEvent,
+    ReactNode,
+    SyntheticEvent,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 import MainLayout from '@/components/MainLayout'
 import {
     Button,
@@ -11,7 +19,7 @@ import {
     SimpleGrid, Spinner,
     Stack,
 } from '@chakra-ui/react'
-import { RiAddFill } from 'react-icons/ri'
+import { RiAddFill, RiSubtractFill } from 'react-icons/ri'
 import Head from 'next/head'
 import { BiUpload } from 'react-icons/bi'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
@@ -45,10 +53,12 @@ const UploadBox = ({ children, loading, onClick, ...props }: {
 const Upload = (props: Props) => {
     const user = useUser()
     const supabase = useSupabaseClient<Database>()
+    const audioRef = useRef<HTMLAudioElement>(null)
     const [songName, setSongName] = useState('')
     const [genres, setGenres] = useState<string[]>([''])
     const [artists, setArtists] = useState<string[]>([''])
     const [srcUrl, setSrcUrl] = useState('')
+    const [duration, setDuration] = useState<number>(0)
     const [imageUrl, setImageUrl] = useState('')
     const [imageUploading, setImageUploading] = useState(false)
     const [srcUploading, setSrcUploading] = useState(false)
@@ -57,15 +67,28 @@ const Upload = (props: Props) => {
     const imageUploadRef = useRef<HTMLInputElement | null>(null)
     const srcUploadRef = useRef<HTMLInputElement | null>(null)
 
-    if (!user) return 'Sign in to start uploading your melody!'
-
     function addGenre() {
         setGenres((a) => [...a, ''])
+    }
+    function removeLastGenre() {
+        setGenres((a) => {
+            const newArray = [...a]
+            newArray.pop()
+            return newArray
+        })
     }
 
     function addArtist() {
         setArtists((a) => [...a, ''])
     }
+    function removeLastArtist() {
+        setArtists((a) => {
+            const newArray = [...a]
+            newArray.pop()
+            return newArray
+        })
+    }
+
 
     function onGenresChange(value: string, id: number) {
         setGenres((a) => {
@@ -88,6 +111,12 @@ const Upload = (props: Props) => {
         if (!user) return
         try {
             setSubmitting(true)
+            setError(null)
+
+            if (!srcUrl) {
+                setError("No audio file provided!")
+                return;
+            }
 
             const trackToUpload: TrackInsert = {
                 src: srcUrl,
@@ -96,6 +125,7 @@ const Upload = (props: Props) => {
                 genres: genres.filter(v => v.length > 0),
                 artists: artists.filter(v => v.length > 0),
                 author: user.id,
+                duration_s: parseInt(`${duration}`) || 0,
             }
 
             const res = await fetch('/api/track', {
@@ -106,7 +136,7 @@ const Upload = (props: Props) => {
                 },
             })
 
-            const jsonData = res.json()
+            const jsonData = await res.json()
 
             if (!res.ok) {
                 throw jsonData
@@ -119,13 +149,14 @@ const Upload = (props: Props) => {
             setSongName('')
             setImageUrl('')
             setSrcUrl('')
-            alert("Uploaded! Please wait for verification process")
+            setDuration(0)
+            alert('Uploaded! Please wait for verification process')
         } catch (e: any) {
             console.error(e)
-            setError((e as ApiResError).error.message)
+            if (e.error)
+                setError(e.error.message)
         } finally {
             setSubmitting(false)
-            setError(null)
             // @ts-ignore
             imageUploadRef.current.value = null
             // @ts-ignore
@@ -137,6 +168,7 @@ const Upload = (props: Props) => {
         try {
             setImageUploading(true)
 
+            if (!user) return
             if (!event.target.files || event.target.files.length === 0) {
                 throw new Error('You must select an image to upload.')
             }
@@ -144,7 +176,7 @@ const Upload = (props: Props) => {
             const file = event.target.files[0]
             const fileNameArray = file.name.split('.')
             const fileExt = fileNameArray.pop()
-            const fileName = fileNameArray.join("").replace(/[^A-Z0-9]+/ig, "_")
+            const fileName = fileNameArray.join('').replace(/[^A-Z0-9]+/ig, '_')
             const filePath = `${user.id}/${encodeURI(fileName)}.${fileExt}`
 
             let { error: uploadError, data: uploadData } = await supabase.storage
@@ -178,6 +210,7 @@ const Upload = (props: Props) => {
     const uploadSrc: ChangeEventHandler<HTMLInputElement> = async (event) => {
         try {
             setSrcUploading(true)
+            if (!user) return
 
             if (!event.target.files || event.target.files.length === 0) {
                 throw new Error('You must select an audio to upload.')
@@ -186,7 +219,7 @@ const Upload = (props: Props) => {
             const file = event.target.files[0]
             const fileNameArray = file.name.split('.')
             const fileExt = fileNameArray.pop()
-            const fileName = fileNameArray.join("").replace(/[^A-Z0-9]+/ig, "_")
+            const fileName = fileNameArray.join('').replace(/[^A-Z0-9]+/ig, '_')
             const filePath = `${user.id}/${encodeURI(fileName)}.${fileExt}`
 
             let { error: uploadError, data: uploadData } = await supabase.storage
@@ -217,6 +250,12 @@ const Upload = (props: Props) => {
         }
     }
 
+    function handleLoadedData() {
+        setDuration(audioRef?.current?.duration || 0)
+    }
+
+    if (!user) return 'Sign in to start uploading your melody!'
+
     return (
         <>
             <Head>
@@ -246,15 +285,26 @@ const Upload = (props: Props) => {
                                         }}
                                     />
                                 ))}
-                                {genres.length < 2 && (
-                                    <div>
-                                        <IconButton
-                                            aria-label='Add genre button'
-                                            icon={<RiAddFill />}
-                                            onClick={() => addGenre()}
-                                        />
-                                    </div>
-                                )}
+                               <div>
+                                   {genres.length > 1 && (
+                                       <div>
+                                           <IconButton
+                                               aria-label='Remove genre button'
+                                               icon={<RiSubtractFill />}
+                                               onClick={() => removeLastGenre()}
+                                           />
+                                       </div>
+                                   )}
+                                   {genres.length < 2 && (
+                                       <div>
+                                           <IconButton
+                                               aria-label='Add genre button'
+                                               icon={<RiAddFill />}
+                                               onClick={() => addGenre()}
+                                           />
+                                       </div>
+                                   )}
+                               </div>
                             </SimpleGrid>
                         </FormControl>
                         <FormControl isRequired>
@@ -271,18 +321,26 @@ const Upload = (props: Props) => {
                                         }}
                                     />
                                 ))}
-                                {artists.length < 4 && (
-                                    <div>
-                                        <IconButton
-                                            aria-label='Add artist button'
-                                            icon={<RiAddFill />}
-                                            onClick={() => addArtist()}
-                                        />
-                                    </div>
-                                )}
+                                <div className={"tw-flex tw-space-x-2"}>
+                                    {artists.length > 1 && (
+                                            <IconButton
+                                                aria-label='Remove artist button'
+                                                icon={<RiSubtractFill />}
+                                                onClick={() => removeLastArtist()}
+                                            />
+                                    )}
+                                    {artists.length < 4 && (
+                                            <IconButton
+                                                aria-label='Add artist button'
+                                                icon={<RiAddFill />}
+                                                onClick={() => addArtist()}
+                                            />
+                                    )}
+                                </div>
+
                             </SimpleGrid>
                         </FormControl>
-                        <FormControl isRequired>
+                        <FormControl isInvalid={!imageUrl} isRequired>
                             <FormLabel>Image</FormLabel>
                             <UploadBox loading={imageUploading} onClick={() => imageUploadRef.current?.click()}>
                                 {imageUrl && <Image alt={'track\'s image'} src={imageUrl} />}
@@ -295,13 +353,20 @@ const Upload = (props: Props) => {
                                 onChange={uploadImage}
                             />
                         </FormControl>
-                        <FormControl isRequired>
+                        <FormControl isInvalid={!srcUrl} isRequired>
                             <FormLabel>Source</FormLabel>
                             <UploadBox loading={srcUploading} onClick={() => srcUploadRef.current?.click()}>
                                 {srcUrl && <p title={srcUrl} className={'tw-truncate tw-w-120px'}>
                                     {srcUrl}
                                 </p>}
                             </UploadBox>
+                            {srcUrl && <audio
+                                ref={audioRef}
+                                className={"tw-p-2"}
+                                controls
+                                src={srcUrl}
+                                onLoadedData={handleLoadedData}
+                            />}
                             <input
                                 ref={srcUploadRef}
                                 hidden

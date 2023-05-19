@@ -22,7 +22,7 @@ type Props = {
 }
 
 export function TrackCard({ track, onClickCover, ...props }: Props) {
-    const trackDuration = (track.duration_s || 0) / 1000
+    const trackDuration = (track.duration_s || 0)
     const trackDurationMins = Math.floor(trackDuration / 60)
     const trackDurationSecs = Math.floor(trackDuration - trackDurationMins * 60)
     const trackDurationString = `${trackDurationMins}:${trackDurationSecs

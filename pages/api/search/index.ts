@@ -11,12 +11,9 @@ async function SearchApi(
     const query = decodeURIComponent(req.query['q'] as string)
     const supabase = createServerSupabaseClient<Database>({ req, res })
     const searchRes = await supabase
-        .from('tracks')
-        .select(`*, profiles(*)`)
-        .textSearch('name', `${query}`, {
-            type: 'plain',
+        .rpc('search_tracks', {
+            query_text: `${query}`,
         })
-        .limit(10)
 
     return res.status(searchRes.status).json({
         message: searchRes.error?.message,
