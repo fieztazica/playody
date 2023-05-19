@@ -1,6 +1,5 @@
 import { AudioCtxType, LoopMode, Track } from '@/typings'
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
-import { ApiResConvertSuccess, ApiResError } from '@/typings/apiRes'
 
 export const AudioCtx = createContext<AudioCtxType | null>(null)
 
