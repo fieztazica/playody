@@ -14,7 +14,7 @@ function PostCard() {
         id: "321",
         artists: [],
         author: "tao",
-        created_at: new Date(Date.now()).toLocaleString(),
+        created_at: new Date("12/12/2012").toLocaleString(),
         is_verified: false,
         genres: null,
         image_url: ""
