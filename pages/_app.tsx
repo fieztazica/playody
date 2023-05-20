@@ -15,6 +15,11 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
     const getLayout = Component.getLayout ?? ((page) => page)
 
     useEffect(() => {
+        document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + 'px');
+    }, [])
+
+
+    useEffect(() => {
         const handleStart = () => {
             indicator.onOpen()
         }
