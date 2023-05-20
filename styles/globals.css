@@ -89,7 +89,7 @@
 
 html,
 body {
-    @apply tw-h-full;
+    @apply tw-absolute tw-inset-0;
 }
 
 div#__next {
