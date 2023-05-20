@@ -29,28 +29,43 @@ const MyProfile = ({profile}: Props) => {
         console.log('Submitting edited user:')
     }
 
+    const handleUpdate = () => {
+        // Perform your submit action here, e.g., update user data in the database
+        console.log('Submitting edited user:')
+    }
+
     if (profile === null) return "Sign in"
     return (
-       <>
+       <div>
            <Head>
                <title>Profile</title>
            </Head>
+           <div className="tw-bg-black/30 tw-p-5 tw-m-1 tw-rounded-md">
+                <Flex>
+                    <Button colorScheme='blue' onClick={handleSubmit}>
+                        My tracks
+                     </Button>
+                </Flex>
+           </div>
+           <Flex marginLeft={1}>
+                <Box textAlign='center'>
+                    <Avatar src={profile.avatar_url || undefined} size='xl' />
+                        <Text mt={5} color='gray.500' fontSize='xl'>
+                             User name: {profile.username}
+                        </Text>
+                </Box>
+            </Flex>
+           <Flex>
            <Box
                bg='blackAlpha.300'
                borderRadius='md'
                p={16}
                maxWidth='100%'
+               className='tw-m-1 tw-w-1/2'
            >
                <Flex justifyContent='center'>
                    <Box maxWidth='xl'>
-                       <Flex justifyContent='center'>
-                           <Box textAlign='center'>
-                               <Avatar src={profile.avatar_url || undefined} size='xl' />
-                               <Text mt={5} color='gray.500' fontSize='xl'>
-                                   User name: {profile.username}
-                               </Text>
-                           </Box>
-                       </Flex>
+                       
                        <VStack spacing={10} alignItems='flex-start' pt={10}>
                            <FormControl>
                                <FormLabel color='gray.500'>Fullname</FormLabel>
@@ -64,6 +79,49 @@ const MyProfile = ({profile}: Props) => {
                                    <Input defaultValue={useUser?.email || ""} />
                                </InputGroup>
                            </FormControl>
+                           <FormControl>
+                               <FormLabel color='gray.500'>Password</FormLabel>
+                               <InputGroup size='md'>
+                                   <Input defaultValue={""} />
+                               </InputGroup>
+                           </FormControl>
+                       </VStack>
+                       <Flex justifyContent='center' mt={10}>
+                           <Button colorScheme='blue' onClick={handleUpdate}>
+                               Update
+                           </Button>
+                       </Flex>
+                   </Box>
+               </Flex>
+           </Box>
+           <Box
+               bg='blackAlpha.300'
+               borderRadius='md'
+               p={16}
+               maxWidth='100%'
+               className='tw-m-1 tw-w-1/2'
+           >
+               <Flex justifyContent='center'>
+                   <Box maxWidth='xl'>
+                       <VStack spacing={10} alignItems='flex-start' pt={10}>
+                           <FormControl>
+                               <FormLabel color='gray.500'>Old Password</FormLabel>
+                               <InputGroup size='md'>
+                                   <Input defaultValue={""} />
+                               </InputGroup>
+                           </FormControl>
+                           <FormControl>
+                               <FormLabel color='gray.500'>New Password</FormLabel>
+                               <InputGroup size='md'>
+                                   <Input defaultValue={""} />
+                               </InputGroup>
+                           </FormControl>
+                           <FormControl>
+                               <FormLabel color='gray.500'>Confirm New Password</FormLabel>
+                               <InputGroup size='md'>
+                                   <Input defaultValue={""} />
+                               </InputGroup>
+                           </FormControl>
                        </VStack>
                        <Flex justifyContent='center' mt={10}>
                            <Button colorScheme='blue' onClick={handleSubmit}>
@@ -73,7 +131,8 @@ const MyProfile = ({profile}: Props) => {
                    </Box>
                </Flex>
            </Box>
-       </>
+           </Flex>
+       </div>
     )
 }
 
@@ -89,7 +148,7 @@ export const getServerSideProps: GetServerSideProps<{
     const supabaseClient = createServerSupabaseClient<Database>(ctx)
     const { data, error } = await supabaseClient.auth.getUser()
 
-    if (error || data.user?.app_metadata.role !== 'admin')
+    if (error)
         return {
             notFound: true,
         }
