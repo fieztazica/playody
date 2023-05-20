@@ -44,7 +44,7 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
         <>
             <Head>
                 <title>Playody</title>
-                <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+                <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
                 <meta name='title' content='Playody - Play your melody' />
                 <meta name='description' content='Playody is a free music sharing web-app' />
                 <meta name='keywords' content='music, sharing music, play, melody, playody' />
