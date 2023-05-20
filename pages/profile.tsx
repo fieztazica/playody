@@ -48,7 +48,7 @@ const handleSubmit = () => {
 
  const Profile = () => {
   return (
-    <Box bg="#02054B" color="white" borderRadius="lg" p={16} maxWidth="100%" marginTop={0} overflow="hidden" position="relative">
+    <Box bg="#02054B" color="white" borderRadius="lg" p={16} maxWidth="100%" marginTop={-16} overflow="hidden" position="relative">
   <Flex justifyContent="center">
     <Box maxWidth="xl">
       <Flex justifyContent="center">
