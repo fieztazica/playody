@@ -5,6 +5,7 @@
 *.lock
 !next.lock
 .idea/
+package-lock.json
 
 # dependencies
 /node_modules

@@ -82,7 +82,7 @@ export function TrackCard({ track, onClickCover, ...props }: Props) {
                             {track.name}
                         </Text>
                         <Text color={'whiteAlpha.800'} fontSize={'sm'}>
-                            {track.artists !== null &&
+                            {track.artists.length &&
                                 track.artists
                                     .map<React.ReactNode>((v, i) => (
                                         <Link

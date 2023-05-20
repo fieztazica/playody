@@ -8,41 +8,41 @@ import { TrackCard } from '@/components/TrackCard'
 import { Track } from '@/typings'
 
 const MyTracks = () => {
-    const expTrack : Track = {
-        name: "Thoi Em DUng DI",
-        src: "http",
+    const expTrack: Track = {
+        name: 'Thoi Em Dung DI',
+        src: 'http',
         duration_s: 320,
-        id: "321",
-        artists: null,
-        author: "tao",
-        created_at: "",
+        id: '321',
+        artists: [],
+        author: 'tao',
+        created_at: '',
         is_verified: false,
         genres: null,
-        image_url: ""
+        image_url: '',
     }
     return (
         <>
             <Head>
-                <title>Home</title>
+                <title>My Tracks</title>
             </Head>
-            <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-full" >
+            <div className='tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-full'>
                 {new Array<Track>(5).fill(expTrack).map((v, i) => (
-                    
-                   <div key={`search ${i}`} className='tw-flex tw-flex-col tw-space-y-2 tw-rounded-md tw-w-full' >
-                    <div>{v.is_verified ? (
-                        <div>
-                        <br></br>
-                            <TrackCard track={v} />
-                        </div>
-                    ) : (
-                        <>
-                        <br></br>
-                        <div className='tw-bg-red-300'>
-                        <TrackCard track={v}/>
-                        </div>
-                    </>
-                    )}</div>
-                   </div>
+
+                    <div key={`search ${i}`} className='tw-flex tw-flex-col tw-space-y-2 tw-rounded-md tw-w-full'>
+                        <div>{v.is_verified ? (
+                            <div>
+                                <br></br>
+                                <TrackCard track={v} />
+                            </div>
+                        ) : (
+                            <>
+                                <br></br>
+                                <div className='tw-bg-red-300'>
+                                    <TrackCard track={v} />
+                                </div>
+                            </>
+                        )}</div>
+                    </div>
                 ))}
             </div>
         </>

@@ -1,20 +1,13 @@
 import { Slider, SliderFilledTrack, SliderThumb, SliderTrack, Stack, Text } from '@chakra-ui/react'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
-import { useEffect, useState } from 'react'
 
 function SeekBar() {
     const {
-        isPause,
         duration,
         currentTime,
-        setIsPause,
         audioRef,
         setCurrentTime,
-        playingIndex,
-        setPlayingIndex,
     } = useAudioCtx()
-    const [seekBarValue, setSeekBarValue] = useState<number>(currentTime)
-
     const currentMinutes = Math.floor(currentTime / 60)
     const currentSeconds = Math.floor(currentTime - currentMinutes * 60)
 

@@ -138,7 +138,7 @@ const VerifyTracks = (props: Props) => {
                                             fontSize={'xl'}
                                             icon={v.is_verified ? <RxCross2 color={'red'} /> : <RxCheck color={'green'} />}
                                             aria-label={v.is_verified ? 'Revoke track button' : 'Accept track button'}
-                                            title={v.is_verified ? 'Revoke verificaiton of this song' : 'Verify this song'}
+                                            title={v.is_verified ? 'Revoke verification of this song' : 'Verify this song'}
                                             onClick={() => toggleVerified(v.id, !v.is_verified)}
                                         />
                                         <IconButton
