@@ -37,7 +37,7 @@ export type AudioCtxType = {
     setPreviousIndexes: Dispatch<SetStateAction<number[]>>
     nextSong: () => void
     previousSong: () => void,
-    addToQueue: (trackId: string) => Promise<void>
+    addToQueue: (track: Track) => Promise<void>
 }
 
 export type Track = Database["public"]["Tables"]["tracks"]["Row"]

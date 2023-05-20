@@ -123,7 +123,20 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      search_tracks: {
+        Args: {
+          query_text: string
+        }
+        Returns: {
+          id: string
+          name: string
+          artists: string[]
+          genres: string[]
+          src: string
+          image_url: string
+          duration_s: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

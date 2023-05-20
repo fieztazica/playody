@@ -68,24 +68,8 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
-    const addToQueue = async (trackId: string) => {
-        // const res: ApiResConvertSuccess | ApiResError = await fetch(`/api/spotify/convert?trackId=${trackId}`).then(r => r.json())
-
-        // if ('error' in res) throw new Error(res.message, (res as ApiResError).error)
-
-        // const spotifyData = (res as ApiResConvertSuccess).data.spotify
-
-        // const topVideo = (res as ApiResConvertSuccess).data.videos[0]
-
-        // const track: Track = {
-        //     name: spotifyData.name,
-        //     src: topVideo.id,
-        //     artists: spotifyData.artists,
-        //     album: spotifyData.album,
-        //     duration_ms: spotifyData.duration_ms,
-        // }
-
-        // setQueue(q => [...q, track])
+    const addToQueue = async (track: Track) => {
+        setQueue(q => [...q, track])
     }
 
     useEffect(() => {
@@ -106,10 +90,9 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
 
         if (queue.length && !playingIndex) setPlayingIndex(0)
 
-        if (playingIndex && (playingIndex >= queue.length || playingIndex < 0)) setPlayingIndex(0)
-
-        if (playingIndex !== null)
-            console.log(queue[playingIndex])
+        // if (playingIndex && (playingIndex >= queue.length || playingIndex < 0)) setPlayingIndex(0)
+        //
+        //     console.log(queue[playingIndex || 0])
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [queue, playingIndex, volume])
