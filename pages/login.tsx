@@ -11,9 +11,11 @@ const Login = () => {
     const supabaseClient = useSupabaseClient()
     const router = useRouter()
     const queryRedirect = router.query['redirect']
-    const hostname = `https://${process.env.NEXT_PUBLIC_VERCEL_URL || 'localhost:3000'}`
+    const hostname = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : `http://localhost:3000`
     const redirect =
         (queryRedirect && typeof queryRedirect == 'string') ? decodeURIComponent(queryRedirect) : hostname
+
+    console.log(redirect)
 
     return (
         <>

@@ -40,7 +40,8 @@ export type AudioCtxType = {
     addToQueue: (track: Track) => Promise<void>
 }
 
-export type Track = Database["public"]["Tables"]["tracks"]["Row"]
+export type Track = Database['public']['Tables']['tracks']['Row']
+export type Profile = Database['public']['Tables']['profiles']['Row']
 
 export type LoopMode = 'queue' | 'song' | 'none'
 
