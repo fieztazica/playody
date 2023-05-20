@@ -14,7 +14,7 @@ import MainLayout from '@/components/MainLayout'
 import * as React from 'react'
 import { GetServerSideProps } from 'next'
 import { Profile } from '@/typings'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { User, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
 import Head from 'next/head'
 
@@ -22,6 +22,7 @@ type Props = {
     profile: Profile | null
 }
 
+let useUser : User | null
 const MyProfile = ({profile}: Props) => {
     const handleSubmit = () => {
         // Perform your submit action here, e.g., update user data in the database
@@ -29,7 +30,6 @@ const MyProfile = ({profile}: Props) => {
     }
 
     if (profile === null) return "Sign in"
-
     return (
        <>
            <Head>
@@ -47,21 +47,21 @@ const MyProfile = ({profile}: Props) => {
                            <Box textAlign='center'>
                                <Avatar src={profile.avatar_url || undefined} size='xl' />
                                <Text mt={5} color='gray.500' fontSize='xl'>
-                                   Full name: {profile.full_name}
+                                   User name: {profile.username}
                                </Text>
                            </Box>
                        </Flex>
                        <VStack spacing={10} alignItems='flex-start' pt={10}>
                            <FormControl>
-                               <FormLabel color='gray.500'>Username</FormLabel>
+                               <FormLabel color='gray.500'>Fullname</FormLabel>
                                <InputGroup size='md'>
-                                   <Input defaultValue={profile.username || ""} />
+                                   <Input defaultValue={profile.full_name|| ""} />
                                </InputGroup>
                            </FormControl>
                            <FormControl>
                                <FormLabel color='gray.500'>Email</FormLabel>
                                <InputGroup size='md'>
-                                   <Input defaultValue={profile.username || ""} />
+                                   <Input defaultValue={useUser?.email || ""} />
                                </InputGroup>
                            </FormControl>
                        </VStack>
