@@ -3,8 +3,6 @@ import {
     ChangeEventHandler,
     FormEvent,
     ReactNode,
-    SyntheticEvent,
-    useEffect,
     useRef,
     useState,
 } from 'react'
@@ -12,8 +10,7 @@ import MainLayout from '@/components/MainLayout'
 import {
     Button,
     Container,
-    FormControl, FormErrorMessage,
-    FormLabel,
+    FormControl, FormLabel,
     IconButton, Image,
     Input,
     SimpleGrid, Spinner,
@@ -25,10 +22,7 @@ import { BiUpload } from 'react-icons/bi'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
 import { TrackInsert } from '@/lib/api/track'
-
-type Props = {}
-
-const UploadBox = ({ children, loading, onClick, ...props }: {
+const UploadBox = ({ children, loading, onClick }: {
     loading: boolean,
     onClick?: () => void,
     children?: ReactNode
@@ -50,7 +44,7 @@ const UploadBox = ({ children, loading, onClick, ...props }: {
     </div>
 }
 
-const Upload = (props: Props) => {
+const Upload = () => {
     const user = useUser()
     const supabase = useSupabaseClient<Database>()
     const audioRef = useRef<HTMLAudioElement>(null)

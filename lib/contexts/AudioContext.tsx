@@ -19,7 +19,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         let randomIndex = 0
         do {
             randomIndex = Math.floor(Math.random() * queue.length)
-        } while (playingIndex === randomIndex)
+        } while (playingIndex === randomIndex && playingIndex === queue.length)
         return randomIndex
     }
 
@@ -35,8 +35,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
     }
 
     const nextSong = () => {
-        if (queue && queue.length && audioRef.current) {
-            if (isPause || playingIndex === null) return
+        if (queue.length && playingIndex !== null) {
             switch (loopMode) {
                 case 'none':
                     setPreviousIndexes((v) => [playingIndex, ...v])
@@ -47,22 +46,21 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
                     ) {
                         setPlayingIndex(0)
                         setIsPause(true)
+                        break;
                     }
                     if (!shuffle) {
-                        setPlayingIndex((v) => v as number + 1)
+                        setPlayingIndex((v) => v as number + 1 >= queue.length ? 0 : v as number + 1)
                     } else setPlayingIndex(getRandomIndexInQueue())
-                    console.log(previousIndexes)
                     break
                 case 'queue':
                     setPreviousIndexes((v) => [playingIndex, ...v])
                     if (!shuffle) {
-                        setPlayingIndex((v) => v as number + 1)
+                        setPlayingIndex((v) => v as number + 1 >= queue.length ? 0 : v as number + 1)
                     } else setPlayingIndex(getRandomIndexInQueue())
                     break
                 case 'song':
                     // audioRef.current.currentTime = 0
-
-                    audioRef.current.play()
+                    audioRef.current?.play()
                     break
             }
         }
@@ -70,6 +68,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
 
     const addToQueue = async (track: Track) => {
         setQueue(q => [...q, track])
+        if (playingIndex === null) setPlayingIndex(0)
     }
 
     useEffect(() => {
@@ -88,32 +87,8 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
             setIsPause(true)
         }
 
-        if (queue.length && !playingIndex) setPlayingIndex(0)
-
-        // if (playingIndex && (playingIndex >= queue.length || playingIndex < 0)) setPlayingIndex(0)
-        //
-        //     console.log(queue[playingIndex || 0])
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [queue, playingIndex, volume])
-
-    // useEffect(() => {
-    //     if (!isPause) {
-    //         audioRef.current?.pause()
-    //     } else {
-    //         audioRef.current?.play()
-    //     }
-    // }, [isPause])
-
-    // useEffect(() => {
-    //     // Pause and clean up on unmount
-    //     return () => {
-    //         //@ts-ignore
-    //         audioRef.current.pause();
-    //         // clearInterval(intervalRef.current);
-    //     }
-    // }, []);
-
 
     let sharedStates: AudioCtxType = {
         audioRef,

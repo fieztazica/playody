@@ -1,7 +1,5 @@
-import { GetServerSideProps } from 'next'
 import { Button, Stack } from '@chakra-ui/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { theme } from '@/lib/theme'
 import Head from 'next/head'
 import { PlayodyTitle } from '@/components/PlayodyTitle'
 import NextLink from 'next/link'
