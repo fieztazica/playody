@@ -37,8 +37,8 @@ const MyTracks = () => {
                     ) : (
                         <>
                         <br></br>
-                        <div className='tw-bg-red-400'>
-                        <TrackCard track={v} />
+                        <div className='tw-bg-red-300'>
+                        <TrackCard track={v}/>
                         </div>
                     </>
                     )}</div>
