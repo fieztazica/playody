@@ -15,9 +15,16 @@ import {
     Link,
   } from '@chakra-ui/react';
   import { useState } from 'react';
-
   import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-  export default function SignupCard() {
+  import { useRouter } from 'next/router';
+  import NextLink from 'next/link';
+import { PlayodyTitle } from '@/components/PlayodyTitle';
+ 
+  const SignUp = () => {
+    const router = useRouter();
+    const handleSignUpClick = () => {
+      router.push('/login'); // Replace '/signup' with the actual path of your sign-up page
+    };
     const [showPassword, setShowPassword] = useState(false);
   
     return (
@@ -25,16 +32,18 @@ import {
         minH={'100vh'}
         align={'center'}
         justify={'center'}
-        bg={useColorModeValue('gray.50', 'gray.800')}>
+       >
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
-          <Stack align={'center'}>
-            <Heading fontSize={'4xl'} textAlign={'center'}>
-              Sign up
-            </Heading>
-            <Text fontSize={'lg'} color={'gray.600'}>
-              to enjoy all of our cool features ✌️
-            </Text>
-          </Stack>
+              <Stack align={'center'}>
+              <div>
+            Sign up to enjoy the full experience with{' '}
+            <span>
+              <NextLink href={'/'}>
+                <PlayodyTitle />
+              </NextLink>
+            </span>
+          </div>
+              </Stack>
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
@@ -88,7 +97,10 @@ import {
               </Stack>
               <Stack pt={6}>
                 <Text align={'center'}>
-                  Already a user? <Link color={'blue.400'}>Login</Link>
+                  Already a user?  
+                  <Link color={'blue.400'} onClick={handleSignUpClick}>
+                      Login
+                    </Link>
                 </Text>
               </Stack>
             </Stack>
@@ -97,3 +109,6 @@ import {
       </Flex>
     );
   }
+
+
+  export default SignUp
