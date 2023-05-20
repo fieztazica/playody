@@ -47,14 +47,6 @@ const MyProfile = ({profile}: Props) => {
                      </Button>
                 </Flex>
            </div>
-           <Flex marginLeft={1}>
-                <Box textAlign='center'>
-                    <Avatar src={profile.avatar_url || undefined} size='xl' />
-                        <Text mt={5} color='gray.500' fontSize='xl'>
-                             User name: {profile.username}
-                        </Text>
-                </Box>
-            </Flex>
            <Flex>
            <Box
                bg='blackAlpha.300'
