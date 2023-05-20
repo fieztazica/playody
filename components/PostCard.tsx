@@ -1,11 +1,12 @@
 import { Track } from "@/typings";
+import MainLayout from "./MainLayout";
 import Head from 'next/head'
 import { TrackCard } from "./TrackCard";
-import { Box, Card, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { Text } from "@chakra-ui/react";
 
 function PostCard() {
-    // TODO: a card for feed page post
+    // TODO: a card for feed page posts
     const expTrack : Track = {
         name: "Thoi Em DUng DI",
         src: "http",
@@ -41,7 +42,15 @@ function PostCard() {
                 ))}
             </Box>
         </>
-    );
+    )
 }
 
-export default PostCard;
+PostCard.getLayout = (page: React.ReactElement) => {
+    return <MainLayout>{page}</MainLayout>
+}
+
+export default PostCard
+
+
+
+
