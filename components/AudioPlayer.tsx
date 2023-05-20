@@ -31,11 +31,12 @@ function AudioPlayer() {
         if (!isPause) audioRef.current?.play()
     }
 
-    const handleLoadAudio = async (videoId: string) => {
+    const handleLoadAudio = async (srcUrl: string | null) => {
         try {
             setLoading(true)
+            if (srcUrl === null) return;
             // Load audio from API route
-            const res = await fetch(`${AUDIO_API_ROUTE}/${videoId}`)
+            const res = await fetch(`${srcUrl}`)
             if (res.status !== 200) return
             const buffer = await res.arrayBuffer()
             const url = URL.createObjectURL(new Blob([buffer]))
@@ -74,7 +75,7 @@ function AudioPlayer() {
     useEffect(() => {
         if (!queue || playingIndex === null) return
         if (queue.length) {
-            // handleLoadAudio(queue?.[playingIndex]?.src)
+            handleLoadAudio(queue[playingIndex].src)
         } else setAudioUrl(null)
     }, [playingIndex, queue])
 

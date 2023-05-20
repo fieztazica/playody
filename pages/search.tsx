@@ -37,7 +37,7 @@ const Search = () => {
 
         const timer = setTimeout(() => {
             findSong(query)
-        }, 2000)
+        }, 1500)
 
         return () => {
             clearTimeout(timer)
@@ -45,17 +45,21 @@ const Search = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [query])
 
-    function findSong(query: string) {
+    async function findSong(query: string) {
         if (query) {
-           
+            const res = await fetch(`/api/search?q=${query}`).then(r => r.json())
+            console.log(res.data)
+            if (res.data) {
+                setSearchResults(res.data)
+            }
         } else {
             setSearchResults([])
         }
     }
 
-    function handleDoubleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>, trackId: string) {
+    function handleDoubleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>, track: Track) {
         if (event.detail == 2) {
-            addToQueue(trackId)
+            addToQueue(track)
         }
     }
 
@@ -76,11 +80,17 @@ const Search = () => {
             </NavBar>
             <div className='tw-flex tw-flex-col tw-items-center'>
                 <Stack key={'search_results'} direction={'column'} w={'full'}>
-                    {/* {searchResults.map((v) => (
-                        <div key={`search_result_${v.id}`} title={"Double click to add the song to queue"} onClick={(e) => handleDoubleClick(e, v.id)}>
-                            <TrackCard track={v}
-                                       onClickCover={() => addToQueue(v.id)} />
-                        </div>))} */}
+                    {searchResults.length <= 0 && <p>No result found.</p>}
+                    {searchResults.map((v) => (
+                        <div
+                            key={`search_result_${v.id}`}
+                            title={'Double click to add the song to queue'}
+                            onClick={(e) => handleDoubleClick(e, v)}>
+                            <TrackCard
+                                track={v}
+                                onClickCover={() => addToQueue(v)} />
+                        </div>))
+                    }
                 </Stack>
             </div>
         </>

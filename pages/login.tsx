@@ -8,19 +8,12 @@ import { useRouter } from 'next/router';
 import { Text } from '@chakra-ui/react';
 
 const Login = () => {
-    const supabaseClient = useSupabaseClient();
-    const router = useRouter();
-    const queryRedirect = router.query['redirect'];
-    const hostname =
-      process.env.NODE_ENV === 'production'
-        ? 'https://playody.owlvernyte.tk'
-        : 'http://localhost:3000';
-    const redirect = queryRedirect
-      ? decodeURIComponent(queryRedirect as string)
-      : hostname;
-    const handleSignUpClick = () => {
-      router.push('/signup'); // Replace '/signup' with the actual path of your sign-up page
-    };
+    const supabaseClient = useSupabaseClient()
+    const router = useRouter()
+    const queryRedirect = router.query['redirect']
+    const hostname = `https://${process.env.NEXT_PUBLIC_VERCEL_URL || 'localhost:3000'}`
+    const redirect =
+        (queryRedirect && typeof queryRedirect == 'string') ? decodeURIComponent(queryRedirect) : hostname
 
     return (
         <>
