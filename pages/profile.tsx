@@ -42,9 +42,17 @@ const MyProfile = ({profile}: Props) => {
            </Head>
            <div className="tw-bg-black/30 tw-p-5 tw-m-1 tw-rounded-md">
                 <Flex>
-                    <Button colorScheme='blue' onClick={handleSubmit}>
-                        My tracks
-                     </Button>
+                <Box textAlign='center' margin={1}>
+                    <Avatar src={profile.avatar_url || undefined} size='xl' />
+                </Box>
+                <div className='tw-ml-3'>
+                <Text color='gray.500' fontSize='xl'>
+                    User name: {profile.username}
+                </Text>
+                <Button className='tw-mt-6' colorScheme='blue' onClick={handleSubmit}>
+                    My tracks
+                </Button>
+                </div>
                 </Flex>
            </div>
            <Flex>
