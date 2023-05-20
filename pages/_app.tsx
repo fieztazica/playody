@@ -15,11 +15,6 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
     const getLayout = Component.getLayout ?? ((page) => page)
 
     useEffect(() => {
-        document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + 'px');
-    }, [])
-
-
-    useEffect(() => {
         const handleStart = () => {
             indicator.onOpen()
         }
@@ -31,6 +26,8 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
         router.events.on('routeChangeStart', handleStart)
         router.events.on('routeChangeComplete', handleStop)
         router.events.on('routeChangeError', handleStop)
+
+        document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + 'px');
 
         return () => {
             router.events.off('routeChangeStart', handleStart)

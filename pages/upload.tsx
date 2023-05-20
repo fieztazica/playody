@@ -107,7 +107,7 @@ const Upload = () => {
             setSubmitting(true)
             setError(null)
 
-            if (!srcUrl) {
+            if (!srcUrl || !duration) {
                 setError("No audio file provided!")
                 return;
             }
