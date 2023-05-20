@@ -41,14 +41,16 @@ const user = {
   email: "TyuiPahm@gmail.com",
   location : "vietnam"
 }
-const handleSubmit = () => {
-  // Perform your submit action here, e.g., update user data in the database
-  console.log("Submitting edited user:");
-}
+
 
  const Profile = () => {
+
+  const handleSubmit = () => {
+    // Perform your submit action here, e.g., update user data in the database
+    console.log("Submitting edited user:");
+  }
   return (
-    <Box bg="#02054B" color="white" borderRadius="lg" p={16} maxWidth="100%" marginTop={-16} overflow="hidden" position="relative">
+    <Box className='tw-h-full tw-bg-black/20' color="white" borderRadius="lg" p={16} maxWidth="100%" marginTop={0} overflow="hidden">
   <Flex justifyContent="center">
     <Box maxWidth="xl">
       <Flex justifyContent="center">
@@ -64,12 +66,6 @@ const handleSubmit = () => {
           <FormLabel color="gray.500">Username</FormLabel>
           <InputGroup size="md">
             <Input defaultValue={user.username} />
-          </InputGroup>
-        </FormControl>
-        <FormControl>
-          <FormLabel color="gray.500">Email</FormLabel>
-          <InputGroup size="md">
-            <Input defaultValue={user.email} />
           </InputGroup>
         </FormControl>
         <FormControl>
