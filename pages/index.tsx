@@ -13,7 +13,7 @@ const Home = () => {
         src: "http",
         duration_s: 320,
         id: "321",
-        artists: null,
+        artists: [],
         author: "tao",
         created_at: "",
         is_verified: false,
