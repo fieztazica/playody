@@ -48,7 +48,7 @@ const Search = () => {
     async function findSong(query: string) {
         if (query) {
             const res = await fetch(`/api/search?q=${query}`).then(r => r.json())
-            console.log(res.data)
+
             if (res.data) {
                 setSearchResults(res.data)
             }

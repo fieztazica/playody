@@ -8,7 +8,7 @@ function DisplayUser() {
     const user = useUser()
     const supabaseClient = useSupabaseClient<Database>()
     const router = useRouter()
-    const hostname = `https://${process.env.NEXT_PUBLIC_VERCEL_URL || 'localhost:3000'}`
+    const hostname = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : `http://localhost:3000`
     const redirect = router.route !== '/' ? `?redirect=${encodeURIComponent(`${hostname}${router.route}`)}` : ''
 
     return (

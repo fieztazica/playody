@@ -6,6 +6,7 @@ import { IconType } from 'react-icons'
 import React from 'react'
 import { usePathname } from 'next/navigation'
 import { MdQueueMusic, MdOutlineQueueMusic } from 'react-icons/md'
+import { useUser } from '@supabase/auth-helpers-react'
 
 type NavLinkType = {
     icon: IconType;
@@ -55,7 +56,7 @@ const NavLink = ({ active, icon, activeIcon, href, children, title, ...props }: 
 
     return (<NextLink href={href}>
         <div
-            className={`tw-flex tw-space-x-2 tw-items-center tw-group tw-px-2 tw-py-1 hover:tw-bg-white/10 active:tw-bg-white/20 tw-rounded-md ${active ? 'tw-font-bold' : ''}`}>
+            className={`tw-flex tw-space-x-2 tw-items-center tw-group tw-px-2 tw-py-1 hover:tw-bg-white/10 active:tw-bg-white/20 tw-rounded-md ${active ? 'tw-font-bold tw-bg-white/5' : ''}`}>
             {(icon && activeIcon) && <Icon as={leftIcon} />}
             <span className={`${active ? 'tw-font-bold' : ''}`}>
                 {title}
@@ -66,6 +67,8 @@ const NavLink = ({ active, icon, activeIcon, href, children, title, ...props }: 
 
 function SideBar() {
     const pathname = usePathname()
+    const user = useUser()
+    const isAdmin = user?.app_metadata.role === 'admin'
 
     return (
         <>
@@ -84,6 +87,9 @@ function SideBar() {
                         )
                     })
                 }
+                {isAdmin && <div key={`verify-tracks_nav link`}>
+                    <NavLink active={pathname == '/verify-tracks'} href={"verify-tracks"} title={"Verify Tracks"} />
+                </div>}
                 <Divider />
                 {new Array(50).fill(0).map((v, i) => (
                     <div key={`${i} nav link`}>
