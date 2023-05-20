@@ -36,24 +36,24 @@ export interface Database {
     Tables: {
       playlists: {
         Row: {
-          author: string | null
+          author: string
           created_at: string | null
-          id: number
-          name: string | null
+          id: string
+          name: string
           trackIds: string[] | null
         }
         Insert: {
-          author?: string | null
+          author: string
           created_at?: string | null
-          id?: number
-          name?: string | null
+          id?: string
+          name: string
           trackIds?: string[] | null
         }
         Update: {
-          author?: string | null
+          author?: string
           created_at?: string | null
-          id?: number
-          name?: string | null
+          id?: string
+          name?: string
           trackIds?: string[] | null
         }
       }
@@ -82,40 +82,40 @@ export interface Database {
       }
       tracks: {
         Row: {
-          artists: string[] | null
-          author: string | null
+          artists: string[]
+          author: string
           created_at: string | null
-          duration_s: number | null
+          duration_s: number
           genres: string[] | null
           id: string
-          image_url: string | null
+          image_url: string
           is_verified: boolean
-          name: string | null
-          src: string | null
+          name: string
+          src: string
         }
         Insert: {
-          artists?: string[] | null
-          author?: string | null
+          artists: string[]
+          author: string
           created_at?: string | null
-          duration_s?: number | null
+          duration_s: number
           genres?: string[] | null
           id?: string
-          image_url?: string | null
+          image_url: string
           is_verified?: boolean
-          name?: string | null
-          src?: string | null
+          name: string
+          src: string
         }
         Update: {
-          artists?: string[] | null
-          author?: string | null
+          artists?: string[]
+          author?: string
           created_at?: string | null
-          duration_s?: number | null
+          duration_s?: number
           genres?: string[] | null
           id?: string
-          image_url?: string | null
+          image_url?: string
           is_verified?: boolean
-          name?: string | null
-          src?: string | null
+          name?: string
+          src?: string
         }
       }
     }
@@ -123,6 +123,13 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      get_claim: {
+        Args: {
+          uid: string
+          claim: string
+        }
+        Returns: Json
+      }
       search_tracks: {
         Args: {
           query_text: string
