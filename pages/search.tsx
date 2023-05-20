@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react'
+import { Stack } from '@chakra-ui/react'
 import MainLayout from '@/components/MainLayout'
-import { RiSearchLine } from 'react-icons/ri'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { NavBar } from '@/components/NavBar'
@@ -19,19 +18,19 @@ const Search = () => {
     const [query, setQuery] = useState<string>('')
 
     useEffect(() => {
-        setQuery(decodeURIComponent(router.query.q as string || ''))
-    }, [router])
+        setQuery(decodeURIComponent((router.query.q || '') as string))
+    }, [router.query.q])
 
     useEffect(() => {
         query ?
-            router.push({
+            router.replace({
                 pathname: '/search',
                 query: {
                     q: encodeURIComponent(query),
                 },
             }, undefined, { shallow: true })
             :
-            router.push({
+            router.replace({
                 pathname: '/search',
             }, undefined, { shallow: true })
 
@@ -48,7 +47,7 @@ const Search = () => {
     async function findSong(query: string) {
         if (query) {
             const res = await fetch(`/api/search?q=${query}`).then(r => r.json())
-            console.log(res.data)
+
             if (res.data) {
                 setSearchResults(res.data)
             }

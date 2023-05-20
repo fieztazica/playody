@@ -1,25 +1,18 @@
-import { Flex, Grid, Spacer, Spinner } from '@chakra-ui/react'
+import { Spinner } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import DisplaySong from './DisplaySong'
 import AudioControl from './AudioControl'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
 import Head from 'next/head'
 import { AudioRightBox } from '@/components/AudioRightBox'
-
-const AUDIO_API_ROUTE = '/api/yt'
-
 function AudioPlayer() {
     const {
-        isPause,
         setDuration,
         audioRef,
         setIsPause,
         setCurrentTime,
         queue,
-        setQueue,
-        loopMode,
         playingIndex,
-        setPlayingIndex,
         nextSong,
     } = useAudioCtx()
     const [loading, setLoading] = useState<boolean>(false)
@@ -28,13 +21,13 @@ function AudioPlayer() {
     const handleLoadedData = () => {
         setLoading(false)
         setDuration(audioRef.current?.duration || 0)
-        if (!isPause) audioRef.current?.play()
+        audioRef.current?.play()
     }
 
     const handleLoadAudio = async (srcUrl: string | null) => {
         try {
             setLoading(true)
-            if (srcUrl === null) return;
+            if (srcUrl === null) return
             // Load audio from API route
             const res = await fetch(`${srcUrl}`)
             if (res.status !== 200) return
@@ -49,35 +42,14 @@ function AudioPlayer() {
         }
     }
 
-    // useEffect(() => {
-    //     if (isPause) {
-    //         setIsPause(!isPause)
-    //         audioRef.current?.play()
-    //     }
-    // }, [audioUrl])
-
-
-    // const handleLoadedMetadata = () => {
-    //     setDuration(audioRef.current?.duration || 0)
-    // }
-
-    // useEffect(() => {
-    //     if (queue)
-    //         handleLoadAudio(queue?.[playingIndex]?.src)
-    //     else setAudioUrl(null)
-    // }, [queue])
-
-    // useEffect(() => {
-    //     if (isPause) setAudioUrl(null)
-    //     else handleLoadAudio(queue[playingIndex].src)
-    // }, [isPause])
-
     useEffect(() => {
-        if (!queue || playingIndex === null) return
-        if (queue.length) {
-            handleLoadAudio(queue[playingIndex].src)
-        } else setAudioUrl(null)
-    }, [playingIndex, queue])
+        if (!queue.length || playingIndex === null) {
+            setAudioUrl(null)
+            return
+        }
+        handleLoadAudio(queue[playingIndex || 0].src)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [playingIndex])
 
     return (
         <>
@@ -91,36 +63,37 @@ function AudioPlayer() {
                     />
                 )}
             </Head>
-            <Grid
-                key={'AudioPlayer'}
-                templateColumns={{
-                    base: '1fr',
-                    md: 'repeat(3, 1fr)',
-                }}
-                p={4}
-                gap={6}
-                bgColor={'rgba(0,0,0,1)'}
-                boxShadow={
-                    'inset 0 10px 25px -25px #FF0080, inset 0 10px 20px -20px #7928CA'
-                }
-                zIndex={5}
-                h={'full'}
-                className={'tw-relative'}
-            >
-                {loading && <div className={'tw-absolute tw-top-0 tw-right-0 tw-m-4'}>
-                    <Spinner ml={2} />
-                </div>}
-                <DisplaySong />
-                <AudioControl />
-                <AudioRightBox />
-            </Grid>
+            <div
+                className={'tw-flex tw-justify-between tw-flex-col md:tw-flex-row tw-space-x-2 tw-rounded-md tw-mx-2 tw-mb-2 tw-p-2 tw-bg-black/30'}>
+                <div className={'tw-flex-1 tw-flex tw-flex-row tw-justify-between'}>
+                    <div className={'tw-flex-1'}>
+                        <DisplaySong />
+                    </div>
+                    <div className={'tw-flex md:tw-hidden tw-items-start tw-space-x-1'}>
+                        {loading &&
+                            <Spinner ml={2} />
+                        }
+                        <AudioRightBox />
+                    </div>
+                </div>
+                <div className={'tw-flex-1'}>
+                    <AudioControl />
+                </div>
+                <div className={'tw-hidden md:tw-block tw-flex-1 tw-relative '}>
+                        {loading && <div className={'tw-absolute tw-top-0 tw-right-0'}>
+                            <Spinner ml={2} />
+                        </div>}
+                    <div className={'tw-absolute tw-bottom-0 tw-right-0 tw-h-fit tw-w-fit '}>
+                        <AudioRightBox />
+                    </div>
+                </div>
+            </div>
             {audioUrl && (
                 <audio
                     ref={audioRef}
                     src={audioUrl}
                     className='tw-hidden'
                     onLoadedData={handleLoadedData}
-                    // onLoadedMetadata={handleLoadedMetadata}
                     onTimeUpdate={() =>
                         setCurrentTime(audioRef.current?.currentTime || 0)
                     }

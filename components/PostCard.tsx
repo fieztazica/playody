@@ -8,17 +8,18 @@ import { Text } from "@chakra-ui/react";
 function PostCard() {
     // TODO: a card for feed page posts
     const expTrack : Track = {
-        name: "Thoi Em DUng DI",
+        name: "Thoi Em Dung DI",
         src: "http",
         duration_s: 320,
         id: "321",
-        artists: null,
+        artists: [],
         author: "tao",
         created_at: new Date(Date.now()).toLocaleString(),
         is_verified: false,
         genres: null,
         image_url: ""
     }
+
     return (
         <>
             <Head>

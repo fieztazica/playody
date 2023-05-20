@@ -1,14 +1,9 @@
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
 import {
-    AspectRatio,
-    Box,
     Image,
-    Square,
     Stack,
-    Text,
     VStack,
 } from '@chakra-ui/react'
-import { useEffect, useRef, useState } from 'react'
 
 function DisplaySong({ ...props }) {
     const { queue, playingIndex } = useAudioCtx()

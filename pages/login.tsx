@@ -1,7 +1,5 @@
-import { Box, Button, Checkbox, Flex, FormControl, FormLabel, Heading, Input, Link, Stack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, Checkbox, Flex, FormControl, FormLabel, Input, Link, Stack, useColorModeValue } from '@chakra-ui/react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { theme } from '@/lib/theme';
-import Head from 'next/head';
 import { PlayodyTitle } from '@/components/PlayodyTitle';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -11,9 +9,13 @@ const Login = () => {
     const supabaseClient = useSupabaseClient()
     const router = useRouter()
     const queryRedirect = router.query['redirect']
-    const hostname = `https://${process.env.NEXT_PUBLIC_VERCEL_URL || 'localhost:3000'}`
+    const hostname = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : `http://localhost:3000`
     const redirect =
         (queryRedirect && typeof queryRedirect == 'string') ? decodeURIComponent(queryRedirect) : hostname
+
+    const handleSignUpClick = () => {
+        router.push('/signup'); // Replace '/signup' with the actual path of your sign-up page
+    };
 
     return (
         <>
@@ -21,7 +23,7 @@ const Login = () => {
             minH={'100vh'}
             align={'center'}
             justify={'center'}
-          
+
           >
             <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
               <Stack align={'center'}>
@@ -69,12 +71,12 @@ const Login = () => {
                     </Button>
                     <Stack pt={6}>
               <Text align={'center'}>
-                Dont have an account? 
+                Dont have an account?
                  <Link color={'blue.400'} onClick={handleSignUpClick}>
                       Sign up
                     </Link>
               </Text>
-              
+
             </Stack>
             <Button
             bgColor={'#18D860'}
