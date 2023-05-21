@@ -21,7 +21,7 @@ import { IconType } from 'react-icons'
 import React from 'react'
 import { usePathname } from 'next/navigation'
 import { MdQueueMusic, MdOutlineQueueMusic } from 'react-icons/md'
-import { useUser } from '@supabase/auth-helpers-react'
+import { useSession, useUser } from '@supabase/auth-helpers-react'
 import { FaPlus } from 'react-icons/fa'
 import { HiPlus } from 'react-icons/hi'
 import CreatePlaylistPopover  from '@/components/CreatePlaylistPopover'
@@ -92,8 +92,8 @@ const NavLink = ({
 
 function SideBar() {
     const pathname = usePathname()
-    const user = useUser()
-    const isAdmin = user?.app_metadata.role === 'admin'
+    const session = useSession()
+    const isAdmin = session?.user.app_metadata.role == "admin"
 
     return (
         <>

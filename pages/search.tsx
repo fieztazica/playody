@@ -45,6 +45,7 @@ const tailwindColors = [
 
 const Search = ({ genres }: Props) => {
     const { addToQueue } = useAudioCtx()
+    const [searching, setSearching] = useState(false)
     const [searchResults, setSearchResults] = useState<
         Track[]
     >([])
@@ -88,14 +89,21 @@ const Search = ({ genres }: Props) => {
     }, [query])
 
     async function findSong(query: string) {
-        if (query) {
-            const res = await fetch(`/api/search?q=${query}`).then(r => r.json())
+        try {
+            setSearching(true)
+            if (query) {
+                const res = await fetch(`/api/search?q=${query}`).then(r => r.json())
 
-            if (res.data) {
-                setSearchResults(res.data)
+                if (res.data) {
+                    setSearchResults(res.data)
+                }
+            } else {
+                setSearchResults([])
             }
-        } else {
-            setSearchResults([])
+        } catch (e: any) {
+            console.error(e)
+        } finally {
+            setSearching(false)
         }
     }
 
@@ -123,7 +131,9 @@ const Search = ({ genres }: Props) => {
             <div className='tw-flex tw-flex-col tw-items-center'>
                 <Stack key={'search_results'} direction={'column'} w={'full'}>
                     {searchResults.length <= 0 &&
-                        <p className={'tw-text-center tw-w-full tw-my-4 tw-text-xl'}>No result found</p>}
+                        <p className={'tw-text-center tw-w-full tw-my-4 tw-text-xl'}>
+                            {searching ? 'Searching...' : 'No result found'}
+                        </p>}
                     {searchResults.map((v) => (
                         <TrackCard
                             key={`search_result_${v.id}`}
