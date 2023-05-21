@@ -1,6 +1,7 @@
 import { Profile, Track } from '@/typings'
 import MainLayout from './MainLayout'
 import Head from 'next/head'
+
 import { TrackCard } from './TrackCard'
 import { Box } from '@chakra-ui/react'
 import { Text } from '@chakra-ui/react'

@@ -14,7 +14,7 @@ import MainLayout from '@/components/MainLayout'
 import * as React from 'react'
 import { GetServerSideProps } from 'next'
 import { Profile } from '@/typings'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { User, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
 import Head from 'next/head'
 import { useUser } from '@supabase/auth-helpers-react'
@@ -23,6 +23,7 @@ type Props = {
     profile: Profile | null
 }
 
+
 const MyProfile = ({profile}: Props) => {
     const user = useUser()
     const handleSubmit = () => {
@@ -30,40 +31,97 @@ const MyProfile = ({profile}: Props) => {
         console.log('Submitting edited user:')
     }
 
-    if (profile === null) return "Sign in"
+    const handleUpdate = () => {
+        // Perform your submit action here, e.g., update user data in the database
+        console.log('Submitting edited user:')
+    }
 
+    if (profile === null) return "Sign in"
     return (
-       <>
+       <div>
            <Head>
                <title>Profile</title>
            </Head>
+           <div className="tw-bg-black/30 tw-p-5 tw-m-1 tw-rounded-md">
+                <Flex>
+                <Box textAlign='center' margin={1}>
+                    <Avatar src={profile.avatar_url || undefined} size='xl' />
+                </Box>
+                <div className='tw-ml-3'>
+                <Text color='gray.500' fontSize='xl'>
+                    User name: {profile.username}
+                </Text>
+                <Button className='tw-mt-6' colorScheme='blue' onClick={handleSubmit}>
+                    My tracks
+                </Button>
+                </div>
+                </Flex>
+           </div>
+           <Flex>
            <Box
                bg='blackAlpha.300'
                borderRadius='md'
                p={16}
                maxWidth='100%'
+               className='tw-m-1 tw-w-1/2'
            >
                <Flex justifyContent='center'>
                    <Box maxWidth='xl'>
-                       <Flex justifyContent='center'>
-                           <Box textAlign='center'>
-                               <Avatar src={profile.avatar_url || undefined} size='xl' />
-                               <Text mt={5} color='gray.500' fontSize='xl'>
-                                   Full name: {profile.full_name}
-                               </Text>
-                           </Box>
-                       </Flex>
+                       
                        <VStack spacing={10} alignItems='flex-start' pt={10}>
                            <FormControl>
-                               <FormLabel color='gray.500'>Username</FormLabel>
+                               <FormLabel color='gray.500'>Fullname</FormLabel>
                                <InputGroup size='md'>
-                                   <Input defaultValue={profile.username || ""} />
+                                   <Input defaultValue={profile.full_name|| ""} />
                                </InputGroup>
                            </FormControl>
                            <FormControl>
                                <FormLabel color='gray.500'>Email</FormLabel>
                                <InputGroup size='md'>
-                                   <Input defaultValue={profile.username || ""} />
+                                   <Input defaultValue={user?.email || ""} />
+                               </InputGroup>
+                           </FormControl>
+                           <FormControl>
+                               <FormLabel color='gray.500'>Password</FormLabel>
+                               <InputGroup size='md'>
+                                   <Input defaultValue={""} />
+                               </InputGroup>
+                           </FormControl>
+                       </VStack>
+                       <Flex justifyContent='center' mt={10}>
+                           <Button colorScheme='blue' onClick={handleUpdate}>
+                               Update
+                           </Button>
+                       </Flex>
+                   </Box>
+               </Flex>
+           </Box>
+           <Box
+               bg='blackAlpha.300'
+               borderRadius='md'
+               p={16}
+               maxWidth='100%'
+               className='tw-m-1 tw-w-1/2'
+           >
+               <Flex justifyContent='center'>
+                   <Box maxWidth='xl'>
+                       <VStack spacing={10} alignItems='flex-start' pt={10}>
+                           <FormControl>
+                               <FormLabel color='gray.500'>Old Password</FormLabel>
+                               <InputGroup size='md'>
+                                   <Input defaultValue={""} />
+                               </InputGroup>
+                           </FormControl>
+                           <FormControl>
+                               <FormLabel color='gray.500'>New Password</FormLabel>
+                               <InputGroup size='md'>
+                                   <Input defaultValue={""} />
+                               </InputGroup>
+                           </FormControl>
+                           <FormControl>
+                               <FormLabel color='gray.500'>Confirm New Password</FormLabel>
+                               <InputGroup size='md'>
+                                   <Input defaultValue={""} />
                                </InputGroup>
                            </FormControl>
                        </VStack>
@@ -75,7 +133,8 @@ const MyProfile = ({profile}: Props) => {
                    </Box>
                </Flex>
            </Box>
-       </>
+           </Flex>
+       </div>
     )
 }
 
@@ -91,7 +150,7 @@ export const getServerSideProps: GetServerSideProps<{
     const supabaseClient = createServerSupabaseClient<Database>(ctx)
     const { data, error } = await supabaseClient.auth.getUser()
 
-    if (error || data.user?.app_metadata.role !== 'admin')
+    if (error)
         return {
             notFound: true,
         }
