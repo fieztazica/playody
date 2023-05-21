@@ -148,6 +148,7 @@ function SideBar() {
                     <Popover>
                         <PopoverTrigger>
                             <IconButton
+                                aria-label='Modify Playlist'
                                 bg={'blend'}
                                 icon={<PlusSquareIcon />}
                             />
