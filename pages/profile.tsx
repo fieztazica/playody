@@ -23,7 +23,7 @@ type Props = {
     profile: Profile | null
 }
 
-let useUser : User | null
+
 const MyProfile = ({profile}: Props) => {
     const user = useUser()
     const handleSubmit = () => {
@@ -78,7 +78,7 @@ const MyProfile = ({profile}: Props) => {
                            <FormControl>
                                <FormLabel color='gray.500'>Email</FormLabel>
                                <InputGroup size='md'>
-                                   <Input defaultValue={useUser?.email || ""} />
+                                   <Input defaultValue={user?.email || ""} />
                                </InputGroup>
                            </FormControl>
                            <FormControl>
