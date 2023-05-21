@@ -15,18 +15,6 @@ const MyTracks = () => {
     const [refreshing, setRefreshing] = useState(false)
     const [myTracks, setMyTracks] = useState<Track[]>([])
 
-    const expTrack: Track = {
-        name: 'Thoi Em Dung DI',
-        src: 'http',
-        duration_s: 320,
-        id: '321',
-        artists: [],
-        author: 'tao',
-        created_at: '',
-        is_verified: false,
-        genres: null,
-        image_url: '',
-    }
 
     async function refresh() {
         try {
