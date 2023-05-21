@@ -5,12 +5,10 @@ import {
     FormLabel,
     Input,
     InputGroup,
-    HStack,
     InputRightElement,
     Stack,
     Button,
     Text,
-    useColorModeValue,
     Link,
 } from '@chakra-ui/react'
 import { useState } from 'react'
@@ -41,7 +39,7 @@ const SignUp = () => {
         try {
             setSigning(true)
             if (password !== repeatPassword) {
-                throw "Passwords aren't match!"
+                throw 'Passwords aren\'t match!'
             }
 
             const { data, error } = await supabaseClient.auth.signUp({
@@ -58,7 +56,8 @@ const SignUp = () => {
                 throw error
             }
 
-            alert("Signed you up!")
+            alert('Signed you up!')
+            router.push(redirect)
             setError('')
         } catch (e: any) {
             console.error(e)
@@ -150,7 +149,10 @@ const SignUp = () => {
                                 color={'white'}
                                 _hover={{
                                     bg: 'blue.500',
-                                }}>
+                                }}
+                                onClick={() => handleSignup()}
+                                isLoading={signing}
+                            >
                                 Sign up
                             </Button>
                         </Stack>
@@ -171,8 +173,7 @@ const SignUp = () => {
                             _hover={{
                                 bgColor: '#14b851',
                             }}
-                            onClick={(e) => {
-                                e.preventDefault()
+                            onClick={() => {
                                 supabaseClient.auth.signInWithOAuth({
                                     provider: 'spotify',
                                     options: {

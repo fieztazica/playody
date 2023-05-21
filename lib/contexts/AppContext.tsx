@@ -20,6 +20,18 @@ export function AppCtxProvider({ children, initialSession }: { children: React.R
                     alert('You didn\'t provide anything!')
                     return
                 }
+
+                const repeatPassword = prompt('Repeat your password.')
+                if (!repeatPassword) {
+                    alert('You didn\'t provide anything!')
+                    return
+                }
+
+                if (newPassword !== repeatPassword) {
+                    alert("Passwords aren't match!")
+                    return
+                }
+
                 const { data, error } = await supabaseClient.auth
                     .updateUser({ password: newPassword })
 

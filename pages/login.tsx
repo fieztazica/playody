@@ -1,14 +1,13 @@
 import {
     Box,
     Button,
-    Checkbox, Divider,
     Flex,
     FormControl,
     FormLabel,
     Input,
     Link,
     Stack,
-    useColorModeValue,
+
 } from '@chakra-ui/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { PlayodyTitle } from '@/components/PlayodyTitle'
@@ -34,7 +33,6 @@ const Login = () => {
     async function handleLogin() {
         try {
             setLoggingIn(true)
-            setError(null)
             const { data, error } = await supabaseClient.auth.signInWithPassword({
                 email: email,
                 password: password,
@@ -43,6 +41,9 @@ const Login = () => {
             if (error) {
                 throw error
             }
+
+            setError(null)
+            router.push(redirect)
         } catch (e: any) {
             console.error(e)
             setError(e.toString())
@@ -78,10 +79,10 @@ const Login = () => {
                             <FormControl id='email'>
                                 <FormLabel>Email address</FormLabel>
                                 <Input type='email' value={email}
-                                onChange={(e) => {
-                                    e.preventDefault()
-                                    setEmail(e.target.value)
-                                }}/>
+                                       onChange={(e) => {
+                                           e.preventDefault()
+                                           setEmail(e.target.value)
+                                       }} />
 
                             </FormControl>
                             <FormControl id='password'>
@@ -89,13 +90,13 @@ const Login = () => {
                                 <Input type='password' value={password} onChange={(e) => {
                                     e.preventDefault()
                                     setPassword(e.target.value)
-                                }}/>
+                                }} />
                             </FormControl>
-                            {error && <p className={"tw-text-red-500"}>
+                            {error && <p className={'tw-text-red-500'}>
                                 {error}
                             </p>}
                             <Stack spacing={4}>
-                                <Link as={NextLink} href={"/recovery"} color={'blue.400'}>Forgot password?</Link>
+                                <Link as={NextLink} href={'/recovery'} color={'blue.400'}>Forgot password?</Link>
                                 <Button
                                     isLoading={loggingIn}
                                     bg={'blue.400'}
@@ -124,8 +125,7 @@ const Login = () => {
                                     _hover={{
                                         bgColor: '#14b851',
                                     }}
-                                    onClick={(e) => {
-                                        e.preventDefault()
+                                    onClick={() => {
                                         supabaseClient.auth.signInWithOAuth({
                                             provider: 'spotify',
                                             options: {
