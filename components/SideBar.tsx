@@ -5,13 +5,6 @@ import {
     Icon,
     IconButton,
     Link,
-    Popover,
-    PopoverArrow,
-    PopoverBody,
-    PopoverCloseButton,
-    PopoverContent,
-    PopoverHeader,
-    PopoverTrigger,
     Stack,
 } from '@chakra-ui/react'
 import DisplayUser from './DisplayUser'
@@ -30,7 +23,8 @@ import { usePathname } from 'next/navigation'
 import { MdQueueMusic, MdOutlineQueueMusic } from 'react-icons/md'
 import { useUser } from '@supabase/auth-helpers-react'
 import { FaPlus } from 'react-icons/fa'
-import { PlusSquareIcon } from '@chakra-ui/icons'
+import { HiPlus } from 'react-icons/hi'
+import CreatePlaylistPopover  from '@/components/CreatePlaylistPopover'
 
 type NavLinkType = {
     icon: IconType
@@ -70,14 +64,14 @@ const navLinks: NavLinkType[] = [
 ]
 
 const NavLink = ({
-    active,
-    icon,
-    activeIcon,
-    href,
-    children,
-    title,
-    ...props
-}: NavLinkProps) => {
+                     active,
+                     icon,
+                     activeIcon,
+                     href,
+                     children,
+                     title,
+                     ...props
+                 }: NavLinkProps) => {
     const leftIcon = active ? activeIcon : icon
 
     return (
@@ -118,30 +112,27 @@ function SideBar() {
                     })
                 }
                 {isAdmin && <div key={`verify-tracks_nav link`}>
-                    <NavLink active={pathname == '/verify-tracks'} href={"verify-tracks"} title={"Verify Tracks"} />
+                    <NavLink active={pathname == '/verify-tracks'} href={'verify-tracks'} title={'Verify Tracks'} />
                 </div>}
                 <Divider />
                 <div
                     className={`tw-flex tw-space-x-2 tw-items-center tw-justify-between tw-group tw-px-2 tw-py-1 
                                          hover:tw-bg-white/10 active:tw-bg-white/20 tw-rounded-md tw-w-full `}>
-                    <div className='tw-py-4' >My Playlist</div>
-                    <Popover>
-                        <PopoverTrigger>
+                    <p className='tw-py-2 tw-text-lg tw-font-bold'>
+                        My Playlists
+                    </p>
+                    <Box>
+                        <CreatePlaylistPopover>
                             <IconButton
                                 aria-label='Modify Playlist'
-                                bg={'blend'}
-                                icon={<PlusSquareIcon />}
+                                icon={<HiPlus />}
+                                variant={'ghost'}
+                                rounded={'full'}
+                                size={"lg"}
+                                fontSize={"2xl"}
                             />
-                        </PopoverTrigger>
-                        <PopoverContent>
-                            <PopoverArrow />
-                            <PopoverCloseButton />
-                            <PopoverHeader>Confirmation!</PopoverHeader>
-                            <PopoverBody>
-                                Are you sure you want to have that milkshake?
-                            </PopoverBody>
-                        </PopoverContent>
-                    </Popover>
+                        </CreatePlaylistPopover>
+                    </Box>
                 </div>
                 {new Array(50).fill(0).map((v, i) => (
                     <div key={`${i} nav link`}>
