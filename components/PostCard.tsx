@@ -1,25 +1,7 @@
 import { Profile, Track } from '@/typings'
 import MainLayout from './MainLayout'
 import Head from 'next/head'
-<<<<<<< HEAD
-import { TrackCard } from "./TrackCard";
-import { Box } from "@chakra-ui/react";
-import { Text } from "@chakra-ui/react";
 
-function PostCard() {
-    // TODO: a card for feed page posts
-    const expTrack : Track = {
-        name: "Thoi Em Dung DI",
-        src: "http",
-        duration_s: 320,
-        id: "321",
-        artists: [],
-        author: "tao",
-        created_at: new Date("12/12/2012").toLocaleString(),
-        is_verified: false,
-        genres: null,
-        image_url: ""
-=======
 import { TrackCard } from './TrackCard'
 import { Box } from '@chakra-ui/react'
 import { Text } from '@chakra-ui/react'
@@ -41,7 +23,6 @@ function PostCard({ track }: { track: Track & { profiles: Profile | null } }) {
         if (event.detail == 2) {
             addToQueue(track)
         }
->>>>>>> main
     }
 
     return (
