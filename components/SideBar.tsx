@@ -24,7 +24,7 @@ import { MdQueueMusic, MdOutlineQueueMusic } from 'react-icons/md'
 import { useUser } from '@supabase/auth-helpers-react'
 import { FaPlus } from 'react-icons/fa'
 import { HiPlus } from 'react-icons/hi'
-import CreatePlaylistPopover  from '@/components/CreatePlaylistPopover'
+//import CreatePlaylistPopover  from '@/components/CreatePlaylistPopover'
 
 type NavLinkType = {
     icon: IconType
@@ -122,7 +122,6 @@ function SideBar() {
                         My Playlists
                     </p>
                     <Box>
-                        <CreatePlaylistPopover>
                             <IconButton
                                 aria-label='Modify Playlist'
                                 icon={<HiPlus />}
@@ -131,7 +130,6 @@ function SideBar() {
                                 size={"lg"}
                                 fontSize={"2xl"}
                             />
-                        </CreatePlaylistPopover>
                     </Box>
                 </div>
                 {new Array(50).fill(0).map((v, i) => (

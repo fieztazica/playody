@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Input, Link } from '@chakra-ui/react'
+import { Button, ButtonGroup, IconButton, Input, Link } from '@chakra-ui/react'
 import MainLayout from '@/components/MainLayout'
 import { PlayodyTitle } from '@/components/PlayodyTitle'
 import Head from 'next/head'
@@ -14,7 +14,7 @@ const MyTracks = () => {
     const user = useUser()
     const [refreshing, setRefreshing] = useState(false)
     const [myTracks, setMyTracks] = useState<Track[]>([])
-
+    const [verifiedTrack, setVerifiedTrack] = useState(false)
 
     async function refresh() {
         try {
@@ -44,6 +44,7 @@ const MyTracks = () => {
         }
     }
 
+
     useEffect(() => {
        refresh()
     }, [])
@@ -55,24 +56,29 @@ const MyTracks = () => {
                 <title>My Tracks</title>
             </Head>
             <div className='tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-full'>
-                <Button isLoading={refreshing} onClick={() => refresh()}>
-                    Refresh
-                </Button>
-                {myTracks.map((v, i) => (
-                    <div key={`search ${i}`} className='tw-flex tw-flex-col tw-space-y-2 tw-rounded-md tw-w-full'>
-                        <div>{v.is_verified ? (
-                            <div>
-                                <br></br>
+                <div className='tw-flex tw-justify-between tw-items-center  tw-m-2'>
+                    <Button
+                        colorScheme={verifiedTrack ? 'teal' : 'red'}
+                        onClick={() => setVerifiedTrack(!verifiedTrack)}
+                        variant={'ghost'}
+                        >
+                            {verifiedTrack ? 'Verified Tracks' : 'Unverified Tracks'}
+                            {': '}
+                            {myTracks?.filter(v => v.is_verified === verifiedTrack).length || 0}
+                    </Button>
+                    <Button isLoading={refreshing} onClick={() => refresh()}>
+                        Refresh
+                    </Button>
+                </div>
+                {myTracks !== null && myTracks.filter(v => v.is_verified === verifiedTrack).map((v) => (
+                    <div key={`myTrack_result_${v.id}`} className='tw-flex tw-flex-col tw-space-y-2 tw-rounded-md tw-bg-black/20 tw-w-full tw-mb-4'>
+                        <div>
+                            <button className='tw-rounded-full tw-m-1 tw-p-2'>Edit</button>
+                            <button className='tw-rounded-full tw-m-1 tw-p-2'>Delete</button>
+                            <div >
                                 <TrackCard track={v} />
                             </div>
-                        ) : (
-                            <>
-                                <br></br>
-                                <div className='tw-bg-red-300'>
-                                    <TrackCard track={v} />
-                                </div>
-                            </>
-                        )}</div>
+                        </div>
                     </div>
                 ))}
             </div>
