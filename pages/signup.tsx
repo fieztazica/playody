@@ -42,6 +42,10 @@ const SignUp = () => {
                 throw 'Passwords aren\'t match!'
             }
 
+            if (!fullName) {
+                throw "Full Name is required!"
+            }
+
             const { data, error } = await supabaseClient.auth.signUp({
                 email: email,
                 password: password,

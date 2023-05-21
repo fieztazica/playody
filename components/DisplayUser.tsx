@@ -1,11 +1,12 @@
 import { Avatar, Button, Flex, Link, Stack, Text } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
 import { useRouter } from 'next/router'
+import useProfile from '@/lib/hooks/useProfile'
 
 function DisplayUser() {
-    const user = useUser()
+    const profile = useProfile()
     const supabaseClient = useSupabaseClient<Database>()
     const router = useRouter()
     const hostname = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : `http://localhost:3000`
@@ -13,13 +14,15 @@ function DisplayUser() {
 
     return (
         <Flex>
-            {user ? (
+            {profile ? (
                 <>
-                    <Avatar mr={5} src={user.user_metadata.avatar_url || undefined} />
+                    <NextLink href={'/profile'}>
+                        <Avatar mr={2} src={profile.avatar_url || undefined} />
+                    </NextLink>
                     <Stack spacing={1} justifyItems={'center'} align={'left'}>
-                        <Link w='fit-content'>
+                        <Link as={NextLink} href={"/profile"} w='fit-content'>
                             <Text fontSize={'16'} fontWeight={'semibold'}>
-                                {user.user_metadata.full_name}
+                                {profile.full_name}
                             </Text>
                         </Link>
                         <Link
@@ -43,7 +46,6 @@ function DisplayUser() {
                     Sign In
                 </Button>
             )}
-
         </Flex>
     )
 }

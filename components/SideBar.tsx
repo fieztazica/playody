@@ -43,12 +43,6 @@ const navLinks: NavLinkType[] = [
         icon: RiUpload2Line,
         activeIcon: RiUpload2Fill,
     },
-    {
-        title: 'Queue',
-        href: '/queue',
-        icon: MdQueueMusic,
-        activeIcon: MdOutlineQueueMusic,
-    },
 ]
 
 const NavLink = ({ active, icon, activeIcon, href, children, title, ...props }: NavLinkProps) => {
@@ -80,8 +74,7 @@ function SideBar() {
                 {
                     navLinks.map(v => {
                         return (
-                            <div key={`${v.title} nav link`}
-                                 className={v.title == 'Queue' ? 'tw-block md:tw-hidden' : undefined}>
+                            <div key={`${v.title} nav link`}>
                                 <NavLink active={pathname == v.href} {...v} />
                             </div>
                         )

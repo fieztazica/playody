@@ -11,6 +11,7 @@ import LogoSvg from '@/components/LogoSvg'
 import { PlayodyTitle } from '@/components/PlayodyTitle'
 import React from 'react'
 import { NavBar } from '@/components/NavBar'
+import NextLink from 'next/link'
 
 function MainLayout({ children, navbar = true }: { children: React.ReactNode, navbar?: boolean }) {
     const { isOpen, onClose, onToggle } = useDisclosure()
@@ -27,12 +28,16 @@ function MainLayout({ children, navbar = true }: { children: React.ReactNode, na
                         />
                     </div>
                     <div className={'tw-grow tw-flex tw-justify-center tw-items-center tw-overflow-x-hidden'}>
-                        <PlayodyTitle />
+                        <NextLink href={"/"}>
+                            <PlayodyTitle />
+                        </NextLink>
                     </div>
                     <div
                         className={'tw-flex-none tw-rounded-md tw-p-1 tw-bg-white/10 hover:tw-bg-white/20 tw-cursor-pointer'}
                     >
-                        <LogoSvg w={8} h={8} />
+                        <NextLink href={"/profile"}>
+                            <LogoSvg w={8} h={8} />
+                        </NextLink>
                     </div>
                 </div>
             </header>

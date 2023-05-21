@@ -130,6 +130,10 @@ export interface Database {
         }
         Returns: Json
       }
+      list_genres: {
+        Args: Record<PropertyKey, never>
+        Returns: string[]
+      }
       search_tracks: {
         Args: {
           query_text: string

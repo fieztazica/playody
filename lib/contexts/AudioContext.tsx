@@ -36,9 +36,9 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
 
     const nextSong = () => {
         if (queue.length && playingIndex !== null) {
+            if (loopMode !== 'song') setPreviousIndexes((v) => [playingIndex, ...v])
             switch (loopMode) {
                 case 'none':
-                    setPreviousIndexes((v) => [playingIndex, ...v])
                     if (
                         queue
                             .map((v, i) => i)
@@ -46,14 +46,13 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
                     ) {
                         setPlayingIndex(0)
                         setIsPause(true)
-                        break;
+                        break
                     }
                     if (!shuffle) {
                         setPlayingIndex((v) => v as number + 1 >= queue.length ? 0 : v as number + 1)
                     } else setPlayingIndex(getRandomIndexInQueue())
                     break
                 case 'queue':
-                    setPreviousIndexes((v) => [playingIndex, ...v])
                     if (!shuffle) {
                         setPlayingIndex((v) => v as number + 1 >= queue.length ? 0 : v as number + 1)
                     } else setPlayingIndex(getRandomIndexInQueue())
@@ -67,8 +66,10 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
     }
 
     const addToQueue = async (track: Track) => {
-        setQueue(q => [...q, track])
+        if (!queue.map(v => v.id).includes(track.id))
+            setQueue(q => [...q, track])
         if (playingIndex === null) setPlayingIndex(0)
+        if (queue.length && isPause) nextSong()
     }
 
     useEffect(() => {
