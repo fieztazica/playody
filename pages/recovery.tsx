@@ -49,7 +49,7 @@ export function Recovery(props: Props) {
     return (
         <div
             className={'tw-container tw-mx-auto tw-px-4 tw-h-full tw-flex tw-flex-col tw-items-center tw-justify-center'}>
-            <div className={'tw-flex tw-flex-col tw-space-y-4 tw-p-8 tw-rounded-md tw-bg-black/30'}>
+            <div className={'tw-flex tw-flex-col tw-space-y-4 tw-p-8 tw-rounded-md tw-bg-black/20'}>
                 <FormControl isRequired>
                     <FormLabel>Email</FormLabel>
                     <Input value={email} onChange={(e) => {

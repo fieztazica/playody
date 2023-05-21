@@ -4,6 +4,7 @@ import { Card, CardBody } from '@chakra-ui/card'
 import {
     BackgroundProps,
     Box,
+    BoxProps,
     Flex,
     Heading,
     Icon,
@@ -16,8 +17,9 @@ import {
 } from '@chakra-ui/react'
 import { BsFillPlayFill } from 'react-icons/bs'
 import { Track } from '@/typings'
+import SearchLink from '@/components/SearchLink'
 
-type Props = {
+interface Props extends BoxProps {
     track: Track
     bgColor?: BackgroundProps['bgColor']
     onClickCover?: () => void
@@ -87,11 +89,9 @@ export function TrackCard({ track, bgColor = 'rgba(0,0,0,0.2)', onClickCover, ..
                             {track.artists.length &&
                                 track.artists
                                     .map<React.ReactNode>((v, i) => (
-                                        <Link
+                                        <SearchLink
                                             key={`artist-${v}-${i}`}
-                                        >
-                                            {v}
-                                        </Link>
+                                            text={v} />
                                     ))
                                     .reduce((prev, curr) => [prev, ', ', curr])}
                         </Text>

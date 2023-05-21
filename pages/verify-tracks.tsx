@@ -26,16 +26,18 @@ const VerifyTracks = (props: Props) => {
 
     async function toggleVerified(id: string, verified: boolean) {
         try {
-            const { error } = await supabaseClient
+            const { data, error } = await supabaseClient
                 .from('tracks')
                 .update({ is_verified: verified })
                 .eq('id', id)
+                .select()
 
             if (error)
                 throw error
 
-            refresh()
+            console.log(data)
 
+            refresh()
         } catch (e: any) {
             if (e?.message)
                 alert(e.message)
@@ -43,11 +45,21 @@ const VerifyTracks = (props: Props) => {
         }
     }
 
-    function handleDelete(id: string) {
+    async function handleDelete(id: string) {
         try {
+            const { error } = await supabaseClient
+                .from('tracks')
+                .delete()
+                .eq('id', id)
 
+            if (error)
+                throw error
+
+            refresh()
         } catch (e: any) {
-
+            if (e?.message)
+                alert(e.message)
+            console.error(e)
         }
     }
 
@@ -99,7 +111,7 @@ const VerifyTracks = (props: Props) => {
                             <Button
                                 colorScheme={verifiedTrack ? 'teal' : 'red'}
                                 onClick={() => setVerifiedTrack(!verifiedTrack)}
-                                variant={"ghost"}
+                                variant={'ghost'}
                             >
                                 {verifiedTrack ? 'Verified Tracks' : 'Unverified Tracks'}
                                 {': '}
@@ -109,7 +121,7 @@ const VerifyTracks = (props: Props) => {
                         <Button
                             isLoading={refreshing}
                             onClick={() => refresh()}
-                            variant={"ghost"}
+                            variant={'ghost'}
                         >
                             Refresh
                         </Button>
@@ -128,7 +140,7 @@ const VerifyTracks = (props: Props) => {
                                               title={v.author || undefined}
                                         >
                                             @{v.profiles.full_name}
-                                        </span>{" "}
+                                        </span>{' '}
                                         uploaded at {new Date(v.created_at || 0).toLocaleString()}
                                     </span>
                                     <ButtonGroup>
@@ -148,6 +160,7 @@ const VerifyTracks = (props: Props) => {
                                             icon={<RxTrash color={'red'} />}
                                             aria-label={'Delete track button'}
                                             title={'Delete this song'}
+                                            onClick={() => handleDelete(v.id)}
                                         />
                                     </ButtonGroup>
                                 </div>
@@ -158,11 +171,11 @@ const VerifyTracks = (props: Props) => {
                                         <p>Genres: {v.genres?.join(', ')}</p>
                                         <p>Duration: {v.duration_s}s</p>
                                     </div>
-                                    {v.image_url && <div className={"tw-p-2 tw-aspect-square tw-max-w-xs"}>
+                                    {v.image_url && <div className={'tw-p-2 tw-aspect-square tw-max-w-xs'}>
                                         <Image alt={`${v.name}'s image`} src={v.image_url} />
                                     </div>}
                                 </div>
-                                <audio className={"tw-w-full"} controls src={v.src || undefined} />
+                                <audio className={'tw-w-full'} controls src={v.src || undefined} />
                             </div>
                         ))
                     }

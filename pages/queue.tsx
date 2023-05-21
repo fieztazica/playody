@@ -6,24 +6,47 @@ import MainLayout from '@/components/MainLayout'
 import Head from 'next/head'
 import { NavBar } from '@/components/NavBar'
 import { PlayodyTitle } from '@/components/PlayodyTitle'
+import UnderlineTypo from '@/components/UnderlineTypo'
 
 type Props = {};
 const Queue = (props: Props) => {
-    const { queue, playingIndex } = useAudioCtx()
+    const { isPause, queue, playingIndex, setPlayingIndex } = useAudioCtx()
+
+    function handleClickSong(index: number) {
+        if (index <= 0 || index >= queue.length || index === playingIndex) return
+        setPlayingIndex(index)
+    }
 
     return (<>
             <Head>
                 <title>
-                    Queue
+                    {playingIndex === null ? 'Queue' : `Playing ${queue?.[playingIndex]?.name} - ${queue[playingIndex].artists.join(', ')}`}
                 </title>
             </Head>
             <div className='tw-flex tw-flex-col tw-items-center tw-h-full'>
                 <div className={'tw-flex tw-flex-col tw-w-full tw-space-y-2'}>
+                    {!isPause && playingIndex !== null && <>
+                        <UnderlineTypo>
+                            Now Playing
+                        </UnderlineTypo>
+                        <div>
+                            <TrackCard
+                                title={'Now playing'}
+                                key={'Now playing'}
+                                track={queue[playingIndex]}
+                            />
+                        </div>
+                    </>}
+                    <UnderlineTypo>
+                        {!isPause && playingIndex !== null ? 'Waiting in queue' : 'Queue'}
+                    </UnderlineTypo>
                     {queue.length ?
-                        queue.map((v, i) => (<div title={playingIndex == i ? 'Now Playing' : undefined} key={v.src}
-                                                  className={`tw-rounded-md ${playingIndex == i && 'tw-shadow-lg tw-shadow-blue-300/50 tw-animate-pulse'}`}>
-                            <TrackCard track={v} />
-                        </div>)) : 'Queue is empty'
+                        queue.filter((v, i) => !isPause ? i !== playingIndex : true).map((v, i) => (
+                            <TrackCard key={`queued_track_${v.id}_${i}`} track={v} onClick={() => handleClickSong(i)} />
+                        )) :
+                        <p className={'tw-text-center tw-w-full tw-my-4 tw-text-xl'}>
+                            Queue is empty
+                        </p>
                     }
                 </div>
             </div>

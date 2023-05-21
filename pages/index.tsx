@@ -25,7 +25,7 @@ const Home = () => {
         try {
             setLoading(true)
             const res = await fetch(`/api/track/list?page=${page}`).then(r => r.json())
-            console.log(res)
+
             if (res.error) {
                 throw res.error
             }

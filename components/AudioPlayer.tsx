@@ -64,7 +64,7 @@ function AudioPlayer() {
                 )}
             </Head>
             <div
-                className={'tw-flex tw-justify-between tw-flex-col md:tw-flex-row tw-space-x-2 tw-rounded-md tw-mx-2 tw-mb-2 tw-p-2 tw-bg-black/30'}>
+                className={'tw-flex tw-justify-between tw-flex-col md:tw-flex-row tw-space-x-2 tw-rounded-md tw-mx-2 tw-mb-2 tw-p-2 tw-bg-black/20'}>
                 <div className={'tw-flex-1 tw-flex tw-flex-row tw-justify-between'}>
                     <div className={'tw-flex-1'}>
                         <DisplaySong />

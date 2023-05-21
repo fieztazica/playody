@@ -8,6 +8,7 @@ function SeekBar() {
         audioRef,
         setCurrentTime,
     } = useAudioCtx()
+
     const currentMinutes = Math.floor(currentTime / 60)
     const currentSeconds = Math.floor(currentTime - currentMinutes * 60)
 
@@ -23,28 +24,31 @@ function SeekBar() {
     }
 
     return (
-        <Stack key={"SeekBarComponent"} direction={'row'} w='full' spacing={4} justify={'center'} align={"center"}>
-            <Text key={"time_consumed"} fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
-                {currentMinutes.toString().padStart(2, '0')}:
-                {currentSeconds.toString().padStart(2, '0')}
+        <Stack key={'SeekBarComponent'} direction={'row'} w='full' spacing={4} justify={'center'} align={'center'}>
+            <Text key={'time_consumed'} fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
+                <span>{currentMinutes.toString().padStart(2, '0')}</span>
+                <span>:</span>
+                <span>{currentSeconds.toString().padStart(2, '0')}</span>
             </Text>
             <Slider
-                key={"seek_bar"}
+                key={'seek_bar'}
                 colorScheme='pink'
                 aria-label='slider-time'
                 max={duration}
                 value={currentTime}
+                focusThumbOnChange={false}
                 onChange={handleSliderChange}
                 maxW='4xl'
             >
-                <SliderTrack bg='purple.900'>
-                    <SliderFilledTrack bg='pink.700' />
+                <SliderTrack key={'slider_track'} bg='purple.900'>
+                    <SliderFilledTrack key={'slider_filled_track'} bg='pink.700' />
                 </SliderTrack>
-                <SliderThumb />
+                <SliderThumb key={"slider_thumb"} />
             </Slider>
-            <Text key={"time_left"} fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
-                {leftMinutes.toString().padStart(2, '0')}:
-                {leftSeconds.toString().padStart(2, '0')}
+            <Text key={'time_left'} fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
+                <span>{leftMinutes.toString().padStart(2, '0')}</span>
+                <span>:</span>
+                <span>{leftSeconds.toString().padStart(2, '0')}</span>
             </Text>
         </Stack>
     )
