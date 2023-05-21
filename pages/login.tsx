@@ -34,7 +34,6 @@ const Login = () => {
     async function handleLogin() {
         try {
             setLoggingIn(true)
-            setError(null)
             const { data, error } = await supabaseClient.auth.signInWithPassword({
                 email: email,
                 password: password,
@@ -43,6 +42,9 @@ const Login = () => {
             if (error) {
                 throw error
             }
+
+            setError(null)
+            router.push(redirect)
         } catch (e: any) {
             console.error(e)
             setError(e.toString())

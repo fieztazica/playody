@@ -59,6 +59,7 @@ const SignUp = () => {
             }
 
             alert("Signed you up!")
+            router.push(redirect)
             setError('')
         } catch (e: any) {
             console.error(e)
