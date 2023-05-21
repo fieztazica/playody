@@ -2,6 +2,7 @@
 import * as React from 'react'
 import { Card, CardBody } from '@chakra-ui/card'
 import {
+    BackgroundProps,
     Box,
     Flex,
     Heading,
@@ -18,10 +19,11 @@ import { Track } from '@/typings'
 
 type Props = {
     track: Track
+    bgColor?: BackgroundProps['bgColor']
     onClickCover?: () => void
 }
 
-export function TrackCard({ track, onClickCover, ...props }: Props) {
+export function TrackCard({ track, bgColor = 'rgba(0,0,0,0.2)', onClickCover, ...props }: Props) {
     const trackDuration = (track.duration_s || 0)
     const trackDurationMins = Math.floor(trackDuration / 60)
     const trackDurationSecs = Math.floor(trackDuration - trackDurationMins * 60)
@@ -34,7 +36,7 @@ export function TrackCard({ track, onClickCover, ...props }: Props) {
             direction={'row'}
             variant={'unstyled'}
             p={2}
-            bgColor={'rgba(0,0,0,0.2)'}
+            bgColor={bgColor}
             _hover={{
                 bgColor: 'rgba(255,255,255,0.05)',
                 boxShadow: 'inset 0 0 15px -8px #fff',
@@ -78,7 +80,7 @@ export function TrackCard({ track, onClickCover, ...props }: Props) {
             <CardBody alignItems={'center'}>
                 <Flex justifyContent={'space-between'} alignItems={'center'}>
                     <Stack spacing={1}>
-                        <Text fontWeight={'semibold'} noOfLines={1} size="sm">
+                        <Text fontWeight={'semibold'} noOfLines={1} size='sm'>
                             {track.name}
                         </Text>
                         <Text color={'whiteAlpha.800'} fontSize={'sm'}>
@@ -95,7 +97,7 @@ export function TrackCard({ track, onClickCover, ...props }: Props) {
                         </Text>
                     </Stack>
                     <Flex justify={'center'} align={'center'} gap={4} px={2}>
-                        <Text fontSize="sm">{trackDurationString}</Text>
+                        <Text fontSize='sm'>{trackDurationString}</Text>
                     </Flex>
                 </Flex>
             </CardBody>
