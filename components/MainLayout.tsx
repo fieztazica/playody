@@ -43,14 +43,16 @@ function MainLayout({ children, navbar = true }: { children: React.ReactNode, na
                 </div>
                 <div className={'tw-overflow-y-auto tw-grow tw-h-full tw-flex-col tw-p-2'}>
                     {isOpen &&
-                        <div onClick={onClose} className={'md:tw-hidden tw-flex tw-flex-col tw-space-y-2 '}>
+                        <div onClick={onClose} className={'md:tw-hidden tw-flex tw-flex-col tw-space-y-2'}>
                             <SideBar />
                         </div>
                     }
-                    <main className={'tw-grow tw-h-full tw-rounded-md'}>
+                    <div className={'tw-grow tw-h-full tw-rounded-md'}>
                         {navbar && <NavBar/>}
-                        {children}
-                    </main>
+                        <main className={"tw-pb-2"}>
+                            {children}
+                        </main>
+                    </div>
                 </div>
             </div>
             <div className={'tw-bottom-0'}>

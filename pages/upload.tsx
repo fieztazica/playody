@@ -22,6 +22,7 @@ import { BiUpload } from 'react-icons/bi'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
 import { TrackInsert } from '@/lib/api/track'
+
 const UploadBox = ({ children, loading, onClick }: {
     loading: boolean,
     onClick?: () => void,
@@ -64,6 +65,7 @@ const Upload = () => {
     function addGenre() {
         setGenres((a) => [...a, ''])
     }
+
     function removeLastGenre() {
         setGenres((a) => {
             const newArray = [...a]
@@ -75,6 +77,7 @@ const Upload = () => {
     function addArtist() {
         setArtists((a) => [...a, ''])
     }
+
     function removeLastArtist() {
         setArtists((a) => {
             const newArray = [...a]
@@ -108,8 +111,8 @@ const Upload = () => {
             setError(null)
 
             if (!srcUrl || !duration) {
-                setError("No audio file provided!")
-                return;
+                setError('No audio file provided!')
+                return
             }
 
             const trackToUpload: TrackInsert = {
@@ -255,131 +258,134 @@ const Upload = () => {
             <Head>
                 <title>Upload</title>
             </Head>
-            <Container className={'tw-py-4 tw-rounded-md tw-bg-black/20'}>
-                <form onSubmit={onSubmit}>
-                    <Stack>
-                        <FormControl isRequired>
-                            <FormLabel>Song name</FormLabel>
-                            <Input value={songName} placeholder='Song name' onChange={(e) => {
-                                e.preventDefault()
-                                setSongName(e.target.value)
-                            }} />
-                        </FormControl>
-                        <FormControl isRequired>
-                            <FormLabel>Genres</FormLabel>
-                            <SimpleGrid minChildWidth='100px' spacing={2}>
-                                {genres.map((v, i) => (
-                                    <Input
-                                        key={`genre-${i}`}
-                                        placeholder={`genre #${i + 1}`}
-                                        value={genres[i]}
-                                        onChange={(e) => {
-                                            e.preventDefault()
-                                            onGenresChange(e.target.value, i)
-                                        }}
-                                    />
-                                ))}
-                               <div>
-                                   {genres.length > 1 && (
-                                       <div>
-                                           <IconButton
-                                               aria-label='Remove genre button'
-                                               icon={<RiSubtractFill />}
-                                               onClick={() => removeLastGenre()}
-                                           />
-                                       </div>
-                                   )}
-                                   {genres.length < 2 && (
-                                       <div>
-                                           <IconButton
-                                               aria-label='Add genre button'
-                                               icon={<RiAddFill />}
-                                               onClick={() => addGenre()}
-                                           />
-                                       </div>
-                                   )}
-                               </div>
-                            </SimpleGrid>
-                        </FormControl>
-                        <FormControl isRequired>
-                            <FormLabel>Artists</FormLabel>
-                            <SimpleGrid minChildWidth='100px' spacing={2}>
-                                {artists.map((v, i) => (
-                                    <Input
-                                        key={`artist-${i}`}
-                                        placeholder={`artist #${i + 1}`}
-                                        value={artists[i]}
-                                        onChange={(e) => {
-                                            e.preventDefault()
-                                            onArtistsChange(e.target.value, i)
-                                        }}
-                                    />
-                                ))}
-                                <div className={"tw-flex tw-space-x-2"}>
-                                    {artists.length > 1 && (
+            <div className={"tw-w-full tw-rounded-md tw-bg-black/20"}>
+                <Container className={'tw-py-4 '}>
+                    <form onSubmit={onSubmit}>
+                        <Stack>
+                            <FormControl isRequired>
+                                <FormLabel>Song name</FormLabel>
+                                <Input value={songName} placeholder='Song name' onChange={(e) => {
+                                    e.preventDefault()
+                                    setSongName(e.target.value)
+                                }} />
+                            </FormControl>
+                            <FormControl isRequired>
+                                <FormLabel>Genres</FormLabel>
+                                <SimpleGrid minChildWidth='100px' spacing={2}>
+                                    {genres.map((v, i) => (
+                                        <Input
+                                            key={`genre-${i}`}
+                                            placeholder={`genre #${i + 1}`}
+                                            value={genres[i]}
+                                            onChange={(e) => {
+                                                e.preventDefault()
+                                                onGenresChange(e.target.value, i)
+                                            }}
+                                        />
+                                    ))}
+                                    <div>
+                                        {genres.length > 1 && (
+                                            <div>
+                                                <IconButton
+                                                    aria-label='Remove genre button'
+                                                    icon={<RiSubtractFill />}
+                                                    onClick={() => removeLastGenre()}
+                                                />
+                                            </div>
+                                        )}
+                                        {genres.length < 2 && (
+                                            <div>
+                                                <IconButton
+                                                    aria-label='Add genre button'
+                                                    icon={<RiAddFill />}
+                                                    onClick={() => addGenre()}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                </SimpleGrid>
+                            </FormControl>
+                            <FormControl isRequired>
+                                <FormLabel>Artists</FormLabel>
+                                <SimpleGrid minChildWidth='100px' spacing={2}>
+                                    {artists.map((v, i) => (
+                                        <Input
+                                            key={`artist-${i}`}
+                                            placeholder={`artist #${i + 1}`}
+                                            value={artists[i]}
+                                            onChange={(e) => {
+                                                e.preventDefault()
+                                                onArtistsChange(e.target.value, i)
+                                            }}
+                                        />
+                                    ))}
+                                    <div className={'tw-flex tw-space-x-2'}>
+                                        {artists.length > 1 && (
                                             <IconButton
                                                 aria-label='Remove artist button'
                                                 icon={<RiSubtractFill />}
                                                 onClick={() => removeLastArtist()}
                                             />
-                                    )}
-                                    {artists.length < 4 && (
+                                        )}
+                                        {artists.length < 4 && (
                                             <IconButton
                                                 aria-label='Add artist button'
                                                 icon={<RiAddFill />}
                                                 onClick={() => addArtist()}
                                             />
-                                    )}
-                                </div>
+                                        )}
+                                    </div>
 
-                            </SimpleGrid>
-                        </FormControl>
-                        <FormControl isInvalid={!imageUrl} isRequired>
-                            <FormLabel>Image</FormLabel>
-                            <UploadBox loading={imageUploading} onClick={() => imageUploadRef.current?.click()}>
-                                {imageUrl && <Image alt={'track\'s image'} src={imageUrl} />}
-                            </UploadBox>
-                            <input
-                                ref={imageUploadRef}
-                                hidden
-                                type={'file'}
-                                accept={'image/png, image/jpeg'}
-                                onChange={uploadImage}
-                            />
-                        </FormControl>
-                        <FormControl isInvalid={!srcUrl} isRequired>
-                            <FormLabel>Source</FormLabel>
-                            <UploadBox loading={srcUploading} onClick={() => srcUploadRef.current?.click()}>
-                                {srcUrl && <p title={srcUrl} className={'tw-truncate tw-w-120px'}>
-                                    {srcUrl}
-                                </p>}
-                            </UploadBox>
-                            {srcUrl && <audio
-                                ref={audioRef}
-                                className={"tw-p-2"}
-                                controls
-                                src={srcUrl}
-                                onLoadedData={handleLoadedData}
-                            />}
-                            <input
-                                ref={srcUploadRef}
-                                hidden
-                                type={'file'}
-                                accept={'audio/mpeg, audio/x-wav'}
-                                onChange={uploadSrc}
-                            />
-                        </FormControl>
-                        {
-                            error && <p className={'tw-text-red-500'}>
-                                {error}
-                            </p>
-                        }
-                        <FormControl>
-                            <Button type={'submit'} colorScheme={'teal'} isLoading={submitting}>Submit</Button>
-                        </FormControl>
-                    </Stack>
-                </form>
-            </Container>
+                                </SimpleGrid>
+                            </FormControl>
+                            <FormControl isInvalid={!imageUrl} isRequired>
+                                <FormLabel>Image</FormLabel>
+                                <UploadBox loading={imageUploading} onClick={() => imageUploadRef.current?.click()}>
+                                    {imageUrl && <Image alt={'track\'s image'} src={imageUrl} />}
+                                </UploadBox>
+                                <input
+                                    ref={imageUploadRef}
+                                    hidden
+                                    type={'file'}
+                                    accept={'image/png, image/jpeg'}
+                                    onChange={uploadImage}
+                                />
+                            </FormControl>
+                            <FormControl isInvalid={!srcUrl} isRequired>
+                                <FormLabel>Source</FormLabel>
+                                <UploadBox loading={srcUploading} onClick={() => srcUploadRef.current?.click()}>
+                                    {srcUrl && <p title={srcUrl} className={'tw-truncate tw-w-120px'}>
+                                        {srcUrl}
+                                    </p>}
+                                </UploadBox>
+                                {srcUrl && <audio
+                                    ref={audioRef}
+                                    className={'tw-p-2'}
+                                    controls
+                                    src={srcUrl}
+                                    onLoadedData={handleLoadedData}
+                                />}
+                                <input
+                                    ref={srcUploadRef}
+                                    hidden
+                                    type={'file'}
+                                    accept={'audio/mpeg, audio/x-wav'}
+                                    onChange={uploadSrc}
+                                />
+                            </FormControl>
+                            {
+                                error && <p className={'tw-text-red-500'}>
+                                    {error}
+                                </p>
+                            }
+                            <FormControl>
+                                <Button type={'submit'} colorScheme={'teal'} isLoading={submitting}>Submit</Button>
+                            </FormControl>
+                        </Stack>
+                    </form>
+                </Container>
+
+            </div>
         </>
     )
 }

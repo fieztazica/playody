@@ -17,12 +17,14 @@ import { Profile } from '@/typings'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
 import Head from 'next/head'
+import { useUser } from '@supabase/auth-helpers-react'
 
 type Props = {
     profile: Profile | null
 }
 
 const MyProfile = ({profile}: Props) => {
+    const user = useUser()
     const handleSubmit = () => {
         // Perform your submit action here, e.g., update user data in the database
         console.log('Submitting edited user:')

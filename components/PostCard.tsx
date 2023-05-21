@@ -1,48 +1,43 @@
-import { Track } from "@/typings";
-import MainLayout from "./MainLayout";
+import { Profile, Track } from '@/typings'
+import MainLayout from './MainLayout'
 import Head from 'next/head'
-import { TrackCard } from "./TrackCard";
-import { Box } from "@chakra-ui/react";
-import { Text } from "@chakra-ui/react";
+import { TrackCard } from './TrackCard'
+import { Box } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
+import React from 'react'
+import { useAudioCtx } from '@/lib/contexts/AudioContext'
+import dayjs from 'dayjs'
+import relativeTime from "dayjs/plugin/relativeTime"
+dayjs.extend(relativeTime)
+dayjs().format()
 
-function PostCard() {
-    // TODO: a card for feed page posts
-    const expTrack : Track = {
-        name: "Thoi Em Dung DI",
-        src: "http",
-        duration_s: 320,
-        id: "321",
-        artists: [],
-        author: "tao",
-        created_at: new Date(Date.now()).toLocaleString(),
-        is_verified: false,
-        genres: null,
-        image_url: ""
+function PostCard({ track }: { track: Track & { profiles: Profile | null } }) {
+    const {addToQueue} = useAudioCtx()
+
+    const rawTrack: Track = {
+        ...track,
+    }
+
+    function handleDoubleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>, track: Track) {
+        if (event.detail == 2) {
+            addToQueue(track)
+        }
     }
 
     return (
-        <>
-            <Head>
-                <title>Home</title>
-            </Head>
-            <Box p={4}>
-                {new Array<Track>(5).fill(expTrack).map((v, i) => (
-                   <Box key={`search ${i}`} borderRadius="md" boxShadow="md" p={4} mb={4} width={{ base: "100%", sm: "80%" }}>
-                   <Box>
-                       <Text fontWeight="bold">
-                           @{v.author} has just uploaded a track
-                       </Text>
-                       <Text fontSize="sm" color="gray.500">
-                           at {v.created_at}
-                       </Text>
-                   </Box>
-                   <Box mt={4}>
-                       <TrackCard track={expTrack}/>
-                   </Box>
-               </Box>
-                ))}
+        <Box borderRadius='md' boxShadow='md' bg={"blackAlpha.300"} p={2} width={'full'}>
+            <div className={"tw-flex tw-justify-between tw-items-center tw-p-2"}>
+                <Text fontWeight='bold'>
+                    @<span className={"hover:tw-underline"}>{track.profiles?.full_name || 'unknown'}</span> {Date.now() - (new Date(track.created_at || 0)).valueOf() < 3600 * 1000 ? " has just" : ""} uploaded a track
+                </Text>
+                <Text fontSize='sm' color='gray.500'>
+                     {dayjs(track.created_at).fromNow()}
+                </Text>
+            </div>
+            <Box onClick={(e) => handleDoubleClick(e, track)}>
+                <TrackCard bgColor={"rgba(0,0,0,0)"} track={rawTrack} onClickCover={() => addToQueue(rawTrack)}/>
             </Box>
-        </>
+        </Box>
     )
 }
 
