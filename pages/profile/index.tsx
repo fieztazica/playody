@@ -55,7 +55,7 @@ const MyProfile = ({ profile }: Props) => {
                         <Link as={NextLink} href={'/profile/my-tracks'}>
                             My Tracks
                         </Link>
-                        <Link as={NextLink} href={'/playlists'}>
+                        <Link as={NextLink} href={'/profile/my-playlists'}>
                             My Playlists
                         </Link>
                     </div>
