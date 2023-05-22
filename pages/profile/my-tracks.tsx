@@ -73,8 +73,10 @@ const MyTracks = () => {
                 {myTracks !== null && myTracks.filter(v => v.is_verified === verifiedTrack).map((v) => (
                     <div key={`myTrack_result_${v.id}`} className='tw-flex tw-flex-col tw-space-y-2 tw-rounded-md tw-bg-black/20 tw-w-full tw-mb-4'>
                         <div>
-                            <button className='tw-rounded-full tw-m-1 tw-p-2'>Edit</button>
-                            <button className='tw-rounded-full tw-m-1 tw-p-2'>Delete</button>
+                        {!v.is_verified && (
+                                <button className='tw-rounded-full tw-m-1 tw-p-2'>Edit</button>
+                        )}
+                                <button className='tw-rounded-full tw-m-1 tw-p-2'>Delete</button>                        
                             <div >
                                 <TrackCard track={v} />
                             </div>
