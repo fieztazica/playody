@@ -24,23 +24,11 @@ import { MdQueueMusic, MdOutlineQueueMusic } from 'react-icons/md'
 import { useSession, useUser } from '@supabase/auth-helpers-react'
 import { FaPlus } from 'react-icons/fa'
 import { HiPlus } from 'react-icons/hi'
-import CreatePlaylistPopover  from '@/components/CreatePlaylistPopover'
+import CreatePlaylistModal from '@/components/CreatePlaylistModal'
+import NavLink, { NavLinkType } from '@/components/NavLink'
+import usePlaylists from '@/lib/hooks/usePlaylists'
 
-type NavLinkType = {
-    icon: IconType
-    activeIcon: IconType
-    href: string
-    title: string
-}
 
-type NavLinkProps = {
-    active: boolean
-    icon?: IconType
-    activeIcon?: IconType
-    href: string
-    title: string
-    children?: React.ReactNode
-}
 
 const navLinks: NavLinkType[] = [
     {
@@ -63,37 +51,11 @@ const navLinks: NavLinkType[] = [
     },
 ]
 
-const NavLink = ({
-                     active,
-                     icon,
-                     activeIcon,
-                     href,
-                     children,
-                     title,
-                     ...props
-                 }: NavLinkProps) => {
-    const leftIcon = active ? activeIcon : icon
-
-    return (
-        <NextLink href={href}>
-            <div
-                className={`tw-flex tw-space-x-2 tw-items-center tw-group tw-px-2 tw-py-1 hover:tw-bg-white/10 active:tw-bg-white/20 tw-rounded-md ${
-                    active ? 'tw-font-bold tw-bg-white/5' : ''
-                }`}
-            >
-                {icon && activeIcon && <Icon as={leftIcon} />}
-                <span className={`${active ? 'tw-font-bold' : ''}`}>
-                    {title}
-                </span>
-            </div>
-        </NextLink>
-    )
-}
-
 function SideBar() {
     const pathname = usePathname()
     const session = useSession()
-    const isAdmin = session?.user.app_metadata.role == "admin"
+    const isAdmin = session?.user.app_metadata.role == 'admin'
+    const playlists = usePlaylists()
 
     return (
         <>
@@ -118,27 +80,29 @@ function SideBar() {
                 <div
                     className={`tw-flex tw-space-x-2 tw-items-center tw-justify-between tw-group tw-px-2 tw-py-1 
                                          hover:tw-bg-white/10 active:tw-bg-white/20 tw-rounded-md tw-w-full `}>
-                    <p className='tw-py-2 tw-text-lg tw-font-bold'>
-                        My Playlists
-                    </p>
+                    <Link as={NextLink} href={'/profile/my-playlists'}>
+                        <p className='tw-py-2 tw-text-lg tw-font-bold'>
+                            My Playlists
+                        </p>
+                    </Link>
                     <Box>
-                        <CreatePlaylistPopover>
+                        <CreatePlaylistModal>
                             <IconButton
                                 aria-label='Modify Playlist'
                                 icon={<HiPlus />}
                                 variant={'ghost'}
                                 rounded={'full'}
-                                size={"lg"}
-                                fontSize={"2xl"}
+                                size={'lg'}
+                                fontSize={'2xl'}
                             />
-                        </CreatePlaylistPopover>
+                        </CreatePlaylistModal>
                     </Box>
                 </div>
-                {new Array(50).fill(0).map((v, i) => (
-                    <div key={`${i} nav link`}>
+                {playlists !== null && playlists.map((v, i) => (
+                    <div key={`${v.id}_playlist_nav_link`}>
                         <NavLink
                             active={false}
-                            title={`Playlist #${i}`}
+                            title={`${v.name}`}
                             href={`#`}
                         />
                     </div>
