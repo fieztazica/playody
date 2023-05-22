@@ -24,6 +24,7 @@ import { MdQueueMusic, MdOutlineQueueMusic } from 'react-icons/md'
 import { useSession, useUser } from '@supabase/auth-helpers-react'
 import { FaPlus } from 'react-icons/fa'
 import { HiPlus } from 'react-icons/hi'
+
 import CreatePlaylistModal from '@/components/CreatePlaylistModal'
 import NavLink, { NavLinkType } from '@/components/NavLink'
 import usePlaylists from '@/lib/hooks/usePlaylists'
