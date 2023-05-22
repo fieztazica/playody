@@ -119,7 +119,6 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
                             {getLayout(<Component {...pageProps} />)}
                         </AudioCtxProvider>
                     </AppCtxProvider>
-
                 </SessionContextProvider>
             </ChakraProvider>
         </>
