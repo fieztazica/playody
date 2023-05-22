@@ -11,6 +11,7 @@ import { Button, ButtonGroup, IconButton, Image, Tooltip } from '@chakra-ui/reac
 import { RxCross2, RxCheck, RxTrash } from 'react-icons/rx'
 import { useEffect, useState } from 'react'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { TrackUpdate } from '@/lib/api/track'
 
 type TrackWithProfile = Track & { profiles: Profile }
 
@@ -25,15 +26,19 @@ const VerifyTracks = (props: Props) => {
     const [verifiedTrack, setVerifiedTrack] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
 
-    async function toggleVerified(id: string, verified: boolean) {
+    async function toggleVerified({  id, is_verified }: Track) {
         try {
-            const { data, error } = await supabaseClient
-                .from('tracks')
-                .update({ is_verified: verified })
-                .eq('id', id)
+            const updateObj: TrackUpdate = { is_verified: !is_verified }
+            const res = await fetch(`/api/track?trackId=${id}`, {
+                method: 'PUT',
+                body: JSON.stringify(updateObj),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(r => r.json())
 
-            if (error)
-                throw error
+            if (res.error)
+                throw res.error
 
             refresh()
         } catch (e: any) {
@@ -45,13 +50,15 @@ const VerifyTracks = (props: Props) => {
 
     async function handleDelete(id: string) {
         try {
-            const { error } = await supabaseClient
-                .from('tracks')
-                .delete()
-                .eq('id', id)
+            const res = await fetch(`/api/track?trackId=${id}`, {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(r => r.json())
 
-            if (error)
-                throw error
+            if (res.error)
+                throw res.error
 
             refresh()
         } catch (e: any) {
@@ -76,7 +83,6 @@ const VerifyTracks = (props: Props) => {
             if (data)
                 setTracks([...data as any])
 
-
         } catch (e: any) {
             if (e?.message)
                 alert(e.message)
@@ -93,7 +99,7 @@ const VerifyTracks = (props: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    if (!session) return null;
+    if (!session) return null
 
 
     return (
@@ -151,7 +157,7 @@ const VerifyTracks = (props: Props) => {
                                             icon={v.is_verified ? <RxCross2 color={'red'} /> : <RxCheck color={'green'} />}
                                             aria-label={v.is_verified ? 'Revoke track button' : 'Accept track button'}
                                             title={v.is_verified ? 'Revoke verification of this song' : 'Verify this song'}
-                                            onClick={() => toggleVerified(v.id, !v.is_verified)}
+                                            onClick={() => toggleVerified(v)}
                                         />
                                         <IconButton
                                             variant={'ghost'}
@@ -212,7 +218,7 @@ export const getServerSideProps: GetServerSideProps<{
         }
     }
 
-    console.log(tracks.data)
+    // console.log(tracks.data)
     return {
         props: {
             tracks: tracks.data,

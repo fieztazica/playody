@@ -108,6 +108,7 @@ export const getServerSideProps: GetServerSideProps<{
         .select('*')
         .eq('id', `${data.user.id}`)
         .limit(1)
+        .single()
 
     if (profile.error || !profile.data) {
         return {
@@ -118,7 +119,7 @@ export const getServerSideProps: GetServerSideProps<{
     console.log(profile.data)
     return {
         props: {
-            profile: profile.data.shift() || null,
+            profile: profile.data || null,
         },
     }
 }
