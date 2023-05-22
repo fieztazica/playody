@@ -38,21 +38,18 @@ export interface Database {
         Row: {
           author: string
           created_at: string | null
-          id: string
           name: string
           trackIds: string[] | null
         }
         Insert: {
           author: string
           created_at?: string | null
-          id?: string
           name: string
           trackIds?: string[] | null
         }
         Update: {
           author?: string
           created_at?: string | null
-          id?: string
           name?: string
           trackIds?: string[] | null
         }
@@ -123,12 +120,39 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      delete_claim: {
+        Args: {
+          uid: string
+          claim: string
+        }
+        Returns: string
+      }
       get_claim: {
         Args: {
           uid: string
           claim: string
         }
         Returns: Json
+      }
+      get_claims: {
+        Args: {
+          uid: string
+        }
+        Returns: Json
+      }
+      get_my_claim: {
+        Args: {
+          claim: string
+        }
+        Returns: Json
+      }
+      get_my_claims: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
+      is_claims_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
       list_genres: {
         Args: Record<PropertyKey, never>
@@ -147,6 +171,14 @@ export interface Database {
           image_url: string
           duration_s: number
         }[]
+      }
+      set_claim: {
+        Args: {
+          uid: string
+          claim: string
+          value: Json
+        }
+        Returns: string
       }
     }
     Enums: {

@@ -11,8 +11,8 @@ import { Database } from '@/typings/supabase'
 import { Session, SupabaseClient } from '@supabase/supabase-js'
 
 export type AppCtxType = {
-    // theme: 'dark' | 'light'
-    // supabaseClient: SupabaseClient<Database>
+    myPlaylists: Playlist[] | null,
+    fetchMyPlaylists: () => void
 }
 
 export type AudioCtxType = {
@@ -37,7 +37,9 @@ export type AudioCtxType = {
     setPreviousIndexes: Dispatch<SetStateAction<number[]>>
     nextSong: () => void
     previousSong: () => void,
-    addToQueue: (track: Track) => Promise<void>
+    addToQueue: (track: Track) => Promise<void>,
+    getRandomIndexInQueue: () => number,
+    addTrackToPlaylist: (playlist: Playlist, track: Track) => Promise<void>,
 }
 
 export type Track = Database['public']['Tables']['tracks']['Row']

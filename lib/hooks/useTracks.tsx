@@ -14,10 +14,10 @@ export default function useTracks({ verified = true, author, all = false }: Prop
     const supabaseClient = useSupabaseClient<Database>()
     const [tracks, setTracks] = useState<Track[]>([])
 
-    useEffect(() => {
-        (async () => {
-            try {
-                if (!session) throw '[usePlaylists] Not Authenticated'
+    function fetchTracks() {
+        try {
+            (async () => {
+                if (!session) throw '[useTracks] Not Authenticated'
 
                 const query = supabaseClient
                     .from('tracks')
@@ -31,7 +31,7 @@ export default function useTracks({ verified = true, author, all = false }: Prop
                     if (verified === false
                         && session?.user.app_metadata.role !== 'admin'
                     )
-                        throw '[usePlaylists] Not Admin'
+                        throw '[useTracks] Not Admin'
                 }
 
                 query.order('created_at', { ascending: false })
@@ -45,10 +45,14 @@ export default function useTracks({ verified = true, author, all = false }: Prop
                 if (data) {
                     setTracks(data)
                 }
-            } catch (e) {
-                console.error(e)
-            }
-        })()
+            })()
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    useEffect(() => {
+        fetchTracks()
     }, [session, supabaseClient])
 
     if (verified === false

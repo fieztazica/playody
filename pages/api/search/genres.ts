@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
 
-async function GetGenres(
+async function getGenres(
     req: NextApiRequest,
     res: NextApiResponse<ApiResError | ApiResSuccess>,
 ) {
@@ -20,4 +20,4 @@ async function GetGenres(
 
 }
 
-export default GetGenres
+export default getGenres

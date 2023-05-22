@@ -1,10 +1,14 @@
-import { AudioCtxType, LoopMode, Track } from '@/typings'
+import { AudioCtxType, LoopMode, Playlist, Track } from '@/typings'
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { useToast } from '@chakra-ui/react'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
+import { Database } from '@/typings/supabase'
 
 export const AudioCtx = createContext<AudioCtxType | null>(null)
 
 export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
+    const user = useUser()
+    const supabaseClient = useSupabaseClient<Database>()
     const toast = useToast()
     const audioRef = useRef<HTMLAudioElement>(null)
     const [currentTime, setCurrentTime] = useState<number>(0)
@@ -21,7 +25,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         let randomIndex = 0
         do {
             randomIndex = Math.floor(Math.random() * queue.length)
-        } while (playingIndex === randomIndex && playingIndex === queue.length)
+        } while (playingIndex == randomIndex && playingIndex == queue.length)
         return randomIndex
     }
 
@@ -75,8 +79,44 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         toast({
             status: 'success',
             title: 'Added to queue',
-            size: "sm"
+            size: 'sm',
         })
+    }
+
+    async function addTrackToPlaylist(playlist: Playlist, track: Track) {
+        try {
+            if (!user)
+                throw 'Unauthenticated'
+
+            if ((playlist.trackIds || []).includes(track.id)) throw {
+                message: `You already have this song in ${playlist.name}`
+            }
+
+            const toAddTrackIs = [...(playlist.trackIds || []).filter(v => v !== track.id), track.id]
+
+            const updateRes = await supabaseClient
+                .from('playlists')
+                .update({
+                    trackIds: toAddTrackIs,
+                })
+                .eq('author', user.id).eq('name', playlist.name)
+
+            if (updateRes.error) {
+                throw updateRes.error
+            }
+
+            toast({
+                title: `Added to ${playlist.name}`,
+                status: 'success',
+            })
+        } catch (e: any) {
+            if (e.message)
+                toast({
+                    title: `${e.message}`,
+                    status: 'error',
+                })
+            console.error(e)
+        }
     }
 
     useEffect(() => {
@@ -121,6 +161,8 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         nextSong,
         previousSong,
         addToQueue,
+        getRandomIndexInQueue,
+        addTrackToPlaylist
     }
 
     return (

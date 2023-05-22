@@ -116,7 +116,6 @@ export const getServerSideProps: GetServerSideProps<{
         }
     }
 
-    console.log(profile.data)
     return {
         props: {
             profile: profile.data || null,

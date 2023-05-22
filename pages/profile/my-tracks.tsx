@@ -15,8 +15,7 @@ const MyTracks = () => {
     const [refreshing, setRefreshing] = useState(false)
     const [myTracks, setMyTracks] = useState<Track[]>([])
 
-    const [verifiedTrack, setVerifiedTrack] = useState(false)
-
+    const [verifiedTrack, setVerifiedTrack] = useState(true)
 
     async function refresh() {
         try {
@@ -58,7 +57,7 @@ const MyTracks = () => {
                 <title>My Tracks</title>
             </Head>
             <div className='tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-full'>
-                <div className='tw-flex tw-justify-between tw-items-center  tw-m-2'>
+                <div className='tw-flex tw-justify-between tw-items-center tw-w-full tw-m-2'>
                     <Button
                         colorScheme={verifiedTrack ? 'teal' : 'red'}
                         onClick={() => setVerifiedTrack(!verifiedTrack)}

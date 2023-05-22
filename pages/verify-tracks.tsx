@@ -1,10 +1,8 @@
-// @flow
 import * as React from 'react'
 import { GetServerSideProps } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
 import { Profile, Track } from '@/typings'
-import { TrackCard } from '@/components/TrackCard'
 import MainLayout from '@/components/MainLayout'
 import Head from 'next/head'
 import { Button, ButtonGroup, IconButton, Image, Tooltip } from '@chakra-ui/react'
@@ -203,6 +201,7 @@ export const getServerSideProps: GetServerSideProps<{
     const supabaseClient = createServerSupabaseClient<Database>(ctx)
     const { data, error } = await supabaseClient.auth.getUser()
 
+    console.log(data)
     if (error || data.user?.app_metadata.role !== 'admin')
         return {
             notFound: true,
