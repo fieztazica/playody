@@ -82,8 +82,9 @@ const MyTracks = () => {
             <Head>
                 <title>My Tracks</title>
             </Head>
-            <div className='tw-mb-4 after:tw-block after:tw-mt-1 after:tw-rounded-full after:tw-h-1 after:tw-w-full after:tw-bg-white/30'>
-                <div className='tw-flex tw-justify-between tw-items-center'>
+            <div>
+                <div className='tw-mb-4 after:tw-block after:tw-mt-1 after:tw-rounded-full after:tw-h-1 after:tw-w-full after:tw-bg-white/30'>
+                    <div className='tw-flex tw-justify-between      tw-items-center'>
                     <Tooltip label={'Click to toggle between verified and unverified tracks'}>
                         <Button
                             colorScheme={verifiedTrack ? 'teal' : 'red'}
@@ -98,6 +99,7 @@ const MyTracks = () => {
                     <Button isLoading={refreshing} onClick={() => refresh()}>
                         Refresh
                     </Button>
+                    </div>
                 </div>
                 <div className={'tw-flex tw-flex-col tw-space-y-2'}>
                     {myTracks !== null && myTracks.filter(v => v.is_verified === verifiedTrack).map((v) => (
