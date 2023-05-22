@@ -3,6 +3,7 @@ import { IconButton, Tooltip } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { MdQueueMusic, MdPlaylistAdd } from 'react-icons/md'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
+import AddToPlaylistModal from '@/components/AddToPlaylistModal'
 
 export function AudioRightBox({ ...props }) {
     const { playingIndex, queue } = useAudioCtx()
@@ -15,14 +16,16 @@ export function AudioRightBox({ ...props }) {
             {
                 playingIndex !== null && <>
                     <Tooltip label={'Add this song to playlist'}>
-                        <IconButton
-                            aria-label={'Add to playlist'}
-                            variant={'ghost'}
-                            rounded={'full'}
-                            fontSize={'2xl'}
-                            size={'sm'}
-                            icon={<MdPlaylistAdd />}
-                        />
+                       <AddToPlaylistModal>
+                           <IconButton
+                               aria-label={'Add to playlist'}
+                               variant={'ghost'}
+                               rounded={'full'}
+                               fontSize={'2xl'}
+                               size={'sm'}
+                               icon={<MdPlaylistAdd />}
+                           />
+                       </AddToPlaylistModal>
                     </Tooltip>
                 </>
             }
