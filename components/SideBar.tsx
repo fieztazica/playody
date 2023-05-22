@@ -24,13 +24,10 @@ import { MdQueueMusic, MdOutlineQueueMusic } from 'react-icons/md'
 import { useSession, useUser } from '@supabase/auth-helpers-react'
 import { FaPlus } from 'react-icons/fa'
 import { HiPlus } from 'react-icons/hi'
-<<<<<<< HEAD
-//import CreatePlaylistPopover  from '@/components/CreatePlaylistPopover'
-=======
+
 import CreatePlaylistModal from '@/components/CreatePlaylistModal'
 import NavLink, { NavLinkType } from '@/components/NavLink'
 import usePlaylists from '@/lib/hooks/usePlaylists'
->>>>>>> main
 
 
 
@@ -90,10 +87,7 @@ function SideBar() {
                         </p>
                     </Link>
                     <Box>
-<<<<<<< HEAD
-=======
                         <CreatePlaylistModal>
->>>>>>> main
                             <IconButton
                                 aria-label='Modify Playlist'
                                 icon={<HiPlus />}
@@ -102,10 +96,7 @@ function SideBar() {
                                 size={'lg'}
                                 fontSize={'2xl'}
                             />
-<<<<<<< HEAD
-=======
                         </CreatePlaylistModal>
->>>>>>> main
                     </Box>
                 </div>
                 {playlists !== null && playlists.map((v, i) => (
