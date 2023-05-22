@@ -27,7 +27,7 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
         router.events.on('routeChangeComplete', handleStop)
         router.events.on('routeChangeError', handleStop)
 
-        document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + 'px');
+        document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px')
 
         return () => {
             router.events.off('routeChangeStart', handleStart)
@@ -41,7 +41,8 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
         <>
             <Head>
                 <title>Playody</title>
-                <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+                <meta name='viewport'
+                      content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
                 <meta name='title' content='Playody - Play your melody' />
                 <meta name='description' content='Playody is a free music sharing web-app' />
                 <meta name='keywords' content='music, sharing music, play, melody, playody' />
@@ -59,7 +60,13 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
                     content='https://media.discordapp.net/attachments/905152915273056286/1109433251547861042/Playody.png'
                 />
             </Head>
-            <ChakraProvider theme={theme}>
+            <ChakraProvider
+                theme={theme}
+                toastOptions={{
+                    defaultOptions:
+                        { position: 'top-right', size: 'sm' },
+                }}
+            >
                 <AppCtxProvider initialSession={initialSession}>
                     <AudioCtxProvider>
                         <Progress

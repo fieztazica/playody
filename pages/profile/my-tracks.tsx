@@ -14,7 +14,10 @@ const MyTracks = () => {
     const user = useUser()
     const [refreshing, setRefreshing] = useState(false)
     const [myTracks, setMyTracks] = useState<Track[]>([])
+<<<<<<< HEAD
     const [verifiedTrack, setVerifiedTrack] = useState(false)
+=======
+>>>>>>> main
 
     async function refresh() {
         try {

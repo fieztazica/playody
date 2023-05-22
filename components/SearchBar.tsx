@@ -5,6 +5,7 @@ import { RiSearchLine } from 'react-icons/ri'
 type Props = {
     query: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+    [key: string]: any
 }
 
 function SearchBar({ query, onChange, ...props }: Props) {

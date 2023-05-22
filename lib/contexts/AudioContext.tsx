@@ -1,9 +1,11 @@
 import { AudioCtxType, LoopMode, Track } from '@/typings'
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { useToast } from '@chakra-ui/react'
 
 export const AudioCtx = createContext<AudioCtxType | null>(null)
 
 export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
+    const toast = useToast()
     const audioRef = useRef<HTMLAudioElement>(null)
     const [currentTime, setCurrentTime] = useState<number>(0)
     const [duration, setDuration] = useState<number>(0)
@@ -70,6 +72,11 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
             setQueue(q => [...q, track])
         if (playingIndex === null) setPlayingIndex(0)
         if (queue.length && isPause) nextSong()
+        toast({
+            status: 'success',
+            title: 'Added to queue',
+            size: "sm"
+        })
     }
 
     useEffect(() => {

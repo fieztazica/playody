@@ -48,7 +48,7 @@ function MainLayout({ children, navbar = true }: { children: React.ReactNode, na
                 </div>
                 <div className={'tw-overflow-y-auto tw-grow tw-h-full tw-flex-col tw-p-2'}>
                     {isOpen &&
-                        <div onClick={onClose} className={'md:tw-hidden tw-flex tw-flex-col tw-space-y-2'}>
+                        <div className={'md:tw-hidden tw-flex tw-flex-col tw-space-y-2'}>
                             <SideBar />
                         </div>
                     }

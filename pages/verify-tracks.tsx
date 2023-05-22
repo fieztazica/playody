@@ -10,7 +10,7 @@ import Head from 'next/head'
 import { Button, ButtonGroup, IconButton, Image, Tooltip } from '@chakra-ui/react'
 import { RxCross2, RxCheck, RxTrash } from 'react-icons/rx'
 import { useEffect, useState } from 'react'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 
 type TrackWithProfile = Track & { profiles: Profile }
 
@@ -19,6 +19,7 @@ type Props = {
 };
 
 const VerifyTracks = (props: Props) => {
+    const session = useSession()
     const supabaseClient = useSupabaseClient<Database>()
     const [tracks, setTracks] = useState<TrackWithProfile[] | null>(null)
     const [verifiedTrack, setVerifiedTrack] = useState(false)
@@ -30,12 +31,9 @@ const VerifyTracks = (props: Props) => {
                 .from('tracks')
                 .update({ is_verified: verified })
                 .eq('id', id)
-                .select()
 
             if (error)
                 throw error
-
-            console.log(data)
 
             refresh()
         } catch (e: any) {
@@ -94,6 +92,8 @@ const VerifyTracks = (props: Props) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    if (!session) return null;
 
 
     return (
