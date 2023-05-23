@@ -30,15 +30,6 @@ type Props = {
 
 const MyProfile = ({ profile }: Props) => {
     const user = useUser()
-    const handleSubmit = () => {
-        // Perform your submit action here, e.g., update user data in the database
-        console.log('Submitting edited user:')
-    }
-
-    const handleUpdate = () => {
-        // Perform your submit action here, e.g., update user data in the database
-        console.log('Submitting edited user:')
-    }
 
     if (profile === null) return 'Sign in'
     return (

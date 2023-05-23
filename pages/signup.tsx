@@ -43,7 +43,7 @@ const SignUp = () => {
             }
 
             if (!fullName) {
-                throw "Full Name is required!"
+                throw 'Full Name is required!'
             }
 
             const { data, error } = await supabaseClient.auth.signUp({
@@ -91,119 +91,123 @@ const SignUp = () => {
                     bg={'blackAlpha.300'}
                     boxShadow={'lg'}
                     p={8}>
-                    <Stack spacing={4}>
-                        <FormControl id='fullName' isRequired>
-                            <FormLabel>Full Name</FormLabel>
-                            <Input value={fullName} onChange={(e) => {
-                                e.preventDefault()
-                                setFullName(e.target.value)
-                            }} type='text' />
-                        </FormControl>
-                        <FormControl id='email' isRequired>
-                            <FormLabel>Email address</FormLabel>
-                            <Input value={email} onChange={(e) => {
-                                e.preventDefault()
-                                setEmail(e.target.value)
-                            }} type='email' />
-                        </FormControl>
-                        <FormControl id='password' isRequired>
-                            <FormLabel>Password</FormLabel>
-                            <InputGroup>
-                                <Input value={password} onChange={(e) => {
+                    <form onSubmit={(e) => {
+                        e.preventDefault()
+                        handleSignup()
+                    }}>
+                        <Stack spacing={4}>
+                            <FormControl id='fullName' isRequired>
+                                <FormLabel>Full Name</FormLabel>
+                                <Input value={fullName} onChange={(e) => {
                                     e.preventDefault()
-                                    setPassword(e.target.value)
-                                }} type={showPassword ? 'text' : 'password'} />
-                                <InputRightElement h={'full'}>
-                                    <Button
-                                        variant={'ghost'}
-                                        onClick={() =>
-                                            setShowPassword((showPassword) => !showPassword)
-                                        }>
-                                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                                    </Button>
-                                </InputRightElement>
-                            </InputGroup>
-                        </FormControl>
-                        <FormControl id='repeat-password' isRequired>
-                            <FormLabel>Repeat Password</FormLabel>
-                            <InputGroup>
-                                <Input value={repeatPassword} onChange={(e) => {
+                                    setFullName(e.target.value)
+                                }} type='text' />
+                            </FormControl>
+                            <FormControl id='email' isRequired>
+                                <FormLabel>Email address</FormLabel>
+                                <Input value={email} onChange={(e) => {
                                     e.preventDefault()
-                                    setRepeatPassword(e.target.value)
-                                }} type={showPassword ? 'text' : 'password'} />
-                                <InputRightElement h={'full'}>
-                                    <Button
-                                        variant={'ghost'}
-                                        onClick={() =>
-                                            setShowPassword((showPassword) => !showPassword)
-                                        }>
-                                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                                    </Button>
-                                </InputRightElement>
-                            </InputGroup>
-                        </FormControl>
-                        {error && <p className={'tw-text-red-500'}>
-                            {error}
-                        </p>}
-                        <Stack spacing={10} pt={2}>
+                                    setEmail(e.target.value)
+                                }} type='email' />
+                            </FormControl>
+                            <FormControl id='password' isRequired>
+                                <FormLabel>Password</FormLabel>
+                                <InputGroup>
+                                    <Input value={password} onChange={(e) => {
+                                        e.preventDefault()
+                                        setPassword(e.target.value)
+                                    }} type={showPassword ? 'text' : 'password'} />
+                                    <InputRightElement h={'full'}>
+                                        <Button
+                                            variant={'ghost'}
+                                            onClick={() =>
+                                                setShowPassword((showPassword) => !showPassword)
+                                            }>
+                                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                                        </Button>
+                                    </InputRightElement>
+                                </InputGroup>
+                            </FormControl>
+                            <FormControl id='repeat-password' isRequired>
+                                <FormLabel>Repeat Password</FormLabel>
+                                <InputGroup>
+                                    <Input value={repeatPassword} onChange={(e) => {
+                                        e.preventDefault()
+                                        setRepeatPassword(e.target.value)
+                                    }} type={showPassword ? 'text' : 'password'} />
+                                    <InputRightElement h={'full'}>
+                                        <Button
+                                            variant={'ghost'}
+                                            onClick={() =>
+                                                setShowPassword((showPassword) => !showPassword)
+                                            }>
+                                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                                        </Button>
+                                    </InputRightElement>
+                                </InputGroup>
+                            </FormControl>
+                            {error && <p className={'tw-text-red-500'}>
+                                {error}
+                            </p>}
+                            <Stack spacing={10} pt={2}>
+                                <Button
+                                    loadingText='Submitting'
+                                    size='lg'
+                                    bg={'blue.400'}
+                                    color={'white'}
+                                    _hover={{
+                                        bg: 'blue.500',
+                                    }}
+                                    isLoading={signing}
+                                >
+                                    Sign up
+                                </Button>
+                            </Stack>
+                            <div
+                                className={'tw-flex tw-flex-row tw-w-full tw-space-x-2 tw-items-center tw-justify-between'}>
+                                <div className={'tw-flex-1 tw-bg-white/20 tw-h-[2px] tw-w-full tw-rounded-full'}>
+
+                                </div>
+                                <div className={'tw-px-2 tw-rounded-full tw-bg-white/20 tw-text-white/80'}>
+                                    or
+                                </div>
+                                <div className={'tw-flex-1 tw-bg-white/20 tw-h-[2px] tw-w-full tw-rounded-full'}>
+
+                                </div>
+                            </div>
                             <Button
-                                loadingText='Submitting'
-                                size='lg'
-                                bg={'blue.400'}
-                                color={'white'}
+                                bgColor={'#18D860'}
                                 _hover={{
-                                    bg: 'blue.500',
+                                    bgColor: '#14b851',
                                 }}
-                                onClick={() => handleSignup()}
-                                isLoading={signing}
+                                onClick={() => {
+                                    supabaseClient.auth.signInWithOAuth({
+                                        provider: 'spotify',
+                                        options: {
+                                            redirectTo: redirect,
+                                        },
+                                    })
+                                }}
+                                leftIcon={<RiSpotifyFill />}
                             >
-                                Sign up
+                                Login with Spotify
                             </Button>
+                            <Stack pt={6}>
+                                <Text align={'center'}>
+                                    Already a user?{' '}
+                                    <Link as={NextLink} color={'blue.400'} href={`/login`}>
+                                        Login
+                                    </Link>
+                                </Text>
+                            </Stack>
                         </Stack>
-                        <div
-                            className={'tw-flex tw-flex-row tw-w-full tw-space-x-2 tw-items-center tw-justify-between'}>
-                            <div className={'tw-flex-1 tw-bg-white/20 tw-h-[2px] tw-w-full tw-rounded-full'}>
-
-                            </div>
-                            <div className={'tw-px-2 tw-rounded-full tw-bg-white/20 tw-text-white/80'}>
-                                or
-                            </div>
-                            <div className={'tw-flex-1 tw-bg-white/20 tw-h-[2px] tw-w-full tw-rounded-full'}>
-
-                            </div>
-                        </div>
-                        <Button
-                            bgColor={'#18D860'}
-                            _hover={{
-                                bgColor: '#14b851',
-                            }}
-                            onClick={() => {
-                                supabaseClient.auth.signInWithOAuth({
-                                    provider: 'spotify',
-                                    options: {
-                                        redirectTo: redirect,
-                                    },
-                                })
-                            }}
-                            leftIcon={<RiSpotifyFill />}
-                        >
-                            Login with Spotify
-                        </Button>
-                        <Stack pt={6}>
-                            <Text align={'center'}>
-                                Already a user?{' '}
-                                <Link as={NextLink} color={'blue.400'} href={`/login`}>
-                                    Login
-                                </Link>
-                            </Text>
-                        </Stack>
-                    </Stack>
+                    </form>
                 </Box>
             </Stack>
         </Flex>
     )
 }
 
-SignUp.title = "Register"
+SignUp.title = 'Register'
 
 export default SignUp

@@ -138,7 +138,7 @@ const Upload = () => {
                 throw jsonData
             }
 
-            console.log((jsonData as ApiResSuccess).data)
+            // console.log((jsonData as ApiResSuccess).data)
 
             setArtists([''])
             setGenres([''])
@@ -193,7 +193,7 @@ const Upload = () => {
             }
         } catch (error) {
             alert('Error uploading image!')
-            console.log(error)
+            console.error(error)
         } finally {
             setImageUploading(false)
             // @ts-ignore
@@ -236,7 +236,7 @@ const Upload = () => {
             }
         } catch (error) {
             alert('Error uploading audio!')
-            console.log(error)
+            console.error(error)
         } finally {
             setSrcUploading(false)
             // @ts-ignore

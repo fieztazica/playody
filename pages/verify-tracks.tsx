@@ -196,7 +196,7 @@ export const getServerSideProps: GetServerSideProps<{
     const supabaseClient = createServerSupabaseClient<Database>(ctx)
     const { data, error } = await supabaseClient.auth.getUser()
 
-    console.log(data)
+    // console.log(data)
     if (error || data.user?.app_metadata.role !== 'admin')
         return {
             notFound: true,

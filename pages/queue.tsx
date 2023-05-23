@@ -16,7 +16,7 @@ const Queue = () => {
     return (<>
             <Head>
                 <title>
-                    {playingIndex === null ? 'Queue' : `Playing ${queue?.[playingIndex]?.name} - ${queue[playingIndex].artists.join(', ')}`}
+                    {playingIndex === null ? 'Queue' : `${queue?.[playingIndex]?.name} - ${queue[playingIndex].artists.join(', ')}`}
                 </title>
             </Head>
             <div className='tw-flex tw-flex-col tw-items-center tw-h-full'>

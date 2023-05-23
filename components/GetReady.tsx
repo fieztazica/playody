@@ -20,6 +20,10 @@ export default function GetReady(props: Props) {
     const [allow, setAllow] = useState(false)
 
     useEffect(() => {
+        if (allow) return;
+        if (localStorage.getItem("ready_pass")) {
+            setAllow(localStorage.getItem("ready_pass") == "true")
+        }
         if (!(!user || !profile || myPlaylists === null))
             setAllow(true)
     }, [user, profile, myPlaylists])
@@ -40,7 +44,10 @@ export default function GetReady(props: Props) {
                 <Button colorScheme={'pink'} w={'full'} as={NextLink} href={'/login'}>
                     Login for the full experience
                 </Button>
-                <Button w={'full'} onClick={() => setAllow(true)}>
+                <Button w={'full'} onClick={() => {
+                    localStorage.setItem("ready_pass", "true")
+                    setAllow(true)
+                }}>
                     Continue
                 </Button>
             </div>}
