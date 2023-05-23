@@ -69,6 +69,7 @@ const MyTracks = () => {
     }
 
     async function toggleEdit(id: string) {
+        
     }
 
     useEffect(() => {
@@ -78,7 +79,7 @@ const MyTracks = () => {
 
     return (
         <>
-<<<<<<< HEAD
+
             <Head>
                 <title>My Tracks</title>
             </Head>
