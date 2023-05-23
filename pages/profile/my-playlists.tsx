@@ -8,15 +8,16 @@ import { TrackCard } from '@/components/TrackCard'
 import { Track } from '@/typings'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
-import usePlaylists from '@/lib/hooks/usePlaylists'
 import NavLink from '@/components/NavLink'
+import { useAppStates } from '@/lib/contexts/AppContext'
 
 const MyPlaylists = () => {
     const supabaseClient = useSupabaseClient<Database>()
     const user = useUser()
     const [refreshing, setRefreshing] = useState(false)
     const [myTracks, setMyTracks] = useState<Track[]>([])
-    const playlists = usePlaylists()
+    const {myPlaylists} = useAppStates()
+  
 
     async function refresh() {
         try {
@@ -60,8 +61,8 @@ const MyPlaylists = () => {
                 <Button isLoading={refreshing} onClick={() => refresh()}>
                     Refresh
                 </Button>
-                {playlists !== null && playlists.map((v, i) => (
-                    <div key={`${v.id}_playlist_nav_link`} className='tw-flex tw-flex-col tw-space-y-2 tw-rounded-md tw-w-full tw-py-2 tw-text-lg tw-font-bold'>
+                {myPlaylists !== null && myPlaylists.map((v) => (
+                    <div key={`${v.author}_${v.name}_playlist_nav_link`} className='tw-flex tw-flex-col tw-space-y-2 tw-rounded-md tw-w-full tw-py-2 tw-text-lg tw-font-bold'>
                         <NavLink
                             active={false}
                             title={`${v.name}`}
