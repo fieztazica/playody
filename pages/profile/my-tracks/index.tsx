@@ -12,7 +12,7 @@ import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
 
 
-const MyTracks = () => {
+const Index = () => {
     const supabaseClient = useSupabaseClient<Database>()
     const user = useUser()
     const [refreshing, setRefreshing] = useState(false)
@@ -147,8 +147,8 @@ const MyTracks = () => {
     )
 }
 
-MyTracks.getLayout = (page: React.ReactElement) => {
+Index.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
-export default MyTracks
+export default Index
