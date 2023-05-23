@@ -2,16 +2,19 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect, useState } from 'react'
 import { Playlist } from '@/typings'
 import { Database } from '@/typings/supabase'
+import { useRouter } from 'next/router'
+import { useAudioCtx } from '@/lib/contexts/AudioContext'
 
-export default function usePlaylists() {
+export default function useMyPlaylists() {
     const session = useSession()
+    const router = useRouter()
     const supabaseClient = useSupabaseClient<Database>()
     const [playlists, setPlaylists] = useState<Playlist[]>([])
 
-    useEffect(() => {
-        (async () => {
-            try {
-                if (!session) throw "[usePlaylists] Not Authenticated";
+    function fetchPlaylists() {
+        try {
+            (async () => {
+                if (!session) throw '[useMyPlaylists] Not Authenticated'
 
                 const { data, error } = await supabaseClient
                     .from('playlists')
@@ -25,13 +28,20 @@ export default function usePlaylists() {
                 if (data) {
                     setPlaylists(data)
                 }
-            } catch (e) {
-                console.error(e)
-            }
-        })()
-    }, [session, supabaseClient])
+            })()
+        } catch (e) {
+            console.error(e)
+        }
+    }
 
-    if (!session) return null
+    useEffect(() => {
+        fetchPlaylists()
+    }, [session, supabaseClient, router])
 
-    return playlists
+    if (!session) return {
+        playlists: null,
+        fetchPlaylists: () => {}
+    }
+
+    return { playlists, fetchPlaylists }
 }

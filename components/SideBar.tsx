@@ -1,11 +1,8 @@
 import {
     Box,
-    Button,
     Divider,
-    Icon,
     IconButton,
     Link,
-    Stack,
 } from '@chakra-ui/react'
 import DisplayUser from './DisplayUser'
 import NextLink from 'next/link'
@@ -17,18 +14,13 @@ import {
     RiUpload2Fill,
     RiUpload2Line,
 } from 'react-icons/ri'
-import { IconType } from 'react-icons'
 import React from 'react'
 import { usePathname } from 'next/navigation'
-import { MdQueueMusic, MdOutlineQueueMusic } from 'react-icons/md'
-import { useSession, useUser } from '@supabase/auth-helpers-react'
-import { FaPlus } from 'react-icons/fa'
+import { useSession } from '@supabase/auth-helpers-react'
 import { HiPlus } from 'react-icons/hi'
 import CreatePlaylistModal from '@/components/CreatePlaylistModal'
 import NavLink, { NavLinkType } from '@/components/NavLink'
-import usePlaylists from '@/lib/hooks/usePlaylists'
-
-
+import { useAppStates } from '@/lib/contexts/AppContext'
 
 const navLinks: NavLinkType[] = [
     {
@@ -55,7 +47,7 @@ function SideBar() {
     const pathname = usePathname()
     const session = useSession()
     const isAdmin = session?.user.app_metadata.role == 'admin'
-    const playlists = usePlaylists()
+    const {myPlaylists} = useAppStates()
 
     return (
         <>
@@ -74,7 +66,7 @@ function SideBar() {
                     })
                 }
                 {isAdmin && <div key={`verify-tracks_nav link`}>
-                    <NavLink active={pathname == '/verify-tracks'} href={'verify-tracks'} title={'Verify Tracks'} />
+                    <NavLink active={pathname == '/verify-tracks'} href={'/verify-tracks'} title={'Verify Tracks'} />
                 </div>}
                 <Divider />
                 <div
@@ -98,8 +90,8 @@ function SideBar() {
                         </CreatePlaylistModal>
                     </Box>
                 </div>
-                {playlists !== null && playlists.map((v, i) => (
-                    <div key={`${v.id}_playlist_nav_link`}>
+                {myPlaylists !== null && myPlaylists.map((v) => (
+                    <div key={`${v.author}_${v.name}_playlist_nav_link`}>
                         <NavLink
                             active={false}
                             title={`${v.name}`}

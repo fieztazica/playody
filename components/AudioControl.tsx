@@ -31,6 +31,7 @@ function AudioControl({ ...props }) {
         setPlayingIndex,
         queue,
         setPreviousIndexes,
+        getRandomIndexInQueue,
     } = useAudioCtx()
 
     const handlePausePlayClick = () => {
@@ -43,8 +44,13 @@ function AudioControl({ ...props }) {
     }
 
     const toggleNextSong = () => {
-        if (playingIndex === null) return;
-        setPlayingIndex(playingIndex + 1 >= queue.length ? 0 : playingIndex + 1)
+        if (playingIndex === null) return
+        const nextIndex = shuffle
+            ? getRandomIndexInQueue()
+            : playingIndex + 1 >= queue.length
+                ? 0
+                : playingIndex + 1
+        setPlayingIndex(nextIndex)
         setPreviousIndexes(a => [...a, playingIndex])
     }
 
@@ -68,7 +74,7 @@ function AudioControl({ ...props }) {
     return (
         <Stack
             justify={'center'}
-            direction={"column"}
+            direction={'column'}
             align={'center'}
             spacing={2}
             w='full'
@@ -79,7 +85,7 @@ function AudioControl({ ...props }) {
             <ButtonGroup alignItems={'center'}>
                 <IconButton
                     color={loopMode !== 'none' ? 'pink.300' : undefined}
-                    size={"sm"}
+                    size={'sm'}
                     variant={'ghost'}
                     rounded={'full'}
                     icon={<LoopIcon />}
@@ -88,7 +94,7 @@ function AudioControl({ ...props }) {
                     title={`${loopMode}`}
                 />
                 <IconButton
-                    size={"sm"}
+                    size={'sm'}
                     rounded={'full'}
                     icon={<BsFillSkipBackwardFill />}
                     aria-label='back button'
@@ -104,7 +110,7 @@ function AudioControl({ ...props }) {
                     w={'fit-content'}
                 />
                 <IconButton
-                    size={"sm"}
+                    size={'sm'}
                     rounded={'full'}
                     icon={<BsSkipForwardFill />}
                     aria-label='next button'
@@ -112,7 +118,7 @@ function AudioControl({ ...props }) {
                 />
                 <IconButton
                     color={shuffle ? 'pink.300' : undefined}
-                    size={"sm"}
+                    size={'sm'}
                     variant={'ghost'}
                     rounded={'full'}
                     icon={<BsShuffle />}

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Box, Button, Input, Link } from '@chakra-ui/react'
 import MainLayout from '@/components/MainLayout'
-import Head from 'next/head'
 import { Track, Profile } from '@/typings'
 import PostCard from '@/components/PostCard'
 import { useInViewport } from 'react-in-viewport'
@@ -45,17 +44,16 @@ const Home = () => {
 
     useEffect(() => {
         if (!isEnded) loadPosts()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page])
 
     useEffect(() => {
         if (!isEnded && inViewport) setPage(p => p + 1)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inViewport])
 
     return (
         <>
-            <Head>
-                <title>Home</title>
-            </Head>
             <div className={'tw-flex tw-flex-col tw-space-y-2'}>
                 {posts.length && posts.map((v, i) => (
                     <div key={`track_${i}_${v.id}`}>
@@ -76,17 +74,6 @@ Home.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
-export default Home
+Home.title = "Home"
 
-// export async function getServerSideProps({
-//     req,
-//                                          }: GetServerSidePropsContext) {
-//     const secret = process.env.NEXTAUTH_SECRET
-//     const tokenJWT = await getToken({ req, secret })
-//     // console.log('JSON Web Token', tokenJWT)
-//     return {
-//         props: {
-//             tokenJWT,
-//         }, // will be passed to the page component as props
-//     }
-// }
+export default Home

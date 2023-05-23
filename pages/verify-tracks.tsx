@@ -1,16 +1,14 @@
-// @flow
 import * as React from 'react'
 import { GetServerSideProps } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
 import { Profile, Track } from '@/typings'
-import { TrackCard } from '@/components/TrackCard'
 import MainLayout from '@/components/MainLayout'
-import Head from 'next/head'
 import { Button, ButtonGroup, IconButton, Image, Tooltip } from '@chakra-ui/react'
 import { RxCross2, RxCheck, RxTrash } from 'react-icons/rx'
 import { useEffect, useState } from 'react'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { TrackUpdate } from '@/lib/api/track'
 
 type TrackWithProfile = Track & { profiles: Profile }
 
@@ -25,15 +23,19 @@ const VerifyTracks = (props: Props) => {
     const [verifiedTrack, setVerifiedTrack] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
 
-    async function toggleVerified(id: string, verified: boolean) {
+    async function toggleVerified({  id, is_verified }: Track) {
         try {
-            const { data, error } = await supabaseClient
-                .from('tracks')
-                .update({ is_verified: verified })
-                .eq('id', id)
+            const updateObj: TrackUpdate = { is_verified: !is_verified }
+            const res = await fetch(`/api/track?trackId=${id}`, {
+                method: 'PUT',
+                body: JSON.stringify(updateObj),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(r => r.json())
 
-            if (error)
-                throw error
+            if (res.error)
+                throw res.error
 
             refresh()
         } catch (e: any) {
@@ -45,13 +47,15 @@ const VerifyTracks = (props: Props) => {
 
     async function handleDelete(id: string) {
         try {
-            const { error } = await supabaseClient
-                .from('tracks')
-                .delete()
-                .eq('id', id)
+            const res = await fetch(`/api/track?trackId=${id}`, {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(r => r.json())
 
-            if (error)
-                throw error
+            if (res.error)
+                throw res.error
 
             refresh()
         } catch (e: any) {
@@ -76,7 +80,6 @@ const VerifyTracks = (props: Props) => {
             if (data)
                 setTracks([...data as any])
 
-
         } catch (e: any) {
             if (e?.message)
                 alert(e.message)
@@ -93,16 +96,11 @@ const VerifyTracks = (props: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    if (!session) return null;
+    if (!session) return null
 
 
     return (
         <>
-            <Head>
-                <title>
-                    Search
-                </title>
-            </Head>
             <div>
                 <div
                     className={'tw-mb-4 after:tw-block after:tw-mt-1 after:tw-rounded-full after:tw-h-1 after:tw-w-full after:tw-bg-white/30'}>
@@ -151,7 +149,7 @@ const VerifyTracks = (props: Props) => {
                                             icon={v.is_verified ? <RxCross2 color={'red'} /> : <RxCheck color={'green'} />}
                                             aria-label={v.is_verified ? 'Revoke track button' : 'Accept track button'}
                                             title={v.is_verified ? 'Revoke verification of this song' : 'Verify this song'}
-                                            onClick={() => toggleVerified(v.id, !v.is_verified)}
+                                            onClick={() => toggleVerified(v)}
                                         />
                                         <IconButton
                                             variant={'ghost'}
@@ -189,6 +187,7 @@ VerifyTracks.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
+VerifyTracks.title= "Verify Tracks"
 export default VerifyTracks
 
 export const getServerSideProps: GetServerSideProps<{
@@ -197,6 +196,7 @@ export const getServerSideProps: GetServerSideProps<{
     const supabaseClient = createServerSupabaseClient<Database>(ctx)
     const { data, error } = await supabaseClient.auth.getUser()
 
+    // console.log(data)
     if (error || data.user?.app_metadata.role !== 'admin')
         return {
             notFound: true,
@@ -212,7 +212,7 @@ export const getServerSideProps: GetServerSideProps<{
         }
     }
 
-    console.log(tracks.data)
+    // console.log(tracks.data)
     return {
         props: {
             tracks: tracks.data,

@@ -13,14 +13,27 @@ async function ApiTrack(
             return res.status(postData.status).json({
                 message: `[SUPABASE] ${postData.statusText}`,
                 error: postData.error,
-                data: postData.data
+                data: postData.data,
             })
         case 'GET':
-            const getData = await trackApi.get(req.query["trackId"] as string)
+            const getData = await trackApi.get(req.query['trackId'] as string)
             return res.status(getData.status).json({
                 message: `[SUPABASE] ${getData.statusText}`,
                 error: getData.error,
-                data: getData.data
+                data: getData.data,
+            })
+        case 'PUT':
+            const updateData = await trackApi
+                .update(req.query['trackId'] as string, req.body)
+            return res.json({
+                message: '',
+                ...updateData
+            })
+        case 'DELETE':
+            const deleteData = await trackApi.delete(req.query['trackId'] as string)
+            return res.json({
+                message: '',
+                ...deleteData
             })
         default:
             return res.status(405).json({

@@ -18,15 +18,14 @@ const useProfile = () => {
                     .select('*')
                     .eq('id', user.id)
                     .limit(1)
+                    .single()
 
                 if (error) {
                     throw error
                 }
 
-                const profileFromData = data?.shift()
-
-                if (profileFromData) {
-                    setProfile(profileFromData)
+                if (data) {
+                    setProfile(data)
                 }
             } catch (e) {
                 console.error(e)

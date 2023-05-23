@@ -15,18 +15,18 @@ export function AudioRightBox({ ...props }) {
         >
             {
                 playingIndex !== null && <>
-                    <Tooltip label={'Add this song to playlist'}>
-                       <AddToPlaylistModal>
-                           <IconButton
-                               aria-label={'Add to playlist'}
-                               variant={'ghost'}
-                               rounded={'full'}
-                               fontSize={'2xl'}
-                               size={'sm'}
-                               icon={<MdPlaylistAdd />}
-                           />
-                       </AddToPlaylistModal>
-                    </Tooltip>
+                    <AddToPlaylistModal>
+                        <Tooltip label={'Add this song to playlist'}>
+                            <IconButton
+                                aria-label={'Add to playlist'}
+                                variant={'ghost'}
+                                rounded={'full'}
+                                fontSize={'2xl'}
+                                size={'sm'}
+                                icon={<MdPlaylistAdd />}
+                            />
+                        </Tooltip>
+                    </AddToPlaylistModal>
                 </>
             }
             <Tooltip label={`Queue (${queue.length})`}>

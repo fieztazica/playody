@@ -30,22 +30,10 @@ type Props = {
 
 const MyProfile = ({ profile }: Props) => {
     const user = useUser()
-    const handleSubmit = () => {
-        // Perform your submit action here, e.g., update user data in the database
-        console.log('Submitting edited user:')
-    }
-
-    const handleUpdate = () => {
-        // Perform your submit action here, e.g., update user data in the database
-        console.log('Submitting edited user:')
-    }
 
     if (profile === null) return 'Sign in'
     return (
         <>
-            <Head>
-                <title>Profile</title>
-            </Head>
             <div className={'tw-w-full tw-flex tw-flex-col tw-space-y-2'}>
                 <div className={'tw-flex tw-flex-col-reverse md:tw-flex-row tw-w-full tw-gap-2'}>
                     <div className='tw-flex-1 tw-flex tw-flex-col tw-space-y-2 tw-bg-black/20 tw-p-5 tw-rounded-md'>
@@ -91,6 +79,9 @@ MyProfile.getLayout = (page: React.ReactNode) => {
         {page}
     </MainLayout>
 }
+
+MyProfile.title = "My Profile"
+
 export default MyProfile
 export const getServerSideProps: GetServerSideProps<{
     profile: Profile | null
@@ -108,6 +99,7 @@ export const getServerSideProps: GetServerSideProps<{
         .select('*')
         .eq('id', `${data.user.id}`)
         .limit(1)
+        .single()
 
     if (profile.error || !profile.data) {
         return {
@@ -115,10 +107,9 @@ export const getServerSideProps: GetServerSideProps<{
         }
     }
 
-    console.log(profile.data)
     return {
         props: {
-            profile: profile.data.shift() || null,
+            profile: profile.data || null,
         },
     }
 }

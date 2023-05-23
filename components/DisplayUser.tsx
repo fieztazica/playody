@@ -29,6 +29,7 @@ function DisplayUser() {
                             w='fit-content'
                             onClick={() => {
                                 supabaseClient.auth.signOut()
+                                localStorage.setItem("ready_pass", "false")
                             }}
                         >
                             <Text fontSize={'16'}>Logout</Text>
