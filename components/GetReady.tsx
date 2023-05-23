@@ -1,7 +1,6 @@
 // @flow
 import * as React from 'react'
 import { useUser } from '@supabase/auth-helpers-react'
-import useProfile from '@/lib/hooks/useProfile'
 import { useAppStates } from '@/lib/contexts/AppContext'
 import LogoSvg from '@/components/LogoSvg'
 import { useEffect, useState } from 'react'
@@ -15,14 +14,14 @@ type Props = {
 
 export default function GetReady(props: Props) {
     const user = useUser()
-    const profile = useProfile()
+    const { profile } = useAppStates()
     const { myPlaylists } = useAppStates()
     const [allow, setAllow] = useState(false)
 
     useEffect(() => {
-        if (allow) return;
-        if (localStorage.getItem("ready_pass")) {
-            setAllow(localStorage.getItem("ready_pass") == "true")
+        if (allow) return
+        if (localStorage.getItem('ready_pass')) {
+            setAllow(localStorage.getItem('ready_pass') == 'true')
         }
         if (!(!user || !profile || myPlaylists === null))
             setAllow(true)
@@ -45,7 +44,7 @@ export default function GetReady(props: Props) {
                     Login for the full experience
                 </Button>
                 <Button w={'full'} onClick={() => {
-                    localStorage.setItem("ready_pass", "true")
+                    localStorage.setItem('ready_pass', 'true')
                     setAllow(true)
                 }}>
                     Continue

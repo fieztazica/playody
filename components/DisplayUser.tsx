@@ -3,10 +3,10 @@ import NextLink from 'next/link'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
 import { useRouter } from 'next/router'
-import useProfile from '@/lib/hooks/useProfile'
+import { useAppStates } from '@/lib/contexts/AppContext'
 
 function DisplayUser() {
-    const profile = useProfile()
+    const { profile } = useAppStates()
     const supabaseClient = useSupabaseClient<Database>()
     const router = useRouter()
     const hostname = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : `http://localhost:3000`

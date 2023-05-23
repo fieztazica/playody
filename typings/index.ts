@@ -12,7 +12,9 @@ import { Session, SupabaseClient } from '@supabase/supabase-js'
 
 export type AppCtxType = {
     myPlaylists: Playlist[] | null,
-    fetchMyPlaylists: () => void
+    fetchMyPlaylists: () => void,
+    profile: Profile | null,
+    fetchProfile: () => void
 }
 
 export type AudioCtxType = {

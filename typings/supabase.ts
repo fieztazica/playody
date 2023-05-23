@@ -120,6 +120,13 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      change_user_password: {
+        Args: {
+          current_plain_password: string
+          new_plain_password: string
+        }
+        Returns: Json
+      }
       delete_claim: {
         Args: {
           uid: string
@@ -179,6 +186,12 @@ export interface Database {
           value: Json
         }
         Returns: string
+      }
+      verify_user_password: {
+        Args: {
+          password: string
+        }
+        Returns: boolean
       }
     }
     Enums: {

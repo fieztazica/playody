@@ -8,10 +8,10 @@ const useProfile = () => {
     const user = useUser()
     const [profile, setProfile] = useState<Profile | null>(null)
 
-    useEffect(() => {
+    function fetchProfile() {
         (async () => {
             try {
-                if (!user) throw "[useProfile] Not Authenticated";
+                if (!user) throw '[useProfile] Not Authenticated'
 
                 const { data, error } = await supabaseClient
                     .from('profiles')
@@ -31,10 +31,17 @@ const useProfile = () => {
                 console.error(e)
             }
         })()
+    }
+
+    useEffect(() => {
+        fetchProfile()
     }, [user, supabaseClient])
 
-    if (!user || !supabaseClient) return null
-    return profile
+    if (!user || !supabaseClient) return {
+        profile: null,
+        fetchProfile: () => {}
+    }
+    return { profile, fetchProfile }
 }
 
 export default useProfile
