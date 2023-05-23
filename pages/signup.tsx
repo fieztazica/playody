@@ -204,5 +204,6 @@ const SignUp = () => {
     )
 }
 
+SignUp.title = "Register"
 
 export default SignUp

@@ -43,9 +43,6 @@ const MyProfile = ({ profile }: Props) => {
     if (profile === null) return 'Sign in'
     return (
         <>
-            <Head>
-                <title>Profile</title>
-            </Head>
             <div className={'tw-w-full tw-flex tw-flex-col tw-space-y-2'}>
                 <div className={'tw-flex tw-flex-col-reverse md:tw-flex-row tw-w-full tw-gap-2'}>
                     <div className='tw-flex-1 tw-flex tw-flex-col tw-space-y-2 tw-bg-black/20 tw-p-5 tw-rounded-md'>
@@ -91,6 +88,9 @@ MyProfile.getLayout = (page: React.ReactNode) => {
         {page}
     </MainLayout>
 }
+
+MyProfile.title = "My Profile"
+
 export default MyProfile
 export const getServerSideProps: GetServerSideProps<{
     profile: Profile | null

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Stack } from '@chakra-ui/react'
 import MainLayout from '@/components/MainLayout'
 import { useRouter } from 'next/router'
-import Head from 'next/head'
 import { NavBar } from '@/components/NavBar'
 import { TrackCard } from '@/components/TrackCard'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
@@ -11,18 +10,12 @@ import { Track } from '@/typings'
 import { GetServerSideProps } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
-import SearchLink from '@/components/SearchLink'
 import NextLink from 'next/link'
 import UnderlineTypo from '@/components/UnderlineTypo'
 
 type Props = {
     genres: string[] | null
 }
-
-function getRandomInt(max: number) {
-    return Math.floor(Math.random() * max)
-}
-
 const tailwindColors = [
     'tw-bg-gray-500',
     'tw-bg-red-500',
@@ -56,11 +49,6 @@ const Search = ({ genres }: Props) => {
     function getRandomInt(max: number) {
         return Math.floor(Math.random() * max)
     }
-
-    function randomColor() {
-        return `tw-bg-${tailwindColors[getRandomInt(tailwindColors.length)]}-500`
-    }
-
     useEffect(() => {
         setQuery(decodeURIComponent((router.query.q || '') as string))
     }, [router.query.q])
@@ -120,11 +108,6 @@ const Search = ({ genres }: Props) => {
 
     return (
         <>
-            <Head>
-                <title>
-                    Search
-                </title>
-            </Head>
             <NavBar>
                 <SearchBar query={query} onChange={handleOnQuery} />
             </NavBar>
@@ -173,6 +156,8 @@ const Search = ({ genres }: Props) => {
 Search.getLayout = (page: React.ReactElement) => {
     return <MainLayout navbar={false}>{page}</MainLayout>
 }
+
+Search.title= "Search"
 
 export default Search
 

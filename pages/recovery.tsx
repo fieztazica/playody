@@ -1,13 +1,10 @@
 // @flow
 import * as React from 'react'
-import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Input } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
-
-type Props = {};
-
-export function Recovery(props: Props) {
+export function Recovery() {
     const supabaseClient = useSupabaseClient<Database>()
     const [email, setEmail] = useState('')
     const [submitting, setSubmitting] = useState(false)
@@ -74,4 +71,5 @@ export function Recovery(props: Props) {
     )
 }
 
+Recovery.title = "Recover your account"
 export default Recovery

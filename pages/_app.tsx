@@ -73,7 +73,10 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
     return (
         <>
             <Head>
-                <title>Playody</title>
+                <title>
+                    Playody
+                    {Component.title ? ' | ' + Component.title : ''}
+                </title>
                 <meta name='viewport'
                       content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
                 <meta name='title' content='Playody - Play your melody' />

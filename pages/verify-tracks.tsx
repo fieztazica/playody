@@ -4,7 +4,6 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
 import { Profile, Track } from '@/typings'
 import MainLayout from '@/components/MainLayout'
-import Head from 'next/head'
 import { Button, ButtonGroup, IconButton, Image, Tooltip } from '@chakra-ui/react'
 import { RxCross2, RxCheck, RxTrash } from 'react-icons/rx'
 import { useEffect, useState } from 'react'
@@ -102,11 +101,6 @@ const VerifyTracks = (props: Props) => {
 
     return (
         <>
-            <Head>
-                <title>
-                    Search
-                </title>
-            </Head>
             <div>
                 <div
                     className={'tw-mb-4 after:tw-block after:tw-mt-1 after:tw-rounded-full after:tw-h-1 after:tw-w-full after:tw-bg-white/30'}>
@@ -193,6 +187,7 @@ VerifyTracks.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
+VerifyTracks.title= "Verify Tracks"
 export default VerifyTracks
 
 export const getServerSideProps: GetServerSideProps<{

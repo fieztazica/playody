@@ -33,7 +33,7 @@ const Login = () => {
     async function handleLogin() {
         try {
             setLoggingIn(true)
-            const { data, error } = await supabaseClient.auth.signInWithPassword({
+            const { error } = await supabaseClient.auth.signInWithPassword({
                 email: email,
                 password: password,
             })
@@ -153,6 +153,8 @@ const Login = () => {
         </>
     )
 }
+
+Login.title = "Login"
 
 export default Login
 

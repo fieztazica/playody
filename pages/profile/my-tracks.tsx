@@ -53,9 +53,6 @@ const MyTracks = () => {
 
     return (
         <>
-            <Head>
-                <title>My Tracks</title>
-            </Head>
             <div className='tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-full'>
                 <div className='tw-flex tw-justify-between tw-items-center tw-w-full tw-m-2'>
                     <Button
@@ -92,5 +89,7 @@ const MyTracks = () => {
 MyTracks.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
+
+MyTracks.title = "My Tracks"
 
 export default MyTracks

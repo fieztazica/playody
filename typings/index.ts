@@ -49,7 +49,8 @@ export type Playlist = Database['public']['Tables']['playlists']['Row']
 export type LoopMode = 'queue' | 'song' | 'none'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-    getLayout?: (page: ReactElement) => ReactNode
+    getLayout?: (page: ReactElement) => ReactNode,
+    title?: string
 }
 
 export type AppPropsWithLayout = AppProps<{
