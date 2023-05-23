@@ -1,6 +1,6 @@
-import { Icon } from '@chakra-ui/react'
+import { Icon, IconProps } from '@chakra-ui/react'
 
-const LogoSvg = ({...props}) => {
+const LogoSvg = ({ ...props }: IconProps) => {
     return (<Icon viewBox='0 0 48 48' {...props}>
         <path fill='#ed3675' d='M20,24c-5.523,0-10,4.477-10,10s4.477,10,10,10s10-4.477,10-10S25.523,24,20,24z'></path>
         <linearGradient id='thMIbMD7~VnYoyixFJ5D6a_p6vT9rfwUGw6_gr1' x1='30' x2='41' y1='8' y2='8'

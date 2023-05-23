@@ -2,7 +2,6 @@
 import * as React from 'react'
 import { useRouter } from 'next/router'
 import MainLayout from '@/components/MainLayout'
-import Playlist from '@/pages/profile/my-playlists/[name]'
 import { GetServerSideProps } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'

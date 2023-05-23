@@ -73,7 +73,7 @@ function SideBar() {
                     <div
                         className={`tw-flex tw-space-x-2 tw-items-center tw-justify-between tw-group tw-px-2 tw-py-1 
                                          hover:tw-bg-white/10 active:tw-bg-white/20 tw-rounded-md tw-w-full `}>
-                        <Link as={NextLink} href={'/profile/my-playlists'}>
+                        <Link as={NextLink} href={'/me/my-playlists'}>
                             <p className='tw-py-2 tw-text-lg tw-font-bold'>
                                 My Playlists
                             </p>
