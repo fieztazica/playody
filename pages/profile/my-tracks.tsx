@@ -91,15 +91,6 @@ const MyTracks = () => {
                             onClick={() => setVerifiedTrack(!verifiedTrack)}
                             variant={'ghost'}
                                 >
-=======
-            <div className='tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-full'>
-                <div className='tw-flex tw-justify-between tw-items-center tw-w-full tw-m-2'>
-                    <Button
-                        colorScheme={verifiedTrack ? 'teal' : 'red'}
-                        onClick={() => setVerifiedTrack(!verifiedTrack)}
-                        variant={'ghost'}
-                        >
->>>>>>> main
                             {verifiedTrack ? 'Verified Tracks' : 'Unverified Tracks'}
                             {': '}
                             {myTracks?.filter(v => v.is_verified === verifiedTrack).length || 0}
@@ -158,7 +149,5 @@ const MyTracks = () => {
 MyTracks.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
-
-MyTracks.title = "My Tracks"
 
 export default MyTracks
