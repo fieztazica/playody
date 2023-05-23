@@ -54,6 +54,6 @@ Queue.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
-Queue.title = "Queue"
+// Queue.title = "Queue"
 
 export default Queue

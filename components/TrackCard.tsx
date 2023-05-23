@@ -18,6 +18,8 @@ import {
 import { BsFillPlayFill } from 'react-icons/bs'
 import { Track } from '@/typings'
 import SearchLink from '@/components/SearchLink'
+import { MdPlaylistAdd } from 'react-icons/md'
+import AddToPlaylistModal from '@/components/AddToPlaylistModal'
 
 interface Props extends BoxProps {
     track: Track
@@ -82,7 +84,11 @@ export function TrackCard({ track, bgColor = 'rgba(0,0,0,0.2)', onClickCover, ..
             <CardBody alignItems={'center'}>
                 <Flex justifyContent={'space-between'} alignItems={'center'}>
                     <Stack spacing={1}>
-                        <Text fontWeight={'semibold'} noOfLines={1} size='sm'>
+                        <Text as={Link}
+                              onClick={onClickCover}
+                              fontWeight={'semibold'}
+                              noOfLines={1}
+                              size='sm'>
                             {track.name}
                         </Text>
                         <Text color={'whiteAlpha.800'} fontSize={'sm'}>
@@ -90,30 +96,59 @@ export function TrackCard({ track, bgColor = 'rgba(0,0,0,0.2)', onClickCover, ..
                                 track.artists
                                     .map<React.ReactNode>((v, i) => (
                                         <SearchLink
-                                            key={`artist-${v}-${i}`}
+                                            key={`artist-${v}-${i}-${track.id}`}
                                             text={v} />
                                     ))
-                                    .reduce((prev, curr) => [prev, ', ', curr])}
+                                    .reduce((prev, curr) =>
+                                        [prev, ', ', curr])
+                            }
                         </Text>
                     </Stack>
-                    <Flex justify={'center'} align={'center'} gap={4} px={2}>
+                    <Flex justify={'center'} align={'center'} gap={2} px={2}>
+
+                        {track.genres && track.genres.length &&
+                            <Text fontSize='sm'>
+                                {track.genres
+                                        .map<React.ReactNode>((v, i) => (
+                                            <SearchLink
+                                                key={`genre-${v}-${i}-${track.id}`}
+                                                text={v} />
+                                        ))
+                                        .reduce((prev, curr) =>
+                                            [prev, ', ', curr])
+                                }
+                            </Text>
+                        }
+                        <AddToPlaylistModal track={track}>
+                            <Tooltip label={'Add this song to playlist'}>
+                                <IconButton
+                                    aria-label={'Add to playlist'}
+                                    variant={'ghost'}
+                                    rounded={'full'}
+                                    fontSize={'2xl'}
+                                    size={'sm'}
+                                    icon={<MdPlaylistAdd />}
+                                />
+                            </Tooltip>
+                        </AddToPlaylistModal>
                         <Text fontSize='sm'>{trackDurationString}</Text>
                     </Flex>
                 </Flex>
             </CardBody>
         </Card>
-    )
+)
 }
 
 /**
- * <div className={'tw-p-5'}>
- *                             <a href={v.external_urls.spotify}>{v.name}</a>
- *                             <Button
- *                                 ml={2}
- *                                 size={'xs'}
- *                                 onClick={() => console.log(v.id)}
- *                             >
- *                                 Play
- *                             </Button>
- *                         </div>
- */
+*
+    <div className={'tw-p-5'}>
+        * <a href={v.external_urls.spotify}>{v.name}</a>
+        * <Button
+        *                                 ml={2}
+        * size={'xs'}
+        * onClick={() => console.log(v.id)}
+        * >
+        * Play
+        * </Button>
+*                         </div>
+*/

@@ -15,7 +15,7 @@ export function AudioRightBox({ ...props }) {
         >
             {
                 playingIndex !== null && <>
-                    <AddToPlaylistModal>
+                    <AddToPlaylistModal track={queue[playingIndex]}>
                         <Tooltip label={'Add this song to playlist'}>
                             <IconButton
                                 aria-label={'Add to playlist'}

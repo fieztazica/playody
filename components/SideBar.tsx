@@ -47,7 +47,7 @@ function SideBar() {
     const pathname = usePathname()
     const session = useSession()
     const isAdmin = session?.user.app_metadata.role == 'admin'
-    const {myPlaylists} = useAppStates()
+    const { myPlaylists } = useAppStates()
 
     return (
         <>
@@ -68,28 +68,30 @@ function SideBar() {
                 {isAdmin && <div key={`verify-tracks_nav link`}>
                     <NavLink active={pathname == '/verify-tracks'} href={'/verify-tracks'} title={'Verify Tracks'} />
                 </div>}
-                <Divider />
-                <div
-                    className={`tw-flex tw-space-x-2 tw-items-center tw-justify-between tw-group tw-px-2 tw-py-1 
+                {session && <>
+                    <Divider />
+                    <div
+                        className={`tw-flex tw-space-x-2 tw-items-center tw-justify-between tw-group tw-px-2 tw-py-1 
                                          hover:tw-bg-white/10 active:tw-bg-white/20 tw-rounded-md tw-w-full `}>
-                    <Link as={NextLink} href={'/profile/my-playlists'}>
-                        <p className='tw-py-2 tw-text-lg tw-font-bold'>
-                            My Playlists
-                        </p>
-                    </Link>
-                    <Box>
-                        <CreatePlaylistModal>
-                            <IconButton
-                                aria-label='Modify Playlist'
-                                icon={<HiPlus />}
-                                variant={'ghost'}
-                                rounded={'full'}
-                                size={'lg'}
-                                fontSize={'2xl'}
-                            />
-                        </CreatePlaylistModal>
-                    </Box>
-                </div>
+                        <Link as={NextLink} href={'/profile/my-playlists'}>
+                            <p className='tw-py-2 tw-text-lg tw-font-bold'>
+                                My Playlists
+                            </p>
+                        </Link>
+                        <Box>
+                            <CreatePlaylistModal>
+                                <IconButton
+                                    aria-label='Modify Playlist'
+                                    icon={<HiPlus />}
+                                    variant={'ghost'}
+                                    rounded={'full'}
+                                    size={'lg'}
+                                    fontSize={'2xl'}
+                                />
+                            </CreatePlaylistModal>
+                        </Box>
+                    </div>
+                </>}
                 {myPlaylists !== null && myPlaylists.map((v) => (
                     <div key={`${v.author}_${v.name}_playlist_nav_link`}>
                         <NavLink

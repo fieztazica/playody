@@ -1,15 +1,14 @@
 // @flow
 import * as React from 'react'
 import { Avatar, Box, Flex, Text } from '@chakra-ui/react'
-import { Profile } from '@/typings'
-import useProfile from '@/lib/hooks/useProfile'
+import { useAppStates } from '@/lib/contexts/AppContext'
 
 
 export default function ChangeAvatarForm() {
-    const profile = useProfile()
+    const { profile } = useAppStates()
     if (!profile) return null
     return (
-        <Flex align={"center"}>
+        <Flex align={'center'}>
             <Box textAlign='center' margin={1}>
                 <Avatar src={profile.avatar_url || undefined} size={
                     {

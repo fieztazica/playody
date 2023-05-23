@@ -21,13 +21,14 @@ import { Database } from '@/typings/supabase'
 import CreatePlaylistModal from '@/components/CreatePlaylistModal'
 import { HiPlus } from 'react-icons/hi'
 import { useAppStates } from '@/lib/contexts/AppContext'
-import { Playlist } from '@/typings'
+import { Playlist, Track } from '@/typings'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
 
 interface Props extends BoxProps {
+    track: Track
 }
 
-export default function AddToPlaylistModal({ children }: Props) {
+export default function AddToPlaylistModal({ children, track }: Props) {
     const { onClose, onOpen, isOpen } = useDisclosure()
     const nameInput = useRef(null)
     const {  addTrackToPlaylist, queue, playingIndex } = useAudioCtx()
@@ -50,7 +51,7 @@ export default function AddToPlaylistModal({ children }: Props) {
                 <ModalContent
                     bgGradient={'linear(to-b, blue.900, purple.900, pink.900)'}
                 >
-                    <ModalHeader>Add to playlist</ModalHeader>
+                    <ModalHeader>Add {track.name} to playlist</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack w={'full'}>
@@ -68,8 +69,7 @@ export default function AddToPlaylistModal({ children }: Props) {
                                     w={'full'}
                                     key={`${v.name}_${v.author}_playlist_add_list`}
                                     onClick={() => {
-                                        if (playingIndex === null) return;
-                                        addTrackToPlaylist(v, queue[playingIndex]).then(() => {
+                                        addTrackToPlaylist(v, track).then(() => {
                                             onClose()
                                         })
                                     }}

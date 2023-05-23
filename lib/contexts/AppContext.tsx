@@ -5,15 +5,19 @@ import { createClient, Session } from '@supabase/supabase-js'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import useMyPlaylists from '@/lib/hooks/useMyPlaylists'
+import useProfile from '@/lib/hooks/useProfile'
 
 export const AppCtx = createContext<AppCtxType | null>(null)
 
 export function AppCtxProvider({ children }: { children: React.ReactNode }) {
     const { playlists, fetchPlaylists } = useMyPlaylists()
+    const { profile, fetchProfile } = useProfile()
 
     let sharedStates = {
         myPlaylists: playlists,
-        fetchMyPlaylists: fetchPlaylists
+        fetchMyPlaylists: fetchPlaylists,
+        profile,
+        fetchProfile,
     }
 
     return (
