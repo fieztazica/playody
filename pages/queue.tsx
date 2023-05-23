@@ -4,12 +4,8 @@ import { useAudioCtx } from '@/lib/contexts/AudioContext'
 import { TrackCard } from '@/components/TrackCard'
 import MainLayout from '@/components/MainLayout'
 import Head from 'next/head'
-import { NavBar } from '@/components/NavBar'
-import { PlayodyTitle } from '@/components/PlayodyTitle'
 import UnderlineTypo from '@/components/UnderlineTypo'
-
-type Props = {};
-const Queue = (props: Props) => {
+const Queue = () => {
     const { isPause, queue, playingIndex, setPlayingIndex } = useAudioCtx()
 
     function handleClickSong(index: number) {
@@ -20,7 +16,7 @@ const Queue = (props: Props) => {
     return (<>
             <Head>
                 <title>
-                    {playingIndex === null ? 'Queue' : `Playing ${queue?.[playingIndex]?.name} - ${queue[playingIndex].artists.join(', ')}`}
+                    {playingIndex === null ? 'Queue' : `${queue?.[playingIndex]?.name} - ${queue[playingIndex].artists.join(', ')}`}
                 </title>
             </Head>
             <div className='tw-flex tw-flex-col tw-items-center tw-h-full'>
@@ -57,5 +53,7 @@ const Queue = (props: Props) => {
 Queue.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
+
+Queue.title = "Queue"
 
 export default Queue

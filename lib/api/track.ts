@@ -32,6 +32,34 @@ class TrackApi {
             .eq('id', trackId))
     }
 
+    async getTracks(playlistName: string) {
+        const sessionRes = await this
+            .supabaseClient
+            .auth
+            .getSession()
+
+        if (sessionRes.error) {
+            return sessionRes
+        }
+
+        const fetchedPlaylist = await this
+            .supabaseAdmin
+            .from('playlists')
+            .select('*')
+            .eq('name', playlistName)
+            .eq("author", sessionRes.data.session?.user.id)
+            .limit(1)
+            .single()
+
+        if (fetchedPlaylist.error)
+            return fetchedPlaylist
+
+        return (await this.supabaseClient
+            .from('tracks')
+            .select()
+            .in('id', fetchedPlaylist.data.trackIds || []))
+    }
+
     async delete(trackId: string) {
         const sessionRes = await this
             .supabaseClient

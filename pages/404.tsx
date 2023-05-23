@@ -34,4 +34,6 @@ function NotFound() {
     )
 }
 
+NotFound.title = "Not Found"
+
 export default NotFound

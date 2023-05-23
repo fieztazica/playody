@@ -17,7 +17,6 @@ import {
     Stack,
 } from '@chakra-ui/react'
 import { RiAddFill, RiSubtractFill } from 'react-icons/ri'
-import Head from 'next/head'
 import { BiUpload } from 'react-icons/bi'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
@@ -139,7 +138,7 @@ const Upload = () => {
                 throw jsonData
             }
 
-            console.log((jsonData as ApiResSuccess).data)
+            // console.log((jsonData as ApiResSuccess).data)
 
             setArtists([''])
             setGenres([''])
@@ -194,7 +193,7 @@ const Upload = () => {
             }
         } catch (error) {
             alert('Error uploading image!')
-            console.log(error)
+            console.error(error)
         } finally {
             setImageUploading(false)
             // @ts-ignore
@@ -237,7 +236,7 @@ const Upload = () => {
             }
         } catch (error) {
             alert('Error uploading audio!')
-            console.log(error)
+            console.error(error)
         } finally {
             setSrcUploading(false)
             // @ts-ignore
@@ -255,9 +254,6 @@ const Upload = () => {
 
     return (
         <>
-            <Head>
-                <title>Upload</title>
-            </Head>
             <div className={"tw-w-full tw-rounded-md tw-bg-black/20"}>
                 <Container className={'tw-py-4 '}>
                     <form onSubmit={onSubmit}>
@@ -393,5 +389,7 @@ const Upload = () => {
 Upload.getLayout = (page: ReactNode) => {
     return <MainLayout>{page}</MainLayout>
 }
+
+Upload.title = "Upload"
 
 export default Upload

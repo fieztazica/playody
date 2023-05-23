@@ -19,13 +19,15 @@ import { useRef, useState } from 'react'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
 import { Playlist } from '@/typings'
+import { useAppStates } from '@/lib/contexts/AppContext'
 
 interface Props extends BoxProps {
 
 }
 
-export default function CreatePlaylistModal({ children }: Props) {
+export default function CreatePlaylistModal({ children, ...props }: Props) {
     const { onClose, onOpen, isOpen } = useDisclosure()
+    const { fetchMyPlaylists } = useAppStates()
     const nameInput = useRef(null)
     const supabaseClient = useSupabaseClient<Database>()
     const user = useUser()
@@ -61,7 +63,7 @@ export default function CreatePlaylistModal({ children }: Props) {
             }
 
             onClose()
-
+            fetchMyPlaylists()
 
         } catch (e: any) {
             if (e.message)
@@ -74,34 +76,39 @@ export default function CreatePlaylistModal({ children }: Props) {
 
     return (
         <>
-            <div onClick={onOpen}>
+            <div className={'tw-w-full tw-h-full'} onClick={onOpen}>
                 {children}
             </div>
-            <Modal initialFocusRef={nameInput} isOpen={isOpen} onClose={onClose} onEsc={onClose} isCentered >
+            <Modal initialFocusRef={nameInput} isOpen={isOpen} onClose={onClose} onEsc={onClose} isCentered>
                 <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Create a playlist</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <FormControl isRequired={true}>
-                            <FormLabel fontWeight={'bold'}>Playlist Name</FormLabel>
-                            <Input
-                                ref={nameInput}
-                                value={playlistName}
-                                onChange={(e) => {
-                                    e.preventDefault()
-                                    setPlaylistName(e.target.value)
-                                }}
-                                placeholder={'Your playlist name'}
-                            />
-                        </FormControl>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button colorScheme={"purple"} isLoading={creating} onClick={() => create()}>
-                            Create
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
+                <form onSubmit={(e) => {
+                    e.preventDefault()
+                    create()
+                }}>
+                    <ModalContent bgGradient={'linear(to-b, blue.900, purple.900, pink.900)'}>
+                        <ModalHeader>Create a playlist</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <FormControl isRequired={true}>
+                                <FormLabel fontWeight={'bold'}>Playlist Name</FormLabel>
+                                <Input
+                                    ref={nameInput}
+                                    value={playlistName}
+                                    onChange={(e) => {
+                                        e.preventDefault()
+                                        setPlaylistName(e.target.value)
+                                    }}
+                                    placeholder={'Your playlist name'}
+                                />
+                            </FormControl>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button type={'submit'} colorScheme={'purple'} isLoading={creating}>
+                                Create
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </form>
             </Modal>
         </>
     )

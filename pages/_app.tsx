@@ -5,14 +5,47 @@ import { AppPropsWithLayout } from '@/typings'
 import { theme } from '@/lib/theme'
 import { AudioCtxProvider } from '@/lib/contexts/AudioContext'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
+import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { Database } from '@/typings/supabase'
 
 export default function App({ Component, pageProps: { initialSession, ...pageProps } }: AppPropsWithLayout) {
     const indicator = useDisclosure()
     const router = useRouter()
+    const [supabaseClient] = useState(() => createBrowserSupabaseClient<Database>())
 
     const getLayout = Component.getLayout ?? ((page) => page)
+
+    useEffect(() => {
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            if (event == 'PASSWORD_RECOVERY') {
+                const newPassword = prompt('What would you like your new password to be?')
+                if (!newPassword) {
+                    alert('You didn\'t provide anything!')
+                    return
+                }
+
+                const repeatPassword = prompt('Repeat your password.')
+                if (!repeatPassword) {
+                    alert('You didn\'t provide anything!')
+                    return
+                }
+
+                if (newPassword !== repeatPassword) {
+                    alert('Passwords aren\'t match!')
+                    return
+                }
+
+                const { data, error } = await supabaseClient.auth
+                    .updateUser({ password: newPassword })
+
+                if (data) alert('Password updated successfully!')
+                if (error) alert('There was an error updating your password.')
+            }
+        })
+    }, [])
 
     useEffect(() => {
         const handleStart = () => {
@@ -40,7 +73,10 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
     return (
         <>
             <Head>
-                <title>Playody</title>
+                <title>
+                    Playody
+                    {Component.title ? ' | ' + Component.title : ''}
+                </title>
                 <meta name='viewport'
                       content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
                 <meta name='title' content='Playody - Play your melody' />
@@ -67,21 +103,26 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
                         { position: 'top-right', size: 'sm' },
                 }}
             >
-                <AppCtxProvider initialSession={initialSession}>
-                    <AudioCtxProvider>
-                        <Progress
-                            display={indicator.isOpen ? 'flex' : 'none'}
-                            bgColor={'transparent'}
-                            height='2px'
-                            flex={1}
-                            position='fixed'
-                            zIndex={'99'}
-                            isIndeterminate
-                            w='100%'
-                        />
-                        {getLayout(<Component {...pageProps} />)}
-                    </AudioCtxProvider>
-                </AppCtxProvider>
+                <SessionContextProvider
+                    supabaseClient={supabaseClient}
+                    initialSession={initialSession}
+                >
+                    <AppCtxProvider>
+                        <AudioCtxProvider>
+                            <Progress
+                                display={indicator.isOpen ? 'flex' : 'none'}
+                                bgColor={'transparent'}
+                                height='2px'
+                                flex={1}
+                                position='fixed'
+                                zIndex={'99'}
+                                isIndeterminate
+                                w='100%'
+                            />
+                            {getLayout(<Component {...pageProps} />)}
+                        </AudioCtxProvider>
+                    </AppCtxProvider>
+                </SessionContextProvider>
             </ChakraProvider>
         </>
     )
