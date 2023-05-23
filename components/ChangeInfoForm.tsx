@@ -8,7 +8,7 @@ import {
     FormLabel,
     Input,
     InputGroup,
-    InputRightElement,
+    InputRightElement, useToast,
     VStack,
 } from '@chakra-ui/react'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
@@ -19,6 +19,7 @@ import { useAppStates } from '@/lib/contexts/AppContext'
 
 export default function ChangeInfoForm() {
     const user = useUser()
+    const toast = useToast()
     const { profile, fetchProfile } = useAppStates()
     const supabase = useSupabaseClient<Database>()
     const [changeEmail, setChangeEmail] = useState(user?.email || '')
@@ -65,6 +66,10 @@ export default function ChangeInfoForm() {
                 throw profileRes.error
             }
 
+            toast({
+                title: "Changed your information",
+                status: "success"
+            })
             fetchProfile()
         } catch (e: any) {
             if (e.message) {

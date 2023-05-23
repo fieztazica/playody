@@ -1,17 +1,21 @@
 // @flow
 import * as React from 'react'
+import { useRouter } from 'next/router'
 import MainLayout from '@/components/MainLayout'
+import Playlist from '@/pages/profile/my-playlists/[name]'
 import { GetServerSideProps } from 'next'
-import { Playlist, Profile } from '@/typings'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
+import { Track } from '@/typings'
 
 type Props = {
-    playlists: Playlist[] | null
+    track: Track | null
 };
 
-const Playlists = ({ playlists }: Props) => {
-    if (playlists === null) return null
+const TrackId = ({ track }: Props) => {
+    const router = useRouter()
+    const trackIdQuery = router.query.trackId as string
+
     return (
         <div>
 
@@ -19,11 +23,11 @@ const Playlists = ({ playlists }: Props) => {
     )
 }
 
-Playlists.getLayout = (page: React.ReactElement) => {
+TrackId.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
-export default Playlists
+export default TrackId
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     const supabaseClient = createServerSupabaseClient<Database>(ctx)
@@ -34,13 +38,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
             notFound: true,
         }
 
-    const playlists = await supabaseClient
-        .from('playlists')
-        .select()
+    const track = await supabaseClient
+        .from('tracks')
+        .select('*')
+        .eq('id', ctx.query.trackId)
         .eq('author', user.data.user.id)
+        .limit(1)
+        .single()
 
-
-    if (playlists.error) {
+    if (track.error) {
         return {
             notFound: true,
         }
@@ -48,7 +54,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 
     return {
         props: {
-            playlists: playlists.data || null,
+            track: track.data || null,
         },
     }
 }
