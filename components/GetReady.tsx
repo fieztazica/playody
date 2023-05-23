@@ -30,7 +30,6 @@ export default function GetReady(props: Props) {
         </>
 
     return <div className={'tw-h-screen tw-w-full tw-flex tw-justify-center tw-items-center tw-flex-col tw-space-y-2'}>
-
         {(!user || !profile || myPlaylists === null) &&
             <div className={'tw-flex tw-flex-col tw-justify-center tw-items-center tw-space-y-2'}>
                 <LogoSvg w={128} h={128} />
