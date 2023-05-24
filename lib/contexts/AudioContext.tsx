@@ -57,7 +57,6 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
                         setIsPause(true)
                         break
                     }
-                    console.log(queue, playingTrack, previousTracks, nowQueue)
                     if (!shuffle) {
                         setPlayingTrack(nowQueue.shift() || null)
                     } else setPlayingTrack(getRandomTrack())
