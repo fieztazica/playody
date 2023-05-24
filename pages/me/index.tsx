@@ -17,11 +17,12 @@ import { Profile } from '@/typings'
 import { User, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
 import Head from 'next/head'
-import { useUser } from '@supabase/auth-helpers-react'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import NextLink from 'next/link'
 import ChangePasswordForm from '@/components/ChangePasswordForm'
 import ChangeInfoForm from '@/components/ChangeInfoForm'
 import ChangeAvatarForm from '@/components/ChangeAvatarForm'
+import { useRouter } from 'next/router'
 
 type Props = {
     profile: Profile | null
@@ -30,6 +31,8 @@ type Props = {
 
 const MyProfile = ({ profile }: Props) => {
     const user = useUser()
+    const router = useRouter()
+    const supabaseClient = useSupabaseClient<Database>()
 
     if (profile === null) return 'Sign in'
     return (
@@ -40,11 +43,19 @@ const MyProfile = ({ profile }: Props) => {
                         <Link as={NextLink} href={'/queue'}>
                             Queue
                         </Link>
-                        <Link as={NextLink} href={'/profile/my-tracks'}>
+                        <Link as={NextLink} href={'/me/my-tracks'}>
                             My Tracks
                         </Link>
-                        <Link as={NextLink} href={'/profile/my-playlists'}>
+                        <Link as={NextLink} href={'/me/my-playlists'}>
                             My Playlists
+                        </Link>
+                        <Link w='fit-content'
+                              onClick={() => {
+                                  supabaseClient.auth.signOut()
+                                  localStorage.setItem("ready_pass", "false")
+                                  router.replace("/")
+                              }}>
+                            Logout
                         </Link>
                     </div>
                     <div className='tw-flex-1 tw-bg-black/20 tw-p-5 tw-rounded-md'>

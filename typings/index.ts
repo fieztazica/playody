@@ -39,7 +39,8 @@ export type AudioCtxType = {
     setPreviousIndexes: Dispatch<SetStateAction<number[]>>
     nextSong: () => void
     previousSong: () => void,
-    addToQueue: (track: Track) => Promise<void>,
+    addToQueue: (track: Track) => void,
+    removeFromQueue: (track: Track) => void,
     getRandomIndexInQueue: () => number,
     addTrackToPlaylist: (playlist: Playlist, track: Track) => Promise<void>,
 }
@@ -48,7 +49,7 @@ export type Track = Database['public']['Tables']['tracks']['Row']
 export type Profile = Database['public']['Tables']['profiles']['Row']
 export type Playlist = Database['public']['Tables']['playlists']['Row']
 
-export type LoopMode = 'queue' | 'song' | 'none'
+export type LoopMode = 'queue' | 'song' | null
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode,

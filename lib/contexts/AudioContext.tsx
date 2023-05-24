@@ -15,7 +15,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
     const [duration, setDuration] = useState<number>(0)
     const [isPause, setIsPause] = useState<boolean>(true)
     const [volume, setVolume] = useState<number>(0)
-    const [loopMode, setLoopMode] = useState<LoopMode>('none')
+    const [loopMode, setLoopMode] = useState<LoopMode>(null)
     const [shuffle, setShuffle] = useState<boolean>(false)
     const [queue, setQueue] = useState<Track[]>([])
     const [playingIndex, setPlayingIndex] = useState<number | null>(null)
@@ -44,7 +44,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         if (queue.length && playingIndex !== null) {
             if (loopMode !== 'song') setPreviousIndexes((v) => [playingIndex, ...v])
             switch (loopMode) {
-                case 'none':
+                case null:
                     if (
                         queue
                             .map((v, i) => i)
@@ -71,10 +71,11 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
-    const addToQueue = async (track: Track) => {
+    const addToQueue = (track: Track) => {
         if (!queue.map(v => v.id).includes(track.id))
             setQueue(q => [...q, track])
-        if (playingIndex === null) setPlayingIndex(0)
+        if (playingIndex === null)
+            setPlayingIndex(0)
         if (queue.length && isPause) nextSong()
         toast({
             status: 'success',
@@ -83,13 +84,31 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         })
     }
 
+    const removeFromQueue = (track: Track) => {
+        if (!queue.length) return
+        if (!queue.map(v => v.id).includes(track.id))
+            return
+
+        if (queue.length <= 1) setPlayingIndex(null)
+
+        setQueue(q => [...q.filter(v => v.id != track.id)])
+
+        toast({
+            status: 'success',
+            title: 'Removed from queue',
+            size: 'sm',
+        })
+    }
+
     async function addTrackToPlaylist(playlist: Playlist, track: Track) {
         try {
             if (!user)
-                throw 'Unauthenticated'
+                throw {
+                    message: 'You need to sign in first',
+                }
 
             if ((playlist.trackIds || []).includes(track.id)) throw {
-                message: `You already have this song in ${playlist.name}`
+                message: `You already have this song in ${playlist.name}`,
             }
 
             const toAddTrackIs = [...(playlist.trackIds || []).filter(v => v !== track.id), track.id]
@@ -135,6 +154,9 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
             setIsPause(true)
         }
 
+        if (playingIndex !== null && playingIndex >= queue.length)
+            setPlayingIndex(null)
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [queue, playingIndex, volume])
 
@@ -161,8 +183,9 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         nextSong,
         previousSong,
         addToQueue,
+        removeFromQueue,
         getRandomIndexInQueue,
-        addTrackToPlaylist
+        addTrackToPlaylist,
     }
 
     return (

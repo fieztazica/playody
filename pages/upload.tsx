@@ -250,11 +250,25 @@ const Upload = () => {
         setDuration(audioRef?.current?.duration || 0)
     }
 
-    if (!user) return 'Sign in to start uploading your melody!'
+    if (!user)
+        return (<div className={'tw-flex ' +
+            'tw-justify-center tw-items-center tw-h-full tw-flex-1'}>
+            <p>
+            <span>
+                You have to{' '}
+            </span>
+                <Button size={'sm'}>
+                    Sign in
+                </Button>
+                <span>
+                {' '}to start upload
+            </span>
+            </p>
+        </div>)
 
     return (
         <>
-            <div className={"tw-w-full tw-rounded-md tw-bg-black/20"}>
+            <div className={'tw-w-full tw-rounded-md tw-bg-black/20'}>
                 <Container className={'tw-py-4 '}>
                     <form onSubmit={onSubmit}>
                         <Stack>
@@ -390,6 +404,6 @@ Upload.getLayout = (page: ReactNode) => {
     return <MainLayout>{page}</MainLayout>
 }
 
-Upload.title = "Upload"
+Upload.title = 'Upload'
 
 export default Upload

@@ -28,10 +28,10 @@ function PostCard({ track }: { track: Track & { profiles: Profile | null } }) {
     return (
         <Box borderRadius='md' boxShadow='md' bg={"blackAlpha.300"} p={2} width={'full'}>
             <div className={"tw-flex tw-justify-between tw-items-center tw-p-2"}>
-                <Text fontWeight='bold'>
-                    @<span className={"hover:tw-underline"}>{track.profiles?.full_name || 'unknown'}</span> {Date.now() - (new Date(track.created_at || 0)).valueOf() < 3600 * 1000 ? " has just" : ""} uploaded a track
+                <Text>
+                    <span className={"tw-font-bold hover:tw-underline"}>@{track.profiles?.full_name || 'unknown'}</span> {Date.now() - (new Date(track.created_at || 0)).valueOf() < 3600 * 1000 ? " has just" : ""} uploaded a track
                 </Text>
-                <Text fontSize='sm' color='gray.500'>
+                <Text fontSize='sm' color='gray.500' title={`${new Date(track.created_at || 0).toLocaleString()}`}>
                      {dayjs(track.created_at).fromNow()}
                 </Text>
             </div>

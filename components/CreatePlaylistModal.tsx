@@ -39,7 +39,9 @@ export default function CreatePlaylistModal({ children, ...props }: Props) {
             setCreating(true)
 
             if (!user)
-                throw 'Unauthenticated'
+                throw {
+                    message: 'You need to sign in first',
+                }
 
             const { data, error } = await supabaseClient
                 .from('playlist')
