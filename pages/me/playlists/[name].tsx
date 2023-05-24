@@ -70,7 +70,7 @@ const MyPlaylistName = ({ playlist }: Props) => {
 
     useEffect(() => {
         refresh()
-    }, [])
+    }, [playlist])
 
     if (!playlist) return null
 
@@ -84,7 +84,7 @@ const MyPlaylistName = ({ playlist }: Props) => {
             <div className={'tw-flex tw-flex-col tw-space-y-2 tw-justify-center'}>
                 <div className={'tw-flex tw-justify-between tw-items-center tw-h-12 tw-space-x-2'}>
                     <UnderlineTypo>
-                        <span>Playlist {playlist.name} has {playlist.trackIds?.length} tracks</span>
+                        <span>{playlist.name} has {playlist.trackIds?.length} tracks</span>
                         {refreshing && <Spinner ml={4}/>}
                     </UnderlineTypo>
                     <Button colorScheme={'purple'} onClick={() => handleClickPlay()}>
