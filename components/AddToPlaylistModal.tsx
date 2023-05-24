@@ -31,7 +31,7 @@ interface Props extends BoxProps {
 export default function AddToPlaylistModal({ children, track }: Props) {
     const { onClose, onOpen, isOpen } = useDisclosure()
     const nameInput = useRef(null)
-    const {  addTrackToPlaylist, queue, playingIndex } = useAudioCtx()
+    const { addTrackToPlaylist, queue } = useAudioCtx()
     const { myPlaylists } = useAppStates()
 
     return (

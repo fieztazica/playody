@@ -6,7 +6,7 @@ import { useAudioCtx } from '@/lib/contexts/AudioContext'
 import AddToPlaylistModal from '@/components/AddToPlaylistModal'
 
 export function AudioRightBox({ ...props }) {
-    const { playingIndex, queue } = useAudioCtx()
+    const { playingTrack, queue } = useAudioCtx()
 
     return (
         <div
@@ -14,8 +14,8 @@ export function AudioRightBox({ ...props }) {
             {...props}
         >
             {
-                playingIndex !== null && <>
-                    <AddToPlaylistModal track={queue[playingIndex]}>
+                playingTrack !== null && <>
+                    <AddToPlaylistModal track={playingTrack}>
                         <Tooltip label={'Add this song to playlist'}>
                             <IconButton
                                 aria-label={'Add to playlist'}

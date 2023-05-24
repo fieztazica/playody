@@ -12,7 +12,7 @@ function AudioPlayer() {
         setIsPause,
         setCurrentTime,
         queue,
-        playingIndex,
+        playingTrack,
         nextSong,
     } = useAudioCtx()
     const [loading, setLoading] = useState<boolean>(false)
@@ -43,13 +43,13 @@ function AudioPlayer() {
     }
 
     useEffect(() => {
-        if (!queue.length || playingIndex === null) {
+        if (!queue.length || playingTrack === null) {
             setAudioUrl(null)
             return
         }
-        handleLoadAudio(queue[playingIndex || 0].src)
+        handleLoadAudio(playingTrack.src)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [playingIndex])
+    }, [playingTrack])
 
     return (
         <>

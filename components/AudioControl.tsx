@@ -27,11 +27,12 @@ function AudioControl({ ...props }) {
         previousSong,
         setShuffle,
         shuffle,
-        playingIndex,
-        setPlayingIndex,
+        playingTrack,
+        setPlayingTrack,
         queue,
-        setPreviousIndexes,
-        getRandomIndexInQueue,
+        setPreviousTracks,
+        getRandomTrack,
+        nextSong
     } = useAudioCtx()
 
     const handlePausePlayClick = () => {
@@ -44,14 +45,15 @@ function AudioControl({ ...props }) {
     }
 
     const toggleNextSong = () => {
-        if (playingIndex === null) return
-        const nextIndex = shuffle
-            ? getRandomIndexInQueue()
-            : playingIndex + 1 >= queue.length
-                ? 0
-                : playingIndex + 1
-        setPlayingIndex(nextIndex)
-        setPreviousIndexes(a => [...a, playingIndex])
+        nextSong()
+        // if (playingIndex === null) return
+        // const nextIndex = shuffle
+        //     ? getRandomIndexInQueue()
+        //     : playingIndex + 1 >= queue.length
+        //         ? 0
+        //         : playingIndex + 1
+        // setPlayingIndex(nextIndex)
+        // setPreviousIndexes(a => [...a, playingIndex])
     }
 
     const LoopIcon = loopMode === 'song' ? BsRepeat1 : BsRepeat

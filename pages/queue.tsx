@@ -7,31 +7,32 @@ import Head from 'next/head'
 import UnderlineTypo from '@/components/UnderlineTypo'
 import { IconButton } from '@chakra-ui/react'
 import { MdPlaylistRemove } from 'react-icons/md'
+import { Track } from '@/typings'
 
 const Queue = () => {
     const {
         isPause,
         queue,
-        playingIndex,
-        setPlayingIndex,
+        playingTrack,
+        setPlayingTrack,
         removeFromQueue,
     } = useAudioCtx()
 
-    function handleClickSong(index: number) {
-        if (!(index < 0 || index >= queue.length || index === playingIndex)) {
-            setPlayingIndex(index)
-        }
+    function handleClickSong(track: Track) {
+        setPlayingTrack(track)
     }
+
+    const title = playingTrack !== null ? `${playingTrack.name} - ${playingTrack.artists.join(', ')}` : 'Queue'
 
     return (<>
             <Head>
                 <title>
-                    {playingIndex === null ? 'Queue' : `${queue?.[playingIndex]?.name} - ${queue[playingIndex].artists.join(', ')}`}
+                    {title}
                 </title>
             </Head>
             <div className='tw-flex tw-flex-col tw-items-center tw-h-full'>
                 <div className={'tw-flex tw-flex-col tw-w-full tw-space-y-2'}>
-                    {!isPause && playingIndex !== null && <>
+                    {!isPause && playingTrack !== null && <>
                         <UnderlineTypo>
                             Now Playing
                         </UnderlineTypo>
@@ -39,23 +40,23 @@ const Queue = () => {
                             <TrackCard
                                 title={'Now playing'}
                                 key={'Now playing'}
-                                track={queue[playingIndex]}
+                                track={playingTrack}
                                 w={'full'}
                             />
                         </div>
                     </>}
                     <UnderlineTypo>
-                        {!isPause && playingIndex !== null ? 'Waiting in queue' : 'Queue'}
+                        {!isPause && playingTrack !== null ? 'Waiting in queue' : 'Queue'}
                     </UnderlineTypo>
-                    {queue.length ?
-                        queue.filter((v, i) => !isPause ? i !== playingIndex : true).map((v, i) => (
+                    {queue && queue.length ?
+                        queue.filter((v) => !isPause ? v !== playingTrack : true).map((v, i) => (
                             <div
                                 key={`queued_track_${v.id}_${i}`}
                                 className={'tw-flex tw-w-full tw-space-x-2 ' +
                                     'tw-group'}>
                                 <TrackCard
                                     track={v}
-                                    onClick={() => handleClickSong(queue.indexOf(v))}
+                                    onClick={() => handleClickSong(v)}
                                     w={'full'}
                                 />
                                 <div title={'Remove this song from queue'}

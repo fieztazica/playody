@@ -33,15 +33,15 @@ export type AudioCtxType = {
     setQueue: Dispatch<SetStateAction<Track[]>>
     shuffle: boolean
     setShuffle: Dispatch<SetStateAction<boolean>>
-    playingIndex: number | null
-    setPlayingIndex: Dispatch<SetStateAction<number | null>>
-    previousIndexes: number[]
-    setPreviousIndexes: Dispatch<SetStateAction<number[]>>
+    playingTrack: Track | null
+    setPlayingTrack: Dispatch<SetStateAction<Track | null>>
+    previousTracks: Track[]
+    setPreviousTracks: Dispatch<SetStateAction<Track[]>>
     nextSong: () => void
     previousSong: () => void,
     addToQueue: (track: Track) => void,
     removeFromQueue: (track: Track) => void,
-    getRandomIndexInQueue: () => number,
+    getRandomTrack: () => Track,
     addTrackToPlaylist: (playlist: Playlist, track: Track) => Promise<void>,
 }
 
