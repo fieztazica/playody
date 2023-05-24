@@ -88,17 +88,6 @@ const MyTracks = ({ tracks }: Props) => {
                 <div
                     className='tw-mb-4 after:tw-block after:tw-mt-1 after:tw-rounded-full after:tw-h-1 after:tw-w-full after:tw-bg-white/30'>
                     <div className='tw-flex tw-justify-between      tw-items-center'>
-                        <Tooltip label={'Click to toggle between verified and unverified tracks'}>
-                            <Button
-                                colorScheme={verifiedTrack ? 'teal' : 'red'}
-                                onClick={() => setVerifiedTrack(!verifiedTrack)}
-                                variant={'ghost'}
-                            >
-                                {verifiedTrack ? 'Verified Tracks' : 'Unverified Tracks'}
-                                {': '}
-                                {myTracks?.filter(v => v.is_verified === verifiedTrack).length || 0}
-                            </Button>
-                        </Tooltip>
                         <Button isLoading={refreshing} onClick={() => refresh()}>
                             Refresh
                         </Button>
