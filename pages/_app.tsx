@@ -97,7 +97,12 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
                 theme={theme}
                 toastOptions={{
                     defaultOptions:
-                        { position: 'top-right', size: 'sm' },
+                        {
+                            position: 'top-right',
+                            size: 'sm',
+                            isClosable: true,
+                            duration: 3000,
+                        },
                 }}
             >
                 <SessionContextProvider

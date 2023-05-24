@@ -35,6 +35,8 @@
         "typescript": "5.0.4"
     },
     "devDependencies": {
+        "@chakra-ui/styled-system": "^2.9.0",
+        "@chakra-ui/theme-tools": "^2.0.16",
         "@types/jsonwebtoken": "^9.0.2",
         "@types/ws": "^8.5.4",
         "eslint": "^8.40.0",
