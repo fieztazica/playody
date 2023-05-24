@@ -200,7 +200,7 @@ export function AudioCtxProvider({ children, title }: { children: React.ReactNod
     return (
         <>
             <Head>
-                <title> {playingTrack && !isPause ? `${playingTrack.name} - ${playingTrack.artists.join(', ')} - Playody` : `Playody | ${title}`}</title>
+                <title>{(playingTrack && !isPause) ? `${playingTrack.name} - ${playingTrack.artists.join(', ')} - Playody` : title ? `Playody | ${title}` : 'Playody'}</title>
             </Head>
             <AudioCtx.Provider value={sharedStates}>{children}</AudioCtx.Provider>
         </>
