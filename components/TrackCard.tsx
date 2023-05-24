@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react'
-import { Card, CardBody } from '@chakra-ui/card'
 import {
     BackgroundProps,
     Box,
@@ -14,6 +13,8 @@ import {
     Stack,
     Text,
     Tooltip,
+    Card,
+    CardBody,
 } from '@chakra-ui/react'
 import { BsFillPlayFill } from 'react-icons/bs'
 import { Track } from '@/typings'
