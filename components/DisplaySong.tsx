@@ -6,8 +6,8 @@ import {
 } from '@chakra-ui/react'
 
 function DisplaySong({ ...props }) {
-    const { queue, playingIndex } = useAudioCtx()
-    const nowPlaying = playingIndex != null ?  queue[playingIndex] : null
+    const { queue, playingTrack } = useAudioCtx()
+    // const nowPlaying = playingIndex != null ?  queue[playingIndex] : null
 
     return (
         <Stack
@@ -19,9 +19,9 @@ function DisplaySong({ ...props }) {
             {...props}
         >
             <Image
-                src={nowPlaying?.image_url || undefined}
-                alt={`${nowPlaying?.name}'s cover`}
-                title={`${nowPlaying?.name}'s cover`}
+                src={playingTrack?.image_url || undefined}
+                alt={`${playingTrack?.name}'s cover`}
+                title={`${playingTrack?.name}'s cover`}
                 objectFit={'cover'}
                 maxW={{ base: '64px', md: '6em' }}
                 maxH={{ base: '64px', md: '6em' }}
@@ -34,14 +34,14 @@ function DisplaySong({ ...props }) {
                 overflow={'hidden'}
             >
                 <p className={'tw-text-ellipsis tw-overflow-hidden tw-text-base tw-font-bold md:tw-text-xl'}
-                   title={nowPlaying?.name || 'No Song Playing'}>
-                    {nowPlaying?.name || 'No Song Playing'}
+                   title={playingTrack?.name || 'No Song Playing'}>
+                    {playingTrack?.name || 'No Song Playing'}
                 </p>
                 <div className={'container tw-hidden md:tw-block'}>
                     <div className={'tw-truncate tw-duration-300 hover:animated'}>
                           <span className={'tw-text-sm md:tw-text-base'}
-                               title={nowPlaying?.artists?.map((v) => v).join(', ') || 'No artist'}>
-                            {nowPlaying?.artists?.map((v) => v).join(', ')}
+                               title={playingTrack?.artists?.map((v) => v).join(', ') || 'No artist'}>
+                            {playingTrack?.artists?.map((v) => v).join(', ')}
                         </span>
                     </div>
                 </div>

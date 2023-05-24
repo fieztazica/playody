@@ -18,54 +18,67 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
     const [loopMode, setLoopMode] = useState<LoopMode>(null)
     const [shuffle, setShuffle] = useState<boolean>(false)
     const [queue, setQueue] = useState<Track[]>([])
-    const [playingIndex, setPlayingIndex] = useState<number | null>(null)
-    const [previousIndexes, setPreviousIndexes] = useState<number[]>([])
+    const [playingTrack, setPlayingTrack] = useState<Track | null>(null)
+    const [previousTracks, setPreviousTracks] = useState<Track[]>([])
 
-    const getRandomIndexInQueue = () => {
-        let randomIndex = 0
+    const getRandomTrack = () => {
+        let rand
         do {
-            randomIndex = Math.floor(Math.random() * queue.length)
-        } while (playingIndex == randomIndex && playingIndex == queue.length)
-        return randomIndex
+            rand = queue[Math.floor(Math.random() * queue.length)]
+        } while (rand === playingTrack)
+        return rand as Track
     }
 
     const previousSong = () => {
-        if (!previousIndexes.length || !previousIndexes) return
+        if (!previousTracks.length || !previousTracks) return
 
-        setPreviousIndexes((a) => {
-            const tIndexes = [...a]
-            const previousIndex = tIndexes.shift()!
-            setPlayingIndex(previousIndex)
-            return [...tIndexes]
+        setPreviousTracks((a) => {
+            const tempTracks = [...a]
+            const topTrack = tempTracks.shift()!
+            setPlayingTrack(topTrack)
+            return [...tempTracks]
         })
     }
 
     const nextSong = () => {
-        if (queue.length && playingIndex !== null) {
-            if (loopMode !== 'song') setPreviousIndexes((v) => [playingIndex, ...v])
+        if (queue.length) {
+            if (!playingTrack) {
+                setPlayingTrack(queue[0])
+                return
+            }
+            if (loopMode !== 'song') setPreviousTracks((v) => [playingTrack, ...v])
+            let nowQueue = [...queue.filter(v => v !== playingTrack)]
             switch (loopMode) {
                 case null:
                     if (
-                        queue
-                            .map((v, i) => i)
-                            .every((ele) => previousIndexes.includes(ele))
+                        queue.every((ele) => previousTracks.includes(ele))
                     ) {
-                        setPlayingIndex(0)
+                        setPlayingTrack(null)
                         setIsPause(true)
                         break
                     }
+                    console.log(queue, playingTrack, previousTracks, nowQueue)
                     if (!shuffle) {
-                        setPlayingIndex((v) => v as number + 1 >= queue.length ? 0 : v as number + 1)
-                    } else setPlayingIndex(getRandomIndexInQueue())
+                        setPlayingTrack(nowQueue.shift() || null)
+                    } else setPlayingTrack(getRandomTrack())
                     break
                 case 'queue':
                     if (!shuffle) {
-                        setPlayingIndex((v) => v as number + 1 >= queue.length ? 0 : v as number + 1)
-                    } else setPlayingIndex(getRandomIndexInQueue())
+                        if (queue.length > 1)
+                            setPlayingTrack(nowQueue.shift() || null)
+                        else {
+                            if (audioRef.current) {
+                                audioRef.current.currentTime = 0
+                                audioRef.current.play()
+                            }
+                        }
+                    } else setPlayingTrack(getRandomTrack())
                     break
                 case 'song':
-                    // audioRef.current.currentTime = 0
-                    audioRef.current?.play()
+                    if (audioRef.current) {
+                        audioRef.current.currentTime = 0
+                        audioRef.current.play()
+                    }
                     break
             }
         }
@@ -74,8 +87,8 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
     const addToQueue = (track: Track) => {
         if (!queue.map(v => v.id).includes(track.id))
             setQueue(q => [...q, track])
-        if (playingIndex === null)
-            setPlayingIndex(0)
+        if (playingTrack === null)
+            setPlayingTrack(track)
         if (queue.length && isPause) nextSong()
         toast({
             status: 'success',
@@ -89,9 +102,7 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         if (!queue.map(v => v.id).includes(track.id))
             return
 
-        if (queue.length <= 1) setPlayingIndex(null)
-
-        setQueue(q => [...q.filter(v => v.id != track.id)])
+        setQueue(q => [...queue.filter(v => v.id != track.id)])
 
         toast({
             status: 'success',
@@ -146,19 +157,17 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
     }, [])
 
     useEffect(() => {
-        if (volume !== 0) localStorage.setItem('app-volume', `${volume}`)
-
         if (!queue.length && !isPause) {
             setDuration(0)
             setCurrentTime(0)
             setIsPause(true)
         }
+    }, [queue, playingTrack])
 
-        if (playingIndex !== null && playingIndex >= queue.length)
-            setPlayingIndex(null)
-
+    useEffect(() => {
+        if (volume !== 0) localStorage.setItem('app-volume', `${volume}`)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [queue, playingIndex, volume])
+    }, [volume])
 
     let sharedStates: AudioCtxType = {
         audioRef,
@@ -176,15 +185,15 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
         setQueue,
         shuffle,
         setShuffle,
-        playingIndex,
-        setPlayingIndex,
-        previousIndexes,
-        setPreviousIndexes,
+        playingTrack,
+        setPlayingTrack,
+        previousTracks,
+        setPreviousTracks,
         nextSong,
         previousSong,
         addToQueue,
         removeFromQueue,
-        getRandomIndexInQueue,
+        getRandomTrack,
         addTrackToPlaylist,
     }
 
