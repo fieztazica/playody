@@ -7,6 +7,7 @@ import { TrackCard } from '@/components/TrackCard'
 import { Track } from '@/typings'
 import { RxTrash } from 'react-icons/rx'
 import { AiOutlineEdit } from 'react-icons/ai'
+import {VscVerified} from 'react-icons/vsc'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
 import { GetServerSideProps } from 'next'
@@ -72,11 +73,6 @@ const MyTracks = ({ tracks }: Props) => {
         }
     }
 
-    async function toggleEdit(id: string) {
-        const trackId = id;
-
-        window.location.href = `/me/my-tracks/${trackId}`;
-    }
 
     useEffect(() => {
         if (tracks === null)
@@ -109,20 +105,28 @@ const MyTracks = ({ tracks }: Props) => {
                     </div>
                 </div>
                 <div className={'tw-flex tw-flex-col tw-space-y-2'}>
-                    {myTracks !== null && myTracks.filter(v => v.is_verified === verifiedTrack).map((v) => (
+                    {myTracks !== null && myTracks.map((v) => (
                         <div key={`myTrack_result_${v.id}`} className='tw-bg-black/10 tw-p-2 tw-rounded-md'>
-                            <div
-                                className={'tw-flex tw-justify-between tw-items-center tw-mb-1 tw-left-0 tw-flex-row-reverse'}>
+                            <div className={'tw-flex tw-justify-between tw-items-center tw-mb-1 '}>
                                 <ButtonGroup>
-                                    {!v.is_verified && (
-                                        <IconButton
-                                            variant={'ghost'}
-                                            size={'sm'}
-                                            fontSize={'xl'}
-                                            icon={<AiOutlineEdit color={'yellow'} />}
-                                            aria-label={'Edit track button'}
-                                            onClick={() => toggleEdit(v.id)}
-                                        />)}
+                                    {!v.is_verified &&
+                                    <IconButton
+                                        className=''
+                                        variant={'ghost'}
+                                        size={'sm'}
+                                        fontSize={'xl'}
+                                        icon={<VscVerified color={'green'} />}
+                                        aria-label={'Is verify'}/>}
+                                </ButtonGroup>
+                                <ButtonGroup>
+                                    <IconButton
+                                        variant={'ghost'}
+                                        size={'sm'}
+                                        fontSize={'xl'}
+                                        icon={<AiOutlineEdit color={'yellow'} />}
+                                        aria-label={'Edit track button'}
+                                        as={NextLink} href={`/me/tracks/${v.id}`}
+                                    />
                                     <IconButton
                                         variant={'ghost'}
                                         size={'sm'}
@@ -130,15 +134,12 @@ const MyTracks = ({ tracks }: Props) => {
                                         icon={<RxTrash color={'red'} />}
                                         aria-label={'Delete track button'}
                                         title={'Delete this song'}
-                                        onClick={() => handleDelete(v.id)}
+                                        onClick={() => handleDelete(v.id)}                                       
                                     />
                                 </ButtonGroup>
                             </div>
                             <div className={'tw-flex tw-items-center tw-justify-between'}>
                                 <div>
-                                    <Link as={NextLink} href={`/me/tracks/${v.id}`}>
-                                        {v.name}
-                                    </Link>
                                     <p>Name: {v.name}</p>
                                     <p>Artists: {v.artists?.join(', ')}</p>
                                     <p>Genres: {v.genres?.join(', ')}</p>
