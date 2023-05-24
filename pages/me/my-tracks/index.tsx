@@ -73,7 +73,9 @@ const Index = ({ tracks }: Props) => {
     }
 
     async function toggleEdit(id: string) {
+        const trackId = id;
 
+        window.location.href = `/me/my-tracks/${trackId}`;
     }
 
     useEffect(() => {
