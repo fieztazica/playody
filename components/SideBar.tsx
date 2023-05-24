@@ -97,7 +97,7 @@ function SideBar() {
                         <NavLink
                             active={false}
                             title={`${v.name}`}
-                            href={`#`}
+                            href={`/me/playlists/${encodeURIComponent(v.name)}`}
                         />
                     </div>
                 ))}
