@@ -110,7 +110,7 @@ export default function App({ Component, pageProps: { initialSession, ...pagePro
                     initialSession={initialSession}
                 >
                     <AppCtxProvider>
-                        <AudioCtxProvider>
+                        <AudioCtxProvider title={Component.title}>
                             <Progress
                                 display={indicator.isOpen ? 'flex' : 'none'}
                                 bgColor={'transparent'}
