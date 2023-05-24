@@ -33,11 +33,11 @@ type Props = {
 const TrackId = ({ track }: Props) => {
     const user = useUser()
     const [songName, setSongName] = useState(track?.name)
-    const [genres, setGenres] = useState<string[]>([track?.genres])
-    const [artists, setArtists] = useState<string[]>([track?.artists])
-    const [srcUrl, setSrcUrl] = useState('')
+    const [genres, setGenres] = useState<string[]>(track?.genres || [])
+    const [artists, setArtists] = useState<string[]>(track?.artists || [])
+    const [srcUrl, setSrcUrl] = useState(track?.src)
     const [duration, setDuration] = useState<number>(0)
-    const [imageUrl, setImageUrl] = useState('')
+    const [imageUrl, setImageUrl] = useState(track?.image_url)
     const [submitting, setSubmitting] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
     const router = useRouter()
@@ -216,12 +216,12 @@ const TrackId = ({ track }: Props) => {
                                             />
                                         )}
                                 </div>
-
                         </SimpleGrid>
                     </FormControl>
                     {track?.image_url && <div className={'tw-p-2 tw-aspect-square tw-max-w-xs'}>
                                         <Image alt={`${track.name}'s image`} src={track?.image_url} />
                                     </div>}
+                        <audio className={'tw-w-full'} controls src={track?.src || undefined} />
                     <FormControl>
                         <Button type={'submit'} colorScheme={'teal'} isLoading={submitting}>Submit</Button>
                     </FormControl>
