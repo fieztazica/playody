@@ -122,7 +122,10 @@ class TrackApi {
 
             return (await this.supabaseAdmin
                 .from('tracks')
-                .update({ ...body })
+                .update({
+                    ...body,
+                    is_verified: false
+                })
                 .eq('author', sessionRes.data.session?.user.id)
                 .eq('id', trackId)
                 .select())
