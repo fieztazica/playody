@@ -16,11 +16,11 @@ function DisplayUser() {
         <Flex>
             {profile ? (
                 <>
-                    <NextLink href={'/profile'}>
+                    <NextLink href={'/me'}>
                         <Avatar mr={2} src={profile.avatar_url || undefined} />
                     </NextLink>
                     <Stack spacing={1} justifyItems={'center'} align={'left'}>
-                        <Link as={NextLink} href={"/profile"} w='fit-content'>
+                        <Link as={NextLink} href={"/me"} w='fit-content'>
                             <Text fontSize={'16'} fontWeight={'semibold'}>
                                 {profile.full_name}
                             </Text>
@@ -30,6 +30,7 @@ function DisplayUser() {
                             onClick={() => {
                                 supabaseClient.auth.signOut()
                                 localStorage.setItem("ready_pass", "false")
+                                router.replace("/")
                             }}
                         >
                             <Text fontSize={'16'}>Logout</Text>
