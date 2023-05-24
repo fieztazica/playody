@@ -36,7 +36,7 @@ const TrackId = ({ track }: Props) => {
     const [genres, setGenres] = useState<string[]>(track?.genres || [])
     const [artists, setArtists] = useState<string[]>(track?.artists || [])
     const [srcUrl, setSrcUrl] = useState(track?.src)
-    const [duration, setDuration] = useState<number>(0)
+    const [duration, setDuration] = useState<number>(parseInt(`${track?.duration_s}`))
     const [imageUrl, setImageUrl] = useState(track?.image_url)
     const [submitting, setSubmitting] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
@@ -62,10 +62,10 @@ const TrackId = ({ track }: Props) => {
                 genres: genres.filter(v => v.length > 0),
                 artists: artists.filter(v => v.length > 0),
                 author: user.id,
-                duration_s: parseInt(`${duration}`) || 0,
+                duration_s: parseInt(`${track?.duration_s}`) || 0,
             }
-
-            const res = await fetch('/api/track', {
+            track?.id
+            const res = await fetch('/api/track?trackId=${track.id}', {
                 method: 'PUT',
                 body: JSON.stringify(trackToUpdate),
                 headers: {
@@ -79,12 +79,7 @@ const TrackId = ({ track }: Props) => {
                 throw jsonData
             }
             // console.log((jsonData as ApiResSuccess).data)
-            setArtists([''])
-            setGenres([''])
-            setSongName('')
-            setImageUrl('')
-            setSrcUrl('')
-            setDuration(0)
+
             alert('Uploaded! Please wait for verification process')
         } catch (e: any) {
             console.error(e)
@@ -92,10 +87,7 @@ const TrackId = ({ track }: Props) => {
                 setError(e.error.message)
         } finally {
             setSubmitting(false)
-            // @ts-ignore
-            imageUploadRef.current.value = null
-            // @ts-ignore
-            srcUploadRef.current.value = null
+            alert('false')
         }
     }
 
