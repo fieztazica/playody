@@ -57,7 +57,7 @@ function AudioControl({ ...props }) {
     const LoopIcon = loopMode === 'song' ? BsRepeat1 : BsRepeat
 
     const toggleLoopMode = () => {
-        const loopModes: ['none', 'queue', 'song'] = ['none', 'queue', 'song']
+        const loopModes: [null, 'queue', 'song'] = [null, 'queue', 'song']
 
         const currentLoopIndex = loopModes.indexOf(loopMode)
 
@@ -84,7 +84,7 @@ function AudioControl({ ...props }) {
         >
             <ButtonGroup alignItems={'center'}>
                 <IconButton
-                    color={loopMode !== 'none' ? 'pink.300' : undefined}
+                    color={loopMode !== null ? 'pink.300' : undefined}
                     size={'sm'}
                     variant={'ghost'}
                     rounded={'full'}

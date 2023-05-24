@@ -41,6 +41,8 @@ export function TrackCard({ track, bgColor = 'rgba(0,0,0,0.2)', onClickCover, ..
             variant={'unstyled'}
             p={2}
             bgColor={bgColor}
+            transition={"all"}
+            transitionDuration={"0.3s"}
             _hover={{
                 bgColor: 'rgba(255,255,255,0.05)',
                 boxShadow: 'inset 0 0 15px -8px #fff',
@@ -131,7 +133,7 @@ export function TrackCard({ track, bgColor = 'rgba(0,0,0,0.2)', onClickCover, ..
                                 />
                             </Tooltip>
                         </AddToPlaylistModal>
-                        <Text fontSize='sm'>{trackDurationString}</Text>
+                        <Text fontSize='sm' title={`${track.duration_s}s`}>{trackDurationString}</Text>
                     </Flex>
                 </Flex>
             </CardBody>
