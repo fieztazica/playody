@@ -134,6 +134,9 @@ const MyTracks = ({ tracks }: Props) => {
                             </div>
                             <div className={'tw-flex tw-items-center tw-justify-between'}>
                                 <div>
+                                    <Link as={NextLink} href={`/me/tracks/${v.id}`}>
+                                        {v.name}
+                                    </Link>
                                     <p>Name: {v.name}</p>
                                     <p>Artists: {v.artists?.join(', ')}</p>
                                     <p>Genres: {v.genres?.join(', ')}</p>
@@ -155,6 +158,8 @@ const MyTracks = ({ tracks }: Props) => {
 MyTracks.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
+
+MyTracks.title = "My Tracks"
 
 export default MyTracks
 

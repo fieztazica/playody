@@ -8,16 +8,17 @@ import { Database } from '@/typings/supabase'
 import { useEffect, useState } from 'react'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 
-import { Button, ButtonGroup, IconButton, Tooltip } from '@chakra-ui/react'
+import { Button, ButtonGroup, IconButton, Link, Tooltip } from '@chakra-ui/react'
 import Head from 'next/head'
 import { RxTrash } from 'react-icons/rx'
 import { useAppStates } from '@/lib/contexts/AppContext'
+import NextLink from 'next/link'
 
 type Props = {
     playlists: Playlist[] | null
 };
 
-const Playlists = ({ playlists }: Props) => {
+const MyPlaylists = ({ playlists }: Props) => {
     const { myPlaylists } = useAppStates()
     const [renderPlaylists, setRenderPlaylists] = useState(() => [...(playlists || [])])
 
@@ -38,8 +39,10 @@ const Playlists = ({ playlists }: Props) => {
                     >
                         <div
                             className={'tw-flex tw-items-center ' +
-                            'tw-justify-between tw-text-lg tw-font-bold'}>
-                            <p>{v.name}</p>
+                                'tw-justify-between tw-text-lg tw-font-bold'}>
+                            <Link as={NextLink} href={`/me/my-playlists`}>
+                                {v.name}
+                            </Link>
                         </div>
                     </div>
                 ))}
@@ -49,13 +52,13 @@ const Playlists = ({ playlists }: Props) => {
 }
 
 
-Playlists.getLayout = (page: React.ReactElement) => {
+MyPlaylists.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
-Playlists.title = 'My Playlists'
+MyPlaylists.title = 'My Playlists'
 
-export default Playlists
+export default MyPlaylists
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     const supabaseClient = createServerSupabaseClient<Database>(ctx)

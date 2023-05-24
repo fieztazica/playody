@@ -25,12 +25,13 @@ import { useUser } from '@supabase/auth-helpers-react'
 import { Track } from '@/typings'
 import { TrackUpdate } from '@/lib/api/track'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 type Props = {
     track: Track | null
 };
 
-const TrackId = ({ track }: Props) => {
+const MyTrackId = ({ track }: Props) => {
     const user = useUser()
     const [songName, setSongName] = useState(track?.name)
     const [genres, setGenres] = useState<string[]>(track?.genres || [])
@@ -45,27 +46,18 @@ const TrackId = ({ track }: Props) => {
 
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
-        if (!user) return
+        if (!user || !track) return
         try {
             setSubmitting(true)
             setError(null)
 
-            if (!srcUrl || !duration) {
-                setError('No audio file provided!')
-                return
-            }
-
             const trackToUpdate: TrackUpdate = {
-                src: srcUrl,
-                image_url: imageUrl,
                 name: songName,
                 genres: genres.filter(v => v.length > 0),
                 artists: artists.filter(v => v.length > 0),
-                author: user.id,
-                duration_s: parseInt(`${track?.duration_s}`) || 0,
             }
-            track?.id
-            const res = await fetch('/api/track?trackId=${track.id}', {
+
+            const res = await fetch(`/api/track?trackId=${track.id}`, {
                 method: 'PUT',
                 body: JSON.stringify(trackToUpdate),
                 headers: {
@@ -81,13 +73,13 @@ const TrackId = ({ track }: Props) => {
             // console.log((jsonData as ApiResSuccess).data)
 
             alert('Uploaded! Please wait for verification process')
+            router.push("/me/tracks")
         } catch (e: any) {
             console.error(e)
             if (e.error)
                 setError(e.error.message)
         } finally {
             setSubmitting(false)
-            alert('false')
         }
     }
 
@@ -131,41 +123,49 @@ const TrackId = ({ track }: Props) => {
         })
     }
 
+    if (!track) return null
+
     return (
-        <div className={'tw-w-full tw-rounded-md tw-bg-black/20'}>
-        <Container className={'tw-py-4 '}>
-        <form onSubmit={onSubmit}>
-            <Stack>
-            <FormControl isRequired>
-                <FormLabel>Song name</FormLabel>
-                    <Input value={songName} placeholder='Song name' onChange={(e) => {
-                        e.preventDefault()
-                        setSongName(e.target.value)
-                    }} />
-            </FormControl>
-            <FormControl isRequired>
-                <FormLabel>Genres</FormLabel>
-                    <SimpleGrid minChildWidth='100px' spacing={2}>
-                        {genres.map((v, i) => (
-                        <Input
-                            key={`genre-${i}`}
-                            placeholder={`genre #${i + 1}`}
-                            value={v}
-                            onChange={(e) => {
-                            e.preventDefault()
-                            onGenresChange(e.target.value, i)
-                            }}
-                            />
-                            ))}
-                                <div>
-                                    {genres.length > 1 && (
-                                        <div>
-                                            <IconButton
-                                                aria-label='Remove genre button'
-                                                icon={<RiSubtractFill />}
-                                                onClick={() => removeLastGenre()}
-                                            />
-                                        </div>
+        <>
+            <Head>
+                <title>
+                    {`Playody | ${track.name || track.id}`}
+                </title>
+            </Head>
+            <div className={'tw-w-full tw-rounded-md tw-bg-black/20'}>
+                <Container className={'tw-py-4 '}>
+                    <form onSubmit={onSubmit}>
+                        <Stack>
+                            <FormControl isRequired>
+                                <FormLabel>Song name</FormLabel>
+                                <Input value={songName} placeholder='Song name' onChange={(e) => {
+                                    e.preventDefault()
+                                    setSongName(e.target.value)
+                                }} />
+                            </FormControl>
+                            <FormControl isRequired>
+                                <FormLabel>Genres</FormLabel>
+                                <SimpleGrid minChildWidth='100px' spacing={2}>
+                                    {genres.map((v, i) => (
+                                        <Input
+                                            key={`genre-${i}`}
+                                            placeholder={`genre #${i + 1}`}
+                                            value={v}
+                                            onChange={(e) => {
+                                                e.preventDefault()
+                                                onGenresChange(e.target.value, i)
+                                            }}
+                                        />
+                                    ))}
+                                    <div>
+                                        {genres.length > 1 && (
+                                            <div>
+                                                <IconButton
+                                                    aria-label='Remove genre button'
+                                                    icon={<RiSubtractFill />}
+                                                    onClick={() => removeLastGenre()}
+                                                />
+                                            </div>
                                         )}
                                         {genres.length < 2 && (
                                             <div>
@@ -176,29 +176,29 @@ const TrackId = ({ track }: Props) => {
                                                 />
                                             </div>
                                         )}
-                                </div>
-                        </SimpleGrid>
-                </FormControl>
-                <FormControl isRequired>
-                    <FormLabel>Artists</FormLabel>
-                        <SimpleGrid minChildWidth='100px' spacing={2}>
-                            {artists.map((v, i) => (
-                            <Input
-                                key={`artist-${i}`}
-                                placeholder={`artist #${i + 1}`}
-                                value={artists[i]}
-                                onChange={(e) => {
-                                    e.preventDefault()
-                                     onArtistsChange(e.target.value, i)
-                                    }}
-                                    />
+                                    </div>
+                                </SimpleGrid>
+                            </FormControl>
+                            <FormControl isRequired>
+                                <FormLabel>Artists</FormLabel>
+                                <SimpleGrid minChildWidth='100px' spacing={2}>
+                                    {artists.map((v, i) => (
+                                        <Input
+                                            key={`artist-${i}`}
+                                            placeholder={`artist #${i + 1}`}
+                                            value={artists[i]}
+                                            onChange={(e) => {
+                                                e.preventDefault()
+                                                onArtistsChange(e.target.value, i)
+                                            }}
+                                        />
                                     ))}
-                                <div className={'tw-flex tw-space-x-2'}>
-                                {artists.length > 1 && (
-                                        <IconButton
-                                            aria-label='Remove artist button'
-                                            icon={<RiSubtractFill />}
-                                            onClick={() => removeLastArtist()}
+                                    <div className={'tw-flex tw-space-x-2'}>
+                                        {artists.length > 1 && (
+                                            <IconButton
+                                                aria-label='Remove artist button'
+                                                icon={<RiSubtractFill />}
+                                                onClick={() => removeLastArtist()}
                                             />
                                         )}
                                         {artists.length < 4 && (
@@ -208,28 +208,29 @@ const TrackId = ({ track }: Props) => {
                                                 onClick={() => addArtist()}
                                             />
                                         )}
-                                </div>
-                        </SimpleGrid>
-                    </FormControl>
-                    {track?.image_url && <div className={'tw-p-2 tw-aspect-square tw-max-w-xs'}>
-                                        <Image alt={`${track.name}'s image`} src={track?.image_url} />
-                                    </div>}
-                        <audio className={'tw-w-full'} controls src={track?.src || undefined} />
-                    <FormControl>
-                        <Button type={'submit'} colorScheme={'teal'} isLoading={submitting}>Submit</Button>
-                    </FormControl>
-            </Stack>
-        </form>
-        </Container>
-        </div>
+                                    </div>
+                                </SimpleGrid>
+                            </FormControl>
+                            {track?.image_url && <div className={'tw-p-2 tw-aspect-square tw-max-w-xs'}>
+                                <Image alt={`${track.name}'s image`} src={track?.image_url} />
+                            </div>}
+                            <audio className={'tw-w-full'} controls src={track?.src || undefined} />
+                            <FormControl>
+                                <Button type={'submit'} colorScheme={'teal'} isLoading={submitting}>Submit</Button>
+                            </FormControl>
+                        </Stack>
+                    </form>
+                </Container>
+            </div>
+        </>
     )
 }
 
-TrackId.getLayout = (page: React.ReactElement) => {
+MyTrackId.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
-export default TrackId
+export default MyTrackId
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     const supabaseClient = createServerSupabaseClient<Database>(ctx)

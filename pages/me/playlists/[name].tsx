@@ -6,27 +6,37 @@ import { GetServerSideProps } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
 import { Playlist } from '@/typings'
+import Head from 'next/head'
 
 type Props = {
     playlist: Playlist | null
 };
 
-const PlaylistName = ({ playlist }: Props) => {
+const MyPlaylistName = ({ playlist }: Props) => {
     const router = useRouter()
     const playlistNameQuery = router.query.name as string
 
-    return (
-        <div>
+    if (!playlist) return null
 
-        </div>
+    return (
+        <>
+            <Head>
+                <title>
+                    {`Playody | ${playlist.name}`}
+                </title>
+            </Head>
+            <div>
+
+            </div>
+        </>
     )
 }
 
-PlaylistName.getLayout = (page: React.ReactElement) => {
+MyPlaylistName.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
-export default PlaylistName
+export default MyPlaylistName
 
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
