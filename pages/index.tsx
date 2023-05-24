@@ -74,6 +74,6 @@ Home.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
-Home.title = "Home"
+Home.title = 'Home'
 
 export default Home

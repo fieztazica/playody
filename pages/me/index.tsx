@@ -43,10 +43,10 @@ const MyProfile = ({ profile }: Props) => {
                         <Link as={NextLink} href={'/queue'}>
                             Queue
                         </Link>
-                        <Link as={NextLink} href={'/me/my-tracks'}>
+                        <Link as={NextLink} href={'/me/tracks'}>
                             My Tracks
                         </Link>
-                        <Link as={NextLink} href={'/me/my-playlists'}>
+                        <Link as={NextLink} href={'/me/playlists'}>
                             My Playlists
                         </Link>
                         <Link w='fit-content'

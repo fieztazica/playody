@@ -3,10 +3,11 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { useToast } from '@chakra-ui/react'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
+import Head from 'next/head'
 
 export const AudioCtx = createContext<AudioCtxType | null>(null)
 
-export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
+export function AudioCtxProvider({ children, title }: { children: React.ReactNode, title?: string }) {
     const user = useUser()
     const supabaseClient = useSupabaseClient<Database>()
     const toast = useToast()
@@ -57,7 +58,6 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
                         setIsPause(true)
                         break
                     }
-                    console.log(queue, playingTrack, previousTracks, nowQueue)
                     if (!shuffle) {
                         setPlayingTrack(nowQueue.shift() || null)
                     } else setPlayingTrack(getRandomTrack())
@@ -198,7 +198,12 @@ export function AudioCtxProvider({ children }: { children: React.ReactNode }) {
     }
 
     return (
-        <AudioCtx.Provider value={sharedStates}>{children}</AudioCtx.Provider>
+        <>
+            <Head>
+                <title>{(playingTrack && !isPause) ? `${playingTrack.name} - ${playingTrack.artists.join(', ')} - Playody` : title ? `Playody | ${title}` : 'Playody'}</title>
+            </Head>
+            <AudioCtx.Provider value={sharedStates}>{children}</AudioCtx.Provider>
+        </>
     )
 }
 

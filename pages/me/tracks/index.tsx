@@ -16,7 +16,7 @@ type Props = {
     tracks: Track[] | null
 }
 
-const Index = ({ tracks }: Props) => {
+const MyTracks = ({ tracks }: Props) => {
     const supabaseClient = useSupabaseClient<Database>()
     const user = useUser()
     const [refreshing, setRefreshing] = useState(false)
@@ -88,10 +88,6 @@ const Index = ({ tracks }: Props) => {
 
     return (
         <>
-
-            <Head>
-                <title>My Tracks</title>
-            </Head>
             <div>
                 <div
                     className='tw-mb-4 after:tw-block after:tw-mt-1 after:tw-rounded-full after:tw-h-1 after:tw-w-full after:tw-bg-white/30'>
@@ -140,6 +136,9 @@ const Index = ({ tracks }: Props) => {
                             </div>
                             <div className={'tw-flex tw-items-center tw-justify-between'}>
                                 <div>
+                                    <Link as={NextLink} href={`/me/tracks/${v.id}`}>
+                                        {v.name}
+                                    </Link>
                                     <p>Name: {v.name}</p>
                                     <p>Artists: {v.artists?.join(', ')}</p>
                                     <p>Genres: {v.genres?.join(', ')}</p>
@@ -158,11 +157,13 @@ const Index = ({ tracks }: Props) => {
     )
 }
 
-Index.getLayout = (page: React.ReactElement) => {
+MyTracks.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
-export default Index
+MyTracks.title = "My Tracks"
+
+export default MyTracks
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     const supabaseClient = createServerSupabaseClient<Database>(ctx)

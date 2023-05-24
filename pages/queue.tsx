@@ -22,14 +22,7 @@ const Queue = () => {
         setPlayingTrack(track)
     }
 
-    const title = playingTrack !== null ? `${playingTrack.name} - ${playingTrack.artists.join(', ')}` : 'Queue'
-
     return (<>
-            <Head>
-                <title>
-                    {title}
-                </title>
-            </Head>
             <div className='tw-flex tw-flex-col tw-items-center tw-h-full'>
                 <div className={'tw-flex tw-flex-col tw-w-full tw-space-y-2'}>
                     {!isPause && playingTrack !== null && <>
@@ -88,6 +81,6 @@ Queue.getLayout = (page: React.ReactElement) => {
     return <MainLayout>{page}</MainLayout>
 }
 
-// Queue.title = "Queue"
+Queue.title = 'Queue'
 
 export default Queue

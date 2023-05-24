@@ -34,11 +34,11 @@ const MobileNavBar = (props: Props) => {
                         </NextLink>
                     </div>
                     : <div key={`playlist_nav_link_logo`} className={'tw-flex-1'}>
-                        <NextLink href={'/me/my-playlists'}>
+                        <NextLink href={'/me/playlists'}>
                             <div className={'tw-flex tw-flex-col tw-justify-center tw-items-center tw-p-2'}>
-                                {pathname == '/me/my-playlists' ? <Icon as={RiPlayListFill} /> :
+                                {pathname == '/me/playlists' ? <Icon as={RiPlayListFill} /> :
                                     <Icon as={RiPlayListLine} />}
-                                <span className={`tw-text-sm ${pathname == '/me/my-playlists' ? 'tw-font-bold' : ''}`}>
+                                <span className={`tw-text-sm ${pathname == '/me/playlists' ? 'tw-font-bold' : ''}`}>
                                 Playlist
                             </span>
                             </div>
