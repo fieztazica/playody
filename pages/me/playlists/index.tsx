@@ -13,6 +13,8 @@ import Head from 'next/head'
 import { RxTrash } from 'react-icons/rx'
 import { useAppStates } from '@/lib/contexts/AppContext'
 import NextLink from 'next/link'
+import { NavBar } from '@/components/NavBar'
+import SearchBar from '@/components/SearchBar'
 
 type Props = {
     playlists: Playlist[] | null
@@ -21,6 +23,7 @@ type Props = {
 const MyPlaylists = ({ playlists }: Props) => {
     const { myPlaylists } = useAppStates()
     const [renderPlaylists, setRenderPlaylists] = useState(() => [...(playlists || [])])
+    const [filter, setFilter] = useState('')
 
     useEffect(() => {
         setRenderPlaylists([...(myPlaylists || [])])
@@ -29,22 +32,34 @@ const MyPlaylists = ({ playlists }: Props) => {
 
     return (
         <>
-            <div className={'tw-flex tw-flex-col tw-space-y-2'}>
-                {renderPlaylists !== null && renderPlaylists.map((v) => (
-                    <div key={`myPlaylist_result_${v.name}`}
-                         className={'tw-flex tw-space-x-2 ' +
-                             'tw-items-center tw-justify-between ' +
-                             'tw-group tw-px-2 tw-py-2 hover:tw-bg-white/10 ' +
-                             'active:tw-bg-white/20 tw-rounded-md tw-w-full'}
-                    >
+            <NavBar>
+                <SearchBar
+                    query={filter}
+                    placeholder={"Search for a playlist"}
+                    onChange={(e) => {
+                        e.preventDefault()
+                        setFilter(e.target.value.toLowerCase())
+                    }}/>
+            </NavBar>
+            <div className={'tw-flex tw-flex-col tw-space-y-1'}>
+                {renderPlaylists !== null && renderPlaylists.filter(p => filter ? p.name.toLowerCase().includes(filter.toLowerCase()) : true).map((v) => (
+                    <NextLink
+                        key={`myPlaylist_result_${v.name}`}
+                        href={`/me/playlists/${encodeURIComponent(v.name)}`}>
                         <div
-                            className={'tw-flex tw-items-center ' +
-                                'tw-justify-between tw-text-lg tw-font-bold'}>
-                            <Link as={NextLink} href={`/me/my-playlists`}>
+                            className={'tw-flex tw-space-x-2 ' +
+                                'tw-items-center tw-justify-between ' +
+                                'tw-group tw-px-2 tw-py-2 hover:tw-bg-white/10 ' +
+                                'active:tw-bg-white/20 tw-rounded-md tw-w-full'}
+                        >
+                            <div
+                                className={'tw-flex tw-items-center ' +
+                                    'tw-justify-between tw-text-lg tw-font-bold'}>
+
                                 {v.name}
-                            </Link>
+                            </div>
                         </div>
-                    </div>
+                    </NextLink>
                 ))}
             </div>
         </>
@@ -53,7 +68,7 @@ const MyPlaylists = ({ playlists }: Props) => {
 
 
 MyPlaylists.getLayout = (page: React.ReactElement) => {
-    return <MainLayout>{page}</MainLayout>
+    return <MainLayout navbar={false}>{page}</MainLayout>
 }
 
 MyPlaylists.title = 'My Playlists'

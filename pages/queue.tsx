@@ -8,6 +8,9 @@ import UnderlineTypo from '@/components/UnderlineTypo'
 import { IconButton } from '@chakra-ui/react'
 import { MdPlaylistRemove } from 'react-icons/md'
 import { Track } from '@/typings'
+import { NavBar } from '@/components/NavBar'
+import SearchBar from '@/components/SearchBar'
+import { useState } from 'react'
 
 const Queue = () => {
     const {
@@ -17,12 +20,22 @@ const Queue = () => {
         setPlayingTrack,
         removeFromQueue,
     } = useAudioCtx()
+    const [filter, setFilter] = useState('')
 
     function handleClickSong(track: Track) {
         setPlayingTrack(track)
     }
 
     return (<>
+            <NavBar>
+                <SearchBar
+                    query={filter}
+                    placeholder={"Search a song in queue"}
+                    onChange={(e) => {
+                        e.preventDefault()
+                        setFilter(e.target.value.toLowerCase())
+                    }}/>
+            </NavBar>
             <div className='tw-flex tw-flex-col tw-items-center tw-h-full'>
                 <div className={'tw-flex tw-flex-col tw-w-full tw-space-y-2'}>
                     {!isPause && playingTrack !== null && <>
@@ -38,11 +51,10 @@ const Queue = () => {
                             />
                         </div>
                     </>}
-                    <UnderlineTypo>
-                        {!isPause && playingTrack !== null ? 'Waiting in queue' : 'Queue'}
-                    </UnderlineTypo>
+                    {(!isPause && playingTrack !== null && queue.filter(v => v !== playingTrack).length > 0) &&
+                        <UnderlineTypo>Waiting in queue </UnderlineTypo>}
                     {queue && queue.length ?
-                        queue.filter((v) => !isPause ? v !== playingTrack : true).map((v, i) => (
+                        queue.filter((v) => !isPause ? v !== playingTrack : true).filter(v => filter ? v.name.toLowerCase().includes(filter) || v.genres?.join(",").toLowerCase().includes(filter) || v.artists.join(",").toLowerCase().includes(filter) : true).map((v, i) => (
                             <div
                                 key={`queued_track_${v.id}_${i}`}
                                 className={'tw-flex tw-w-full tw-space-x-2 ' +
@@ -78,7 +90,7 @@ const Queue = () => {
 }
 
 Queue.getLayout = (page: React.ReactElement) => {
-    return <MainLayout>{page}</MainLayout>
+    return <MainLayout navbar={false}>{page}</MainLayout>
 }
 
 Queue.title = 'Queue'

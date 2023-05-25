@@ -9,6 +9,10 @@ import { RxCross2, RxCheck, RxTrash } from 'react-icons/rx'
 import { useEffect, useState } from 'react'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { TrackUpdate } from '@/lib/api/track'
+import { NavBar } from '@/components/NavBar'
+import SearchBar from '@/components/SearchBar'
+import { Checkbox } from '@chakra-ui/checkbox'
+import { MdRefresh } from 'react-icons/md'
 
 type TrackWithProfile = Track & { profiles: Profile }
 
@@ -22,16 +26,17 @@ const VerifyTracks = (props: Props) => {
     const [tracks, setTracks] = useState<TrackWithProfile[] | null>(null)
     const [verifiedTrack, setVerifiedTrack] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
+    const [filter, setFilter] = useState('')
 
-    async function toggleVerified({  id, is_verified }: Track) {
+    async function toggleVerified({ id, is_verified }: Track) {
         try {
             const updateObj: TrackUpdate = { is_verified: !is_verified }
             const res = await fetch(`/api/track?trackId=${id}`, {
                 method: 'PUT',
                 body: JSON.stringify(updateObj),
                 headers: {
-                    "Content-Type": "application/json"
-                }
+                    'Content-Type': 'application/json',
+                },
             }).then(r => r.json())
 
             if (res.error)
@@ -45,24 +50,26 @@ const VerifyTracks = (props: Props) => {
         }
     }
 
-    async function handleDelete(id: string) {
-        try {
-            const res = await fetch(`/api/track?trackId=${id}`, {
-                method: 'DELETE',
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(r => r.json())
+    function handleDelete(id: string) {
+        (async () => {
+            try {
+                const res = await fetch(`/api/track?trackId=${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }).then(r => r.json())
 
-            if (res.error)
-                throw res.error
+                if (res.error)
+                    throw res.error
 
-            refresh()
-        } catch (e: any) {
-            if (e?.message)
-                alert(e.message)
-            console.error(e)
-        }
+                refresh()
+            } catch (e: any) {
+                if (e?.message)
+                    alert(e.message)
+                console.error(e)
+            }
+        })()
     }
 
     async function refresh() {
@@ -101,38 +108,37 @@ const VerifyTracks = (props: Props) => {
 
     return (
         <>
-            <div>
-                <div
-                    className={'tw-mb-4 after:tw-block after:tw-mt-1 after:tw-rounded-full after:tw-h-1 after:tw-w-full after:tw-bg-white/30'}>
-                    <div className={'tw-flex tw-justify-between tw-items-center'}>
-                        <Tooltip label={'Click to toggle between verified and unverified tracks'}>
-                            <Button
-                                colorScheme={verifiedTrack ? 'teal' : 'red'}
-                                onClick={() => setVerifiedTrack(!verifiedTrack)}
-                                variant={'ghost'}
-                            >
-                                {verifiedTrack ? 'Verified Tracks' : 'Unverified Tracks'}
-                                {': '}
-                                {tracks?.filter(v => v.is_verified === verifiedTrack).length || 0}
-                            </Button>
-                        </Tooltip>
-                        <Button
-                            isLoading={refreshing}
-                            onClick={() => refresh()}
-                            variant={'ghost'}
-                        >
-                            Refresh
-                        </Button>
-                    </div>
+            <NavBar>
+                <div className={'tw-flex tw-space-x-2 tw-h-full tw-items-center tw-w-full'}>
+                    <SearchBar
+                        query={filter}
+                        placeholder={'Search for a track'}
+                        onChange={(e) => {
+                            e.preventDefault()
+                            setFilter(e.target.value.toLowerCase())
+                        }} />
+                    <Checkbox
+                        isChecked={verifiedTrack}
+                        onChange={(e) => {
+                            e.preventDefault()
+                            setVerifiedTrack(e.target.checked)
+                        }}>Verified</Checkbox>
+                    <IconButton
+                        isLoading={refreshing}
+                        onClick={() => refresh()}
+                        title={'Refresh'}
+                        icon={<MdRefresh />}
+                        aria-label={'Refresh button'} />
                 </div>
-                <div className={'tw-flex tw-flex-col tw-space-y-2'}>
-                    {
-                        tracks !== null && tracks.filter(v => v.is_verified === verifiedTrack).map((v) => (
-                            <div
-                                key={`track_result_${v.id}`}
-                                className={'tw-bg-black/10 tw-p-2 tw-rounded-md'}
-                            >
-                                <div className={'tw-flex tw-justify-between tw-items-center tw-mb-1'}>
+            </NavBar>
+            <div className={'tw-flex tw-flex-col tw-space-y-2'}>
+                {
+                    tracks !== null && tracks.filter(v => v.is_verified === verifiedTrack).filter(v => filter ? v.name.toLowerCase().includes(filter) || v.genres?.join(',').toLowerCase().includes(filter) || v.artists.join(',').toLowerCase().includes(filter) : true).map((v) => (
+                        <div
+                            key={`track_result_${v.id}`}
+                            className={'tw-bg-black/10 tw-p-2 tw-rounded-md'}
+                        >
+                            <div className={'tw-flex tw-justify-between tw-items-center tw-mb-1'}>
                                     <span>
                                         <span className={`tw-font-semibold`}
                                               title={v.author || undefined}
@@ -141,53 +147,52 @@ const VerifyTracks = (props: Props) => {
                                         </span>{' '}
                                         uploaded at {new Date(v.created_at || 0).toLocaleString()}
                                     </span>
-                                    <ButtonGroup>
-                                        <IconButton
-                                            variant={'ghost'}
-                                            size={'sm'}
-                                            fontSize={'xl'}
-                                            icon={v.is_verified ? <RxCross2 color={'red'} /> : <RxCheck color={'green'} />}
-                                            aria-label={v.is_verified ? 'Revoke track button' : 'Accept track button'}
-                                            title={v.is_verified ? 'Revoke verification of this song' : 'Verify this song'}
-                                            onClick={() => toggleVerified(v)}
-                                        />
-                                        <IconButton
-                                            variant={'ghost'}
-                                            size={'sm'}
-                                            fontSize={'xl'}
-                                            icon={<RxTrash color={'red'} />}
-                                            aria-label={'Delete track button'}
-                                            title={'Delete this song'}
-                                            onClick={() => handleDelete(v.id)}
-                                        />
-                                    </ButtonGroup>
-                                </div>
-                                <div className={'tw-flex tw-items-center tw-justify-between'}>
-                                    <div>
-                                        <p>Name: {v.name}</p>
-                                        <p>Artists: {v.artists?.join(', ')}</p>
-                                        <p>Genres: {v.genres?.join(', ')}</p>
-                                        <p>Duration: {v.duration_s}s</p>
-                                    </div>
-                                    {v.image_url && <div className={'tw-p-2 tw-aspect-square tw-max-w-xs'}>
-                                        <Image alt={`${v.name}'s image`} src={v.image_url} />
-                                    </div>}
-                                </div>
-                                <audio className={'tw-w-full'} controls src={v.src || undefined} />
+                                <ButtonGroup>
+                                    <IconButton
+                                        variant={'ghost'}
+                                        size={'sm'}
+                                        fontSize={'xl'}
+                                        icon={v.is_verified ? <RxCross2 color={'red'} /> : <RxCheck color={'green'} />}
+                                        aria-label={v.is_verified ? 'Revoke track button' : 'Accept track button'}
+                                        title={v.is_verified ? 'Revoke verification of this song' : 'Verify this song'}
+                                        onClick={() => toggleVerified(v)}
+                                    />
+                                    <IconButton
+                                        variant={'ghost'}
+                                        size={'sm'}
+                                        fontSize={'xl'}
+                                        icon={<RxTrash color={'red'} />}
+                                        aria-label={'Delete track button'}
+                                        title={'Delete this song'}
+                                        onClick={() => handleDelete(v.id)}
+                                    />
+                                </ButtonGroup>
                             </div>
-                        ))
-                    }
-                </div>
+                            <div className={'tw-flex tw-items-center tw-justify-between'}>
+                                <div>
+                                    <p>Name: {v.name}</p>
+                                    <p>Artists: {v.artists?.join(', ')}</p>
+                                    <p>Genres: {v.genres?.join(', ')}</p>
+                                    <p>Duration: {v.duration_s}s</p>
+                                </div>
+                                {v.image_url && <div className={'tw-p-2 tw-aspect-square tw-max-w-xs'}>
+                                    <Image alt={`${v.name}'s image`} src={v.image_url} />
+                                </div>}
+                            </div>
+                            <audio className={'tw-w-full'} controls src={v.src || undefined} />
+                        </div>
+                    ))
+                }
             </div>
         </>
     )
 }
 
 VerifyTracks.getLayout = (page: React.ReactElement) => {
-    return <MainLayout>{page}</MainLayout>
+    return <MainLayout navbar={false}>{page}</MainLayout>
 }
 
-VerifyTracks.title= "Verify Tracks"
+VerifyTracks.title = 'Verify Tracks'
 export default VerifyTracks
 
 export const getServerSideProps: GetServerSideProps<{

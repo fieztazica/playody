@@ -4,24 +4,22 @@ import { RiSearchLine } from 'react-icons/ri'
 
 type Props = {
     query: string;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    placeholder?: string
     [key: string]: any
 }
 
-function SearchBar({ query, onChange, ...props }: Props) {
+function SearchBar({ query, onChange, placeholder = 'Play a melody', ...props }: Props) {
     return (
         <InputGroup>
             <InputLeftElement>
                 <RiSearchLine />
             </InputLeftElement>
             <Input
-                id={"search_bar"}
-                key={"SearchBar"}
                 type={'text'}
-                name={'searchQuery'}
                 value={query}
                 w={{ base: 'full', md: 300 }}
-                placeholder='Play a melody'
+                placeholder={placeholder}
                 onChange={onChange}
                 {...props}
             />

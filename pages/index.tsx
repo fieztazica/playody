@@ -4,6 +4,8 @@ import MainLayout from '@/components/MainLayout'
 import { Track, Profile } from '@/typings'
 import PostCard from '@/components/PostCard'
 import { useInViewport } from 'react-in-viewport'
+import { NavBar } from '@/components/NavBar'
+import SearchBar from '@/components/SearchBar'
 
 const Home = () => {
     const [page, setPage] = useState(1)
@@ -11,6 +13,7 @@ const Home = () => {
     const [posts, setPosts] = useState<(Track & { profiles: Profile | null })[]>([])
     const [loading, setLoading] = useState(false)
     const loadBoxRef = useRef(null)
+    const [filter, setFilter] = useState('')
     const {
         inViewport,
     } = useInViewport(
@@ -54,8 +57,17 @@ const Home = () => {
 
     return (
         <>
+            <NavBar>
+                <SearchBar
+                    query={filter}
+                    placeholder={"Search for a post"}
+                    onChange={(e) => {
+                        e.preventDefault()
+                        setFilter(e.target.value.toLowerCase())
+                    }}/>
+            </NavBar>
             <div className={'tw-flex tw-flex-col tw-space-y-2'}>
-                {posts.length && posts.map((v, i) => (
+                {posts.length > 0 && posts.filter(v => filter ? v.name.toLowerCase().includes(filter) || v.genres?.join(",").toLowerCase().includes(filter) || v.artists.join(",").toLowerCase().includes(filter) || v.profiles?.full_name?.toLowerCase().includes(filter) : true).map((v, i) => (
                     <div key={`track_${i}_${v.id}`}>
                         <PostCard track={v} />
                     </div>
@@ -71,7 +83,7 @@ const Home = () => {
 }
 
 Home.getLayout = (page: React.ReactElement) => {
-    return <MainLayout>{page}</MainLayout>
+    return <MainLayout navbar={false}>{page}</MainLayout>
 }
 
 Home.title = 'Home'

@@ -11,6 +11,8 @@ import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
 import { GetServerSideProps } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { NavBar } from '@/components/NavBar'
+import SearchBar from '@/components/SearchBar'
 
 type Props = {
     tracks: Track[] | null
@@ -21,7 +23,7 @@ const MyTracks = ({ tracks }: Props) => {
     const user = useUser()
     const [refreshing, setRefreshing] = useState(false)
     const [myTracks, setMyTracks] = useState<Track[]>([])
-
+    const [filter, setFilter] = useState('')
     const [verifiedTrack, setVerifiedTrack] = useState(true)
 
     async function refresh() {
@@ -86,6 +88,15 @@ const MyTracks = ({ tracks }: Props) => {
 
     return (
         <>
+            <NavBar>
+                <SearchBar
+                    query={filter}
+                    placeholder={"Search for a track"}
+                    onChange={(e) => {
+                        e.preventDefault()
+                        setFilter(e.target.value.toLowerCase())
+                    }}/>
+            </NavBar>
             <div>
                 <div
                     className='tw-mb-4 after:tw-block after:tw-mt-1 after:tw-rounded-full after:tw-h-1 after:tw-w-full after:tw-bg-white/30'>
@@ -107,7 +118,7 @@ const MyTracks = ({ tracks }: Props) => {
                     </div>
                 </div>
                 <div className={'tw-flex tw-flex-col tw-space-y-2'}>
-                    {myTracks !== null && myTracks.filter(v => v.is_verified === verifiedTrack).map((v) => (
+                    {myTracks !== null && myTracks.filter(v => v.is_verified === verifiedTrack).filter(v => filter ? v.name.toLowerCase().includes(filter) || v.genres?.join(",").toLowerCase().includes(filter) || v.artists.join(",").toLowerCase().includes(filter) : true).map((v) => (
                         <div key={`myTrack_result_${v.id}`} className='tw-bg-black/10 tw-p-2 tw-rounded-md'>
                             <div
                                 className={'tw-flex tw-justify-between tw-items-center tw-mb-1 tw-left-0 tw-flex-row-reverse'}>
@@ -156,7 +167,7 @@ const MyTracks = ({ tracks }: Props) => {
 }
 
 MyTracks.getLayout = (page: React.ReactElement) => {
-    return <MainLayout>{page}</MainLayout>
+    return <MainLayout navbar={false}>{page}</MainLayout>
 }
 
 MyTracks.title = "My Tracks"
