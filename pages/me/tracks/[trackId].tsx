@@ -55,6 +55,7 @@ const MyTrackId = ({ track }: Props) => {
                 name: songName,
                 genres: genres.filter(v => v.length > 0),
                 artists: artists.filter(v => v.length > 0),
+                is_verified: false
             }
 
             const res = await fetch(`/api/track?trackId=${track.id}`, {
