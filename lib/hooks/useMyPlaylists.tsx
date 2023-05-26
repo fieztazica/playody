@@ -19,6 +19,7 @@ export default function useMyPlaylists() {
                 const { data, error } = await supabaseClient
                     .from('playlists')
                     .select('*')
+                    .order('name', { ascending: true })
                     .eq('author', session.user.id)
 
                 if (error) {
@@ -40,7 +41,8 @@ export default function useMyPlaylists() {
 
     if (!session) return {
         playlists: null,
-        fetchPlaylists: () => {}
+        fetchPlaylists: () => {
+        },
     }
 
     return { playlists, fetchPlaylists }
