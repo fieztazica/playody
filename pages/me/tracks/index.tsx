@@ -110,7 +110,7 @@ const MyTracks = ({ tracks }: Props) => {
                         <div key={`myTrack_result_${v.id}`} className='tw-bg-black/10 tw-p-2 tw-rounded-md'>
                             <div className={'tw-flex tw-justify-between tw-items-center tw-mb-1 '}>
                                 <ButtonGroup>
-                                    {!v.is_verified &&
+                                    {v.is_verified &&
                                     <IconButton
                                         className=''
                                         variant={'ghost'}
