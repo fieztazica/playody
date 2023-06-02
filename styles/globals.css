@@ -46,10 +46,13 @@
 .waving {
     background-image: linear-gradient(
             -225deg,
-            #231557 0%,
-            #44107a 29%,
-            #ff1361 67%,
-            #fff800 100%
+            #0BC5EA 0%,
+            #9F7AEA 15%,
+            #ED64A6 30%,
+            #FFFFFF 50%,
+            #ED64A6 70%,
+            #9F7AEA 85%,
+            #0BC5EA 100%
     );
     background-size: 200% auto;
     background-clip: text;
