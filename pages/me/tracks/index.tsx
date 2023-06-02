@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, IconButton, Input, Link, Tooltip, Image } from '@chakra-ui/react'
+import { Button, ButtonGroup, IconButton, Input, Link, Tooltip, Image, Icon } from '@chakra-ui/react'
 import MainLayout from '@/components/MainLayout'
 import Head from 'next/head'
 import NextLink from 'next/link'
@@ -7,13 +7,14 @@ import { TrackCard } from '@/components/TrackCard'
 import { Track } from '@/typings'
 import { RxTrash } from 'react-icons/rx'
 import { AiOutlineEdit } from 'react-icons/ai'
-import {VscVerified} from 'react-icons/vsc'
+import { VscVerified } from 'react-icons/vsc'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '@/typings/supabase'
 import { GetServerSideProps } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NavBar } from '@/components/NavBar'
 import SearchBar from '@/components/SearchBar'
+import { MdRefresh } from 'react-icons/md'
 
 type Props = {
     tracks: Track[] | null
@@ -25,7 +26,6 @@ const MyTracks = ({ tracks }: Props) => {
     const [refreshing, setRefreshing] = useState(false)
     const [myTracks, setMyTracks] = useState<Track[]>([])
     const [filter, setFilter] = useState('')
-    const [verifiedTrack, setVerifiedTrack] = useState(true)
 
     async function refresh() {
         try {
@@ -87,73 +87,73 @@ const MyTracks = ({ tracks }: Props) => {
     return (
         <>
             <NavBar>
-                <SearchBar
-                    query={filter}
-                    placeholder={"Search for a track"}
-                    onChange={(e) => {
-                        e.preventDefault()
-                        setFilter(e.target.value.toLowerCase())
-                    }}/>
+                <div className={'tw-flex tw-space-x-2 tw-h-full tw-items-center tw-w-full'}>
+                    <SearchBar
+                        query={filter}
+                        placeholder={'Search for a track'}
+                        onChange={(e) => {
+                            e.preventDefault()
+                            setFilter(e.target.value.toLowerCase())
+                        }} />
+                    <IconButton
+                        isLoading={refreshing}
+                        onClick={() => refresh()}
+                        title={'Refresh'}
+                        icon={<MdRefresh />}
+                        aria-label={'Refresh button'} />
+                </div>
             </NavBar>
-            <div>
-                <div
-                    className='tw-mb-4 after:tw-block after:tw-mt-1 after:tw-rounded-full after:tw-h-1 after:tw-w-full after:tw-bg-white/30'>
-                    <div className='tw-flex tw-justify-between      tw-items-center'>
-                        <Button isLoading={refreshing} onClick={() => refresh()}>
-                            Refresh
-                        </Button>
-                    </div>
-                </div>
-                <div className={'tw-flex tw-flex-col tw-space-y-2'}>
-                    {myTracks !== null && myTracks.map((v) => (
-
-                        <div key={`myTrack_result_${v.id}`} className='tw-bg-black/10 tw-p-2 tw-rounded-md'>
-                            <div className={'tw-flex tw-justify-between tw-items-center tw-mb-1 '}>
-                                <ButtonGroup>
-                                    {v.is_verified &&
-                                    <IconButton
-                                        className=''
-                                        variant={'ghost'}
-                                        size={'sm'}
-                                        fontSize={'xl'}
-                                        icon={<VscVerified color={'green'} />}
-                                        aria-label={'Is verify'}/>}
-                                </ButtonGroup>
-                                <ButtonGroup>
-                                    <IconButton
-                                        variant={'ghost'}
-                                        size={'sm'}
-                                        fontSize={'xl'}
-                                        icon={<AiOutlineEdit color={'yellow'} />}
-                                        aria-label={'Edit track button'}
-                                        as={NextLink} href={`/me/tracks/${v.id}`}
-                                    />
-                                    <IconButton
-                                        variant={'ghost'}
-                                        size={'sm'}
-                                        fontSize={'xl'}
-                                        icon={<RxTrash color={'red'} />}
-                                        aria-label={'Delete track button'}
-                                        title={'Delete this song'}
-                                        onClick={() => handleDelete(v.id)}                                       
-                                    />
-                                </ButtonGroup>
+            <div className={'tw-flex tw-flex-col tw-space-y-2'}>
+                {myTracks !== null && myTracks.filter(v => filter ? v.name.toLowerCase().includes(filter) || v.genres?.join(',').toLowerCase().includes(filter) || v.artists.join(',').toLowerCase().includes(filter) : true).map((v) => (
+                    <div key={`myTrack_result_${v.id}`} className='tw-bg-black/10 tw-p-2 tw-rounded-md'>
+                        <div className={'tw-flex tw-justify-between tw-items-center tw-mb-1'}>
+                            <div className={"tw-flex tw-flex-row tw-space-x-2 tw-justify-center tw-items-center"}>
+                                <span className={"tw-font-bold"}>{v.name}</span>
+                                {v.is_verified &&
+                                    <Tooltip placement='right' label={"Verified"}>
+                                        <span className={"tw-flex tw-justify-center tw-items-center"}>
+                                            <Icon
+                                                as={VscVerified}
+                                                fontSize={'xl'}
+                                            />
+                                        </span>
+                                    </Tooltip>
+                                }
                             </div>
-                            <div className={'tw-flex tw-items-center tw-justify-between'}>
-                                <div>
-                                    <p>Name: {v.name}</p>
-                                    <p>Artists: {v.artists?.join(', ')}</p>
-                                    <p>Genres: {v.genres?.join(', ')}</p>
-                                    <p>Duration: {v.duration_s}s</p>
-                                </div>
-                                {v.image_url && <div className={'tw-p-2 tw-aspect-square tw-max-w-xs'}>
-                                    <Image alt={`${v.name}'s image`} src={v.image_url} />
-                                </div>}
-                            </div>
-                            <audio className={'tw-w-full'} controls src={v.src || undefined} />
+                            <ButtonGroup>
+                                <IconButton
+                                    variant={'ghost'}
+                                    size={'sm'}
+                                    fontSize={'xl'}
+                                    icon={<AiOutlineEdit color={'yellow'} />}
+                                    aria-label={'Edit track button'}
+                                    as={NextLink} href={`/me/tracks/${v.id}`}
+                                    title={"Edit this track"}
+                                />
+                                <IconButton
+                                    variant={'ghost'}
+                                    size={'sm'}
+                                    fontSize={'xl'}
+                                    icon={<RxTrash color={'red'} />}
+                                    aria-label={'Delete track button'}
+                                    title={'Delete this track'}
+                                    onClick={() => handleDelete(v.id)}
+                                />
+                            </ButtonGroup>
                         </div>
-                    ))}
-                </div>
+                        <div className={'tw-flex tw-items-center tw-justify-between'}>
+                            <div>
+                                <p>Artists: {v.artists?.join(', ')}</p>
+                                <p>Genres: {v.genres?.join(', ')}</p>
+                                <p>Duration: {v.duration_s}s</p>
+                            </div>
+                            {v.image_url && <div className={'tw-p-2 tw-aspect-square tw-max-w-xs'}>
+                                <Image alt={`${v.name}'s image`} src={v.image_url} />
+                            </div>}
+                        </div>
+                        <audio className={'tw-w-full'} controls src={v.src || undefined} />
+                    </div>
+                ))}
             </div>
         </>
     )
@@ -163,7 +163,7 @@ MyTracks.getLayout = (page: React.ReactElement) => {
     return <MainLayout navbar={false}>{page}</MainLayout>
 }
 
-MyTracks.title = "My Tracks"
+MyTracks.title = 'My Tracks'
 
 export default MyTracks
 
