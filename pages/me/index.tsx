@@ -17,7 +17,7 @@ import { Profile } from '@/typings'
 import { User, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/typings/supabase'
 import Head from 'next/head'
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
+import { useSession, useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import NextLink from 'next/link'
 import ChangePasswordForm from '@/components/ChangePasswordForm'
 import ChangeInfoForm from '@/components/ChangeInfoForm'
@@ -30,7 +30,8 @@ type Props = {
 
 
 const MyProfile = ({ profile }: Props) => {
-    const user = useUser()
+    const session = useSession()
+    const isAdmin = session?.user.app_metadata.role == 'admin'
     const router = useRouter()
     const supabaseClient = useSupabaseClient<Database>()
 
@@ -49,11 +50,15 @@ const MyProfile = ({ profile }: Props) => {
                         <Link as={NextLink} href={'/me/playlists'}>
                             My Playlists
                         </Link>
+
+                        {isAdmin && <Link as={NextLink} href={'/verify-tracks'}>
+                            Verify Tracks
+                        </Link>}
                         <Link w='fit-content'
                               onClick={() => {
                                   supabaseClient.auth.signOut()
-                                  localStorage.setItem("ready_pass", "false")
-                                  router.replace("/")
+                                  localStorage.setItem('ready_pass', 'false')
+                                  router.replace('/')
                               }}>
                             Logout
                         </Link>
@@ -69,7 +74,7 @@ const MyProfile = ({ profile }: Props) => {
                         className={'tw-flex-1 tw-rounded-md tw-bg-black/20 tw-py-10'}
                     >
                         <Flex justifyContent='center'>
-                            <ChangeInfoForm/>
+                            <ChangeInfoForm />
                         </Flex>
                     </div>
                     <div
@@ -91,7 +96,7 @@ MyProfile.getLayout = (page: React.ReactNode) => {
     </MainLayout>
 }
 
-MyProfile.title = "My Profile"
+MyProfile.title = 'My Profile'
 
 export default MyProfile
 export const getServerSideProps: GetServerSideProps<{

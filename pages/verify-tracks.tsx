@@ -168,7 +168,7 @@ const VerifyTracks = (props: Props) => {
                                     />
                                 </ButtonGroup>
                             </div>
-                            <div className={'tw-flex tw-items-center tw-justify-between'}>
+                            <div className={'tw-flex tw-flex-col-reverse md:tw-flex-row tw-items-center tw-justify-between'}>
                                 <div>
                                     <p>Name: {v.name}</p>
                                     <p>Artists: {v.artists?.join(', ')}</p>
