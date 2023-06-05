@@ -14,6 +14,7 @@ import { NavBar } from '@/components/NavBar'
 import NextLink from 'next/link'
 import GetReady from '@/components/GetReady'
 import MobileNavBar from '@/components/MobileNavBar'
+import Breadcrumbs from '@/components/Breadcrumbs'
 
 function MainLayout({ children, navbar = true }: { children: React.ReactNode, navbar?: boolean }) {
     return (

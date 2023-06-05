@@ -12,9 +12,8 @@ function SeekBar() {
     const currentMinutes = Math.floor(currentTime / 60)
     const currentSeconds = Math.floor(currentTime - currentMinutes * 60)
 
-    const left = duration - currentTime
-    const leftMinutes = Math.floor(left / 60)
-    const leftSeconds = Math.floor(left - leftMinutes * 60)
+    const durationMinutes = Math.floor(duration / 60)
+    const durationSeconds = Math.floor(duration - durationMinutes * 60)
 
     const handleSliderChange = (val: number) => {
         if (audioRef.current) {
@@ -46,9 +45,9 @@ function SeekBar() {
                 <SliderThumb key={"slider_thumb"} />
             </Slider>
             <Text key={'time_left'} fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
-                <span>{leftMinutes.toString().padStart(2, '0')}</span>
+                <span>{durationMinutes.toString().padStart(2, '0')}</span>
                 <span>:</span>
-                <span>{leftSeconds.toString().padStart(2, '0')}</span>
+                <span>{durationSeconds.toString().padStart(2, '0')}</span>
             </Text>
         </Stack>
     )

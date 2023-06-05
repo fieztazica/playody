@@ -13,6 +13,7 @@ import { PlayodyTitle } from '@/components/PlayodyTitle'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
 import NextLink from 'next/link'
+import Breadcrumbs from '@/components/Breadcrumbs'
 
 type Props = {
     children?: ReactNode
@@ -67,6 +68,9 @@ export function NavBar({ children, ...props }: Props) {
                     </div>
                 )}
             </nav>
+            <div key={"breadcrumb"} className={"tw-mb-2 tw-rounded-md tw-p-2 tw-bg-black/20 tw-w-full"}>
+                <Breadcrumbs/>
+            </div>
         </>
     )
 }
