@@ -73,7 +73,7 @@ const MyTrackId = ({ track }: Props) => {
             }
             // console.log((jsonData as ApiResSuccess).data)
 
-            alert('Uploaded! Please wait for verification process')
+            alert('Updated! Please wait for verification process')
             router.push("/me/tracks")
         } catch (e: any) {
             console.error(e)

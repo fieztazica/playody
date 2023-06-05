@@ -11,11 +11,37 @@ import { useEffect, useState } from 'react'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { TrackCard } from '@/components/TrackCard'
 import UnderlineTypo from '@/components/UnderlineTypo'
-import { Button, Spinner, useToast } from '@chakra-ui/react'
+import {
+    Button,
+    Divider,
+    Icon,
+    IconButton,
+    Spinner,
+    Text,
+    Tooltip,
+    useToast,
+    SkeletonText,
+    ButtonGroup,
+    Popover,
+    PopoverArrow,
+    PopoverBody,
+    PopoverCloseButton,
+    PopoverContent,
+    PopoverHeader,
+    PopoverTrigger,
+} from '@chakra-ui/react'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
-import { MdPlaylistRemove } from 'react-icons/md'
+import { MdPlaylistRemove, MdRefresh } from 'react-icons/md'
 import { NavBar } from '@/components/NavBar'
 import SearchBar from '@/components/SearchBar'
+import { flattenDeep, shuffle, take, uniq } from 'lodash'
+import { BsFillPlayFill, BsShuffle } from 'react-icons/bs'
+import { AiOutlineEdit } from 'react-icons/ai'
+import NextLink from 'next/link'
+import { RxTrash } from 'react-icons/rx'
+import formatDuration from 'format-duration'
+import DeletePlaylistPopover from '@/components/DeletePlaylistPopover'
+import ChangePlaylistNamePopover from '@/components/ChangePlaylistNamePopover'
 
 type Props = {
     playlist: Playlist | null,
@@ -30,6 +56,7 @@ const MyPlaylistName = ({ playlist }: Props) => {
     const [filter, setFilter] = useState('')
     const [refreshing, setRefreshing] = useState(false)
     const [tracksInPlaylist, setTracksInPlaylist] = useState<Track[]>([])
+    const playlistArtists = uniq(flattenDeep(tracksInPlaylist.map(v => v.artists)))
 
     function refresh() {
         (async () => {
@@ -102,6 +129,20 @@ const MyPlaylistName = ({ playlist }: Props) => {
         if (!tracksInPlaylist.length) return
         setQueue([...tracksInPlaylist])
         setPlayingTrack(tracksInPlaylist[0])
+        toast({
+            status: 'info',
+            title: `Added ${tracksInPlaylist.length} track(s) to queue!`,
+        })
+    }
+
+    function handleClickShufflePlay() {
+        if (!tracksInPlaylist.length) return
+        setQueue(shuffle([...tracksInPlaylist]))
+        setPlayingTrack(tracksInPlaylist[0])
+        toast({
+            status: 'info',
+            title: `Added ${tracksInPlaylist.length} track(s) to queue!`,
+        })
     }
 
     useEffect(() => {
@@ -130,17 +171,60 @@ const MyPlaylistName = ({ playlist }: Props) => {
                     }} />
             </NavBar>
             <div className={'tw-flex tw-flex-col tw-space-y-2 tw-h-full'}>
-                <div className={'tw-flex tw-justify-between tw-items-center tw-space-x-2 tw-sticky tw-top-0'}>
-                    <UnderlineTypo>
-                        {playlist.name}
-                        {tracksInPlaylist.length > 0 && ` has ${tracksInPlaylist.length} tracks`}
-                    </UnderlineTypo>
-                    <Button
-                        isDisabled={tracksInPlaylist.length <= 0} isLoading={refreshing} colorScheme={'purple'}
-                        onClick={() => handleClickPlay()}>
-                        Play
-                    </Button>
+                <div
+                    className={'tw-flex tw-bg-black/20 tw-rounded-md tw-px-4 tw-py-2 tw-justify-center tw-items-center'}>
+                    <div className={'tw-flex tw-flex-col tw-space-y-1 tw-flex-1'}>
+                        <p className={'tw-font-extrabold tw-text-2xl md:tw-text-4xl'}>
+                            {playlist.name}
+                        </p>
+                        <SkeletonText isLoaded={!refreshing}>
+                            <Text as={'i'} fontSize={'sm'} noOfLines={1}>
+                                {take(playlistArtists, 5).join(', ')}
+                                {playlistArtists.length > 5 ? ', ...' : ''}
+                            </Text>
+                        </SkeletonText>
+                    </div>
+                    <div className={'tw-p-2'}>
+                        <Tooltip label={'Play'}>
+                            <IconButton
+                                boxSize={{
+                                    base: '64px',
+                                    md: '84px',
+                                }}
+                                rounded={'full'}
+                                fontSize={'4xl'}
+                                aria-label={'Play'}
+                                icon={<BsFillPlayFill />}
+                                isDisabled={tracksInPlaylist.length <= 0}
+                                isLoading={refreshing}
+                                colorScheme={'purple'}
+                                onClick={() => handleClickPlay()}
+                            />
+                        </Tooltip>
+                    </div>
                 </div>
+                <div
+                    className={'tw-flex tw-bg-black/20 tw-rounded-md tw-px-4 tw-py-2 tw-items-center tw-justify-between'}>
+                    <ButtonGroup>
+                        <IconButton
+                            variant={'ghost'}
+                            size={'sm'}
+                            fontSize={'xl'}
+                            icon={<BsShuffle color={'teal'} />}
+                            aria-label={'Shuffle play button'}
+                            title={'Shuffle play'}
+                            onClick={() => handleClickShufflePlay()}
+                            isLoading={refreshing}
+                            isDisabled={tracksInPlaylist.length <= 0}
+                        />
+                        <ChangePlaylistNamePopover name={playlist.name} />
+                        <DeletePlaylistPopover name={playlist.name} />
+                    </ButtonGroup>
+                    <span>
+                        {formatDuration(tracksInPlaylist.map(v => v.duration_s).reduce((a, b) => a + b, 0) * 1000)}
+                    </span>
+                </div>
+                <Divider />
                 {
                     (tracksInPlaylist && tracksInPlaylist.length > 0) ? tracksInPlaylist.filter(v => filter ? v.name.toLowerCase().includes(filter) || v.artists.join(',').toLowerCase().includes(filter) || v.genres?.join(',').toLowerCase().includes(filter) : true).map((v) => (
                         <div
@@ -154,7 +238,7 @@ const MyPlaylistName = ({ playlist }: Props) => {
                                  className={'tw-transition tw-h-full tw-cursor-pointer ' +
                                      'tw-flex tw-duration-300 tw-justify-center ' +
                                      'tw-items-center hover:tw-bg-red-700 ' +
-                                     'tw-bg-red-600 tw-rounded-md tw-basis-0 ' +
+                                     'tw-bg-red-600 tw-rounded-md  tw-basis-0 ' +
                                      'group-hover:tw-basis-16 tw-transition-all tw-duration-300'}
                                  onClick={() => handleRemoveFromPlaylist(v)}
                             >
@@ -164,7 +248,7 @@ const MyPlaylistName = ({ playlist }: Props) => {
                                 </div>
                             </div>
                         </div>
-                    )) : (!refreshing && "There is nothing in this playlist")
+                    )) : (!refreshing && 'There is nothing in this playlist')
                 }
             </div>
         </>

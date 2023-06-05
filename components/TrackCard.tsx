@@ -21,6 +21,7 @@ import { Track } from '@/typings'
 import SearchLink from '@/components/SearchLink'
 import { MdPlaylistAdd } from 'react-icons/md'
 import AddToPlaylistModal from '@/components/AddToPlaylistModal'
+import formatDuration from 'format-duration'
 interface Props extends BoxProps {
     track?: Track
     bgColor?: BackgroundProps['bgColor']
@@ -30,12 +31,7 @@ interface Props extends BoxProps {
 export function TrackCard({ track, bgColor = 'rgba(0,0,0,0.2)', onClickCover, ...props }: Props) {
     if (!track) return null;
 
-    const trackDuration = (track.duration_s || 0)
-    const trackDurationMins = Math.floor(trackDuration / 60)
-    const trackDurationSecs = Math.floor(trackDuration - trackDurationMins * 60)
-    const trackDurationString = `${trackDurationMins}:${trackDurationSecs
-        .toString()
-        .padStart(2, '0')}`
+    const trackDurationString = formatDuration(track.duration_s * 1000)
 
 
     return (
