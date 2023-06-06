@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, IconButton, Input, Link, Tooltip, Image, Icon } from '@chakra-ui/react'
+import {
+    Button,
+    ButtonGroup,
+    IconButton,
+    Input,
+    Link,
+    Tooltip,
+    Image,
+    Icon,
+    PopoverTrigger,
+    PopoverContent, PopoverArrow, PopoverCloseButton, PopoverHeader, PopoverBody, PopoverFooter, Popover,
+} from '@chakra-ui/react'
 import MainLayout from '@/components/MainLayout'
 import Head from 'next/head'
 import NextLink from 'next/link'
@@ -107,11 +118,11 @@ const MyTracks = ({ tracks }: Props) => {
                 {myTracks !== null && myTracks.filter(v => filter ? v.name.toLowerCase().includes(filter) || v.genres?.join(',').toLowerCase().includes(filter) || v.artists.join(',').toLowerCase().includes(filter) : true).map((v) => (
                     <div key={`myTrack_result_${v.id}`} className='tw-bg-black/10 tw-p-2 tw-rounded-md'>
                         <div className={'tw-flex tw-justify-between tw-items-center tw-mb-1'}>
-                            <div className={"tw-flex tw-flex-row tw-space-x-2 tw-justify-center tw-items-center"}>
-                                <span className={"tw-font-bold"}>{v.name}</span>
+                            <div className={'tw-flex tw-flex-row tw-space-x-2 tw-justify-center tw-items-center'}>
+                                <span className={'tw-font-bold'}>{v.name}</span>
                                 {v.is_verified &&
-                                    <Tooltip placement='right' label={"Verified"}>
-                                        <span className={"tw-flex tw-justify-center tw-items-center"}>
+                                    <Tooltip placement='right' label={'Verified'}>
+                                        <span className={'tw-flex tw-justify-center tw-items-center'}>
                                             <Icon
                                                 as={VscVerified}
                                                 fontSize={'xl'}
@@ -128,17 +139,35 @@ const MyTracks = ({ tracks }: Props) => {
                                     icon={<AiOutlineEdit color={'yellow'} />}
                                     aria-label={'Edit track button'}
                                     as={NextLink} href={`/me/tracks/${v.id}`}
-                                    title={"Edit this track"}
+                                    title={'Edit this track'}
                                 />
-                                <IconButton
-                                    variant={'ghost'}
-                                    size={'sm'}
-                                    fontSize={'xl'}
-                                    icon={<RxTrash color={'red'} />}
-                                    aria-label={'Delete track button'}
-                                    title={'Delete this track'}
-                                    onClick={() => handleDelete(v.id)}
-                                />
+                                <Popover>
+                                    <PopoverTrigger>
+                                        <IconButton
+                                            variant={'ghost'}
+                                            size={'sm'}
+                                            fontSize={'xl'}
+                                            icon={<RxTrash color={'red'} />}
+                                            aria-label={'Delete track button'}
+                                            title={'Delete this track'}
+                                        />
+                                    </PopoverTrigger>
+                                    <PopoverContent bgGradient={'linear(to-b, blue.900, purple.900, pink.900)'}>
+                                        <PopoverArrow />
+                                        <PopoverCloseButton />
+                                        <PopoverHeader>
+                                            Confirmation!
+                                        </PopoverHeader>
+                                        <PopoverBody>
+                                            Are you sure that you want to delete this track?
+                                        </PopoverBody>
+                                        <PopoverFooter>
+                                            <Button colorScheme={'red'} onClick={() => handleDelete(v.id)}>
+                                                Yes
+                                            </Button>
+                                        </PopoverFooter>
+                                    </PopoverContent>
+                                </Popover>
                             </ButtonGroup>
                         </div>
                         <div className={'tw-flex tw-items-center tw-justify-between'}>
