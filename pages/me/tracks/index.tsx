@@ -163,7 +163,7 @@ const MyTracks = ({ tracks }: Props) => {
                                         </PopoverBody>
                                         <PopoverFooter>
                                             <Button colorScheme={'red'} onClick={() => handleDelete(v.id)}>
-                                                Yes
+                                                Delete
                                             </Button>
                                         </PopoverFooter>
                                     </PopoverContent>
