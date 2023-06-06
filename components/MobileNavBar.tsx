@@ -76,8 +76,8 @@ const MobileNavBar = (props: Props) => {
                 </div>
                 <div key={`profile_nav_link_logo`} className={'tw-flex-1 tw-flex tw-justify-center'}>
                     <NextLink href={profile == null ? '/login' : '/me'}>
-                        < div className={'tw-p-1'}>
-                            < Avatar
+                        <div className={'tw-p-1'}>
+                            <Avatar
                                 size={'sm'}
                                 src={profile?.avatar_url || undefined}
                                 filter={pathname == '/me'

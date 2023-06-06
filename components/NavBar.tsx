@@ -26,11 +26,12 @@ export function NavBar({ children, ...props }: Props) {
             <nav
                 className={`tw-w-full tw-sticky tw-top-0 tw-backdrop-blur-sm tw-z-10 tw-mb-2 tw-block}`}
             >
-                <div className="tw-w-full tw-p-2 tw-bg-black/20 tw-hidden md:tw-flex tw-justify-between tw-gap-2 tw-rounded-md">
+                <div
+                    className='tw-w-full tw-p-2 tw-bg-black/20 tw-hidden md:tw-flex tw-justify-between tw-gap-2 tw-rounded-md'>
                     <div className={'tw-w-fit tw-flex tw-flex-row tw-space-x-2'}>
                         <ButtonGroup
                             display={{ base: 'none', md: 'block' }}
-                            w="fit-content"
+                            w='fit-content'
                         >
                             <IconButton
                                 icon={<FiChevronLeft />}
@@ -68,9 +69,11 @@ export function NavBar({ children, ...props }: Props) {
                     </div>
                 )}
             </nav>
-            <div key={"breadcrumb"} className={"tw-mb-2 tw-rounded-md tw-p-2 tw-bg-black/20 tw-w-full"}>
-                <Breadcrumbs/>
-            </div>
+            {router.pathname !== '/' &&
+                <div key={'breadcrumb'} className={'tw-mb-2 tw-rounded-md tw-p-2 tw-bg-black/20 tw-w-full'}>
+                    <Breadcrumbs />
+                </div>
+            }
         </>
     )
 }
