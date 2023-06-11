@@ -44,11 +44,14 @@ export function AudioCtxProvider({ children, title }: { children: React.ReactNod
     const nextSong = () => {
         if (queue.length) {
             if (!playingTrack) {
-                setPlayingTrack(queue[0])
                 return
             }
             if (loopMode !== 'song') setPreviousTracks((v) => [playingTrack, ...v])
-            let nowQueue = [...queue.filter(v => v !== playingTrack)]
+
+            let npIndex = queue.indexOf(playingTrack)
+            let nextTrack = queue[npIndex + 1 >= queue.length ? 0 : npIndex + 1] || null
+
+            console.log(npIndex, nextTrack, queue)
             switch (loopMode) {
                 case null:
                     if (
@@ -59,13 +62,13 @@ export function AudioCtxProvider({ children, title }: { children: React.ReactNod
                         break
                     }
                     if (!shuffle) {
-                        setPlayingTrack(nowQueue.shift() || null)
+                        setPlayingTrack(nextTrack )
                     } else setPlayingTrack(getRandomTrack())
                     break
                 case 'queue':
                     if (!shuffle) {
                         if (queue.length > 1)
-                            setPlayingTrack(nowQueue.shift() || null)
+                            setPlayingTrack(nextTrack)
                         else {
                             if (audioRef.current) {
                                 audioRef.current.currentTime = 0

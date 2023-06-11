@@ -32,14 +32,12 @@ const Breadcrumbs = () => {
             }
         })
 
-        console.log(breadcrumbs)
-
         setBreadcrumbs(breadcrumbs)
     }, [router.asPath])
 
     return (
         <Breadcrumb>
-            <BreadcrumbItem isCurrentPage={router.pathname === '/'} href={'/'}>
+            <BreadcrumbItem isCurrent={router.pathname === '/'} href={'/'}>
                 <Icon as={LogoSvg} boxSize={6}/>
             </BreadcrumbItem>
             {breadcrumbs &&

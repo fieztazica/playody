@@ -7,6 +7,7 @@ function SeekBar() {
         currentTime,
         audioRef,
         setCurrentTime,
+        playingTrack
     } = useAudioCtx()
 
     const currentMinutes = Math.floor(currentTime / 60)
@@ -24,7 +25,12 @@ function SeekBar() {
 
     return (
         <Stack key={'SeekBarComponent'} direction={'row'} w='full' spacing={4} justify={'center'} align={'center'}>
-            <Text key={'time_consumed'} fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
+            <Text
+                key={'time_consumed'}
+                fontSize={{ base: 'xs', md: 'md' }}
+                color={playingTrack ? undefined : "gray"}
+                minW={'max-content'}
+            >
                 <span>{currentMinutes.toString().padStart(2, '0')}</span>
                 <span>:</span>
                 <span>{currentSeconds.toString().padStart(2, '0')}</span>
@@ -38,13 +44,19 @@ function SeekBar() {
                 focusThumbOnChange={false}
                 onChange={handleSliderChange}
                 maxW='4xl'
+                isDisabled={!playingTrack}
             >
                 <SliderTrack key={'slider_track'} bg='purple.900'>
                     <SliderFilledTrack key={'slider_filled_track'} bg='pink.700' />
                 </SliderTrack>
                 <SliderThumb key={"slider_thumb"} />
             </Slider>
-            <Text key={'time_left'} fontSize={{ base: 'xs', md: 'md' }} minW={'max-content'}>
+            <Text
+                key={'time_left'}
+                fontSize={{ base: 'xs', md: 'md' }}
+                color={playingTrack ? undefined : "gray"}
+                minW={'max-content'}
+            >
                 <span>{durationMinutes.toString().padStart(2, '0')}</span>
                 <span>:</span>
                 <span>{durationSeconds.toString().padStart(2, '0')}</span>

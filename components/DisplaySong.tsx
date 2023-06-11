@@ -9,6 +9,9 @@ function DisplaySong({ ...props }) {
     const { queue, playingTrack } = useAudioCtx()
     // const nowPlaying = playingIndex != null ?  queue[playingIndex] : null
 
+    if (!playingTrack)
+        return null;
+
     return (
         <Stack
             h='full'

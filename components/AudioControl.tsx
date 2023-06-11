@@ -25,6 +25,7 @@ function AudioControl({ ...props }) {
         loopMode,
         setLoopMode,
         previousSong,
+        previousTracks,
         setShuffle,
         shuffle,
         playingTrack,
@@ -94,6 +95,7 @@ function AudioControl({ ...props }) {
                     aria-label='loop button'
                     onClick={toggleLoopMode}
                     title={`${loopMode}`}
+                    isDisabled={!queue.length}
                 />
                 <IconButton
                     size={'sm'}
@@ -101,6 +103,7 @@ function AudioControl({ ...props }) {
                     icon={<BsFillSkipBackwardFill />}
                     aria-label='back button'
                     onClick={() => previousSong()}
+                    isDisabled={!previousTracks.length}
                 />
                 <IconButton
                     rounded={'full'}
@@ -110,6 +113,7 @@ function AudioControl({ ...props }) {
                     onClick={handlePausePlayClick}
                     aria-label='pause/resume button'
                     w={'fit-content'}
+                    isDisabled={!playingTrack}
                 />
                 <IconButton
                     size={'sm'}
@@ -117,6 +121,7 @@ function AudioControl({ ...props }) {
                     icon={<BsSkipForwardFill />}
                     aria-label='next button'
                     onClick={toggleNextSong}
+                    isDisabled={!playingTrack}
                 />
                 <IconButton
                     color={shuffle ? 'pink.300' : undefined}
@@ -126,6 +131,7 @@ function AudioControl({ ...props }) {
                     icon={<BsShuffle />}
                     aria-label='shuffle button'
                     onClick={() => setShuffle(!shuffle)}
+                    isDisabled={!queue.length}
                 />
             </ButtonGroup>
             <SeekBar />
