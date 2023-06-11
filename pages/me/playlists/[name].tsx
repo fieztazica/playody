@@ -229,7 +229,7 @@ const MyPlaylistName = ({ playlist }: Props) => {
                     (tracksInPlaylist && tracksInPlaylist.length > 0) ? tracksInPlaylist.filter(v => filter ? v.name.toLowerCase().includes(filter) || v.artists.join(',').toLowerCase().includes(filter) || v.genres?.join(',').toLowerCase().includes(filter) : true).map((v) => (
                         <div
                             key={`track_${v.id}_of_playlist_${playlist.name}`}
-                            className={'tw-flex tw-w-full tw-space-x-2 ' +
+                            className={'tw-flex tw-w-full hover:tw-space-x-2 ' +
                                 'tw-group'}>
                             <TrackCard
                                 onClickCover={() => addToQueue(v)}
@@ -238,7 +238,7 @@ const MyPlaylistName = ({ playlist }: Props) => {
                                  className={'tw-transition tw-h-full tw-cursor-pointer ' +
                                      'tw-flex tw-duration-300 tw-justify-center ' +
                                      'tw-items-center hover:tw-bg-red-700 ' +
-                                     'tw-bg-red-600 tw-rounded-md  tw-basis-0 ' +
+                                     'tw-bg-red-600 tw-rounded-md tw-basis-0 ' +
                                      'group-hover:tw-basis-16 tw-transition-all tw-duration-300'}
                                  onClick={() => handleRemoveFromPlaylist(v)}
                             >

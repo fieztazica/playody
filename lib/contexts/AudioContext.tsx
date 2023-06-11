@@ -49,9 +49,8 @@ export function AudioCtxProvider({ children, title }: { children: React.ReactNod
             if (loopMode !== 'song') setPreviousTracks((v) => [playingTrack, ...v])
 
             let npIndex = queue.indexOf(playingTrack)
-            let nextTrack = queue[npIndex + 1 >= queue.length ? 0 : npIndex + 1] || null
+            let nextTrack = queue[npIndex + 1] || null
 
-            console.log(npIndex, nextTrack, queue)
             switch (loopMode) {
                 case null:
                     if (
