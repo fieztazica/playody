@@ -40,7 +40,7 @@ export function AudioCtxProvider({ children, title }: { children: React.ReactNod
             return [...tempTracks]
         })
     }
-
+    
     const nextSong = () => {
         if (queue.length) {
             if (!playingTrack) {

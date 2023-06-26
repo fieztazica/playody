@@ -159,6 +159,7 @@ const SignUp = () => {
                                         bg: 'blue.500',
                                     }}
                                     isLoading={signing}
+                                    onClick={handleSignup}
                                 >
                                     Sign up
                                 </Button>
