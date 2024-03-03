@@ -24,10 +24,14 @@ export default function GetReady(props: Props) {
         const passValue = localStorage.getItem(passKey)
         if (passValue) {
             try {
-                const passValueTimestamp = new Date(passValue).getTime()
-                if (!isNaN(passValueTimestamp)) throw new Error('')
+                const passValueDate = new Date(Number(passValue))
+                console.log(passValue, passValueDate)
+                if (!!isNaN(passValueDate as unknown as number))
+                    throw new Error('')
+                const passValueTimestamp = passValueDate.getTime()
                 const dif = Math.floor((Date.now() - passValueTimestamp) / 1000)
                 const day = 24 * 60 * 60
+                console.log(passValue, passValueTimestamp, dif)
                 setAllow(dif < day)
             } catch (error) {
                 localStorage.removeItem(passKey)
