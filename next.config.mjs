@@ -2,7 +2,7 @@ import million from 'million/compiler'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: true,
+    reactStrictMode: false,
     output: 'standalone',
     httpAgentOptions: {
         keepAlive: true,

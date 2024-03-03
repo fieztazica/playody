@@ -7,7 +7,6 @@ import {
     Input,
     Link,
     Stack,
-
 } from '@chakra-ui/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { PlayodyTitle } from '@/components/PlayodyTitle'
@@ -26,9 +25,13 @@ const Login = () => {
     const [loggingIn, setLoggingIn] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const queryRedirect = router.query['redirect']
-    const hostname = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : `http://localhost:3000`
+    const hostname = process.env.NEXT_PUBLIC_VERCEL_URL
+        ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+        : `http://localhost:3000`
     const redirect =
-        (queryRedirect && typeof queryRedirect == 'string') ? decodeURIComponent(queryRedirect) : hostname
+        queryRedirect && typeof queryRedirect == 'string'
+            ? decodeURIComponent(queryRedirect)
+            : hostname
 
     async function handleLogin() {
         try {
@@ -52,21 +55,16 @@ const Login = () => {
         }
     }
 
-
     return (
         <>
-            <Flex
-                h={'full'}
-                align={'center'}
-                justify={'center'}
-            >
+            <Flex h={'full'} align={'center'} justify={'center'}>
                 <Stack spacing={2} mx={'auto'} maxW={'lg'} px={6}>
                     <div className={'tw-inline-block'}>
                         Login to enjoy the full experience with{' '}
                         <span>
-                          <NextLink href={'/'}>
-                            <PlayodyTitle />
-                          </NextLink>
+                            <NextLink href={'/'}>
+                                <PlayodyTitle />
+                            </NextLink>
                         </span>
                     </div>
                     <Box
@@ -75,32 +73,46 @@ const Login = () => {
                         boxShadow={'lg'}
                         p={8}
                     >
-                        <form onSubmit={(e) => {
-                            e.preventDefault()
-                            handleLogin()
-                        }}>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault()
+                                handleLogin()
+                            }}
+                        >
                             <Stack spacing={2}>
-                                <FormControl id='email'>
+                                <FormControl id="email">
                                     <FormLabel>Email address</FormLabel>
-                                    <Input type='email' value={email}
-                                           onChange={(e) => {
-                                               e.preventDefault()
-                                               setEmail(e.target.value)
-                                           }} />
-
+                                    <Input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => {
+                                            e.preventDefault()
+                                            setEmail(e.target.value)
+                                        }}
+                                    />
                                 </FormControl>
-                                <FormControl id='password'>
+                                <FormControl id="password">
                                     <FormLabel>Password</FormLabel>
-                                    <Input type='password' value={password} onChange={(e) => {
-                                        e.preventDefault()
-                                        setPassword(e.target.value)
-                                    }} />
+                                    <Input
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => {
+                                            e.preventDefault()
+                                            setPassword(e.target.value)
+                                        }}
+                                    />
                                 </FormControl>
-                                {error && <p className={'tw-text-red-500'}>
-                                    {error}
-                                </p>}
+                                {error && (
+                                    <p className={'tw-text-red-500'}>{error}</p>
+                                )}
                                 <Stack spacing={4}>
-                                    <Link as={NextLink} href={'/recovery'} color={'blue.400'}>Forgot password?</Link>
+                                    <Link
+                                        as={NextLink}
+                                        href={'/recovery'}
+                                        color={'blue.400'}
+                                    >
+                                        Forgot password?
+                                    </Link>
                                     <Button
                                         isLoading={loggingIn}
                                         bg={'blue.400'}
@@ -113,18 +125,27 @@ const Login = () => {
                                         Sign in
                                     </Button>
                                     <div
-                                        className={'tw-flex tw-flex-row tw-w-full tw-space-x-2 tw-items-center tw-justify-between'}>
+                                        className={
+                                            'tw-flex tw-flex-row tw-w-full tw-space-x-2 tw-items-center tw-justify-between'
+                                        }
+                                    >
                                         <div
-                                            className={'tw-flex-1 tw-bg-white/20 tw-h-[2px] tw-w-full tw-rounded-full'}>
-
-                                        </div>
-                                        <div className={'tw-px-2 tw-rounded-full tw-bg-white/20 tw-text-white/80'}>
+                                            className={
+                                                'tw-flex-1 tw-bg-white/20 tw-h-[2px] tw-w-full tw-rounded-full'
+                                            }
+                                        ></div>
+                                        <div
+                                            className={
+                                                'tw-px-2 tw-rounded-full tw-bg-white/20 tw-text-white/80'
+                                            }
+                                        >
                                             or
                                         </div>
                                         <div
-                                            className={'tw-flex-1 tw-bg-white/20 tw-h-[2px] tw-w-full tw-rounded-full'}>
-
-                                        </div>
+                                            className={
+                                                'tw-flex-1 tw-bg-white/20 tw-h-[2px] tw-w-full tw-rounded-full'
+                                            }
+                                        ></div>
                                     </div>
                                     <Button
                                         bgColor={'#18D860'}
@@ -132,12 +153,14 @@ const Login = () => {
                                             bgColor: '#14b851',
                                         }}
                                         onClick={() => {
-                                            supabaseClient.auth.signInWithOAuth({
-                                                provider: 'spotify',
-                                                options: {
-                                                    redirectTo: redirect,
-                                                },
-                                            })
+                                            supabaseClient.auth.signInWithOAuth(
+                                                {
+                                                    provider: 'spotify',
+                                                    options: {
+                                                        redirectTo: redirect,
+                                                    },
+                                                }
+                                            )
                                         }}
                                         leftIcon={<RiSpotifyFill />}
                                     >
@@ -145,8 +168,12 @@ const Login = () => {
                                     </Button>
                                     <Stack pt={6}>
                                         <Text align={'center'}>
-                                            Dont have an account?{' '}
-                                            <Link as={NextLink} href={'/signup'} color={'blue.400'}>
+                                            {"Don't have an account? "}
+                                            <Link
+                                                as={NextLink}
+                                                href={'/signup'}
+                                                color={'blue.400'}
+                                            >
                                                 Sign up
                                             </Link>
                                         </Text>

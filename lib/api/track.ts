@@ -47,7 +47,7 @@ class TrackApi {
             .from('playlists')
             .select('*')
             .eq('name', playlistName)
-            .eq("author", sessionRes.data.session?.user.id)
+            .eq("author", sessionRes.data.session?.user.id!)
             .limit(1)
             .single()
 
@@ -126,7 +126,7 @@ class TrackApi {
                     ...body,
                     is_verified: false
                 })
-                .eq('author', sessionRes.data.session?.user.id)
+                .eq('author', sessionRes.data.session?.user.id!)
                 .eq('id', trackId)
                 .select())
         }
