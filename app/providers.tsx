@@ -5,6 +5,7 @@ import { AppCtxProvider } from '@/lib/contexts/AppContext'
 import { AudioCtxProvider } from '@/lib/contexts/AudioContext'
 import { theme } from '@/lib/theme'
 import { Database } from '@/typings/supabase'
+import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider, Progress, useDisclosure } from '@chakra-ui/react'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
@@ -77,37 +78,39 @@ export function Providers({ children }: { children: React.ReactNode }) {
     }, [router])
 
     return (
-        <ChakraProvider
-            theme={theme}
-            toastOptions={{
-                defaultOptions: {
-                    position: 'top-right',
-                    size: 'sm',
-                    isClosable: true,
-                    duration: 3000,
-                },
-            }}
-        >
-            <SessionContextProvider
-                supabaseClient={supabaseClient}
-                initialSession={null}
+        <CacheProvider>
+            <ChakraProvider
+                theme={theme}
+                toastOptions={{
+                    defaultOptions: {
+                        position: 'top-right',
+                        size: 'sm',
+                        isClosable: true,
+                        duration: 3000,
+                    },
+                }}
             >
-                <AppCtxProvider>
-                    <AudioCtxProvider>
-                        <Progress
-                            display={indicator.isOpen ? 'flex' : 'none'}
-                            bgColor={'transparent'}
-                            height="2px"
-                            flex={1}
-                            position="fixed"
-                            zIndex={'99'}
-                            isIndeterminate
-                            w="100%"
-                        />
-                        {children}
-                    </AudioCtxProvider>
-                </AppCtxProvider>
-            </SessionContextProvider>
-        </ChakraProvider>
+                <SessionContextProvider
+                    supabaseClient={supabaseClient}
+                    initialSession={null}
+                >
+                    <AppCtxProvider>
+                        <AudioCtxProvider>
+                            <Progress
+                                display={indicator.isOpen ? 'flex' : 'none'}
+                                bgColor={'transparent'}
+                                height="2px"
+                                flex={1}
+                                position="fixed"
+                                zIndex={'99'}
+                                isIndeterminate
+                                w="100%"
+                            />
+                            {children}
+                        </AudioCtxProvider>
+                    </AppCtxProvider>
+                </SessionContextProvider>
+            </ChakraProvider>
+        </CacheProvider>
     )
 }

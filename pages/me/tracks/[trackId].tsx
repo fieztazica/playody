@@ -11,10 +11,13 @@ import MainLayout from '@/components/MainLayout'
 import {
     Button,
     Container,
-    FormControl, FormLabel,
-    IconButton, Image,
+    FormControl,
+    FormLabel,
+    IconButton,
+    Image,
     Input,
-    SimpleGrid, Spinner,
+    SimpleGrid,
+    Spinner,
     Stack,
 } from '@chakra-ui/react'
 import { RiAddFill, RiSubtractFill } from 'react-icons/ri'
@@ -29,7 +32,7 @@ import Head from 'next/head'
 
 type Props = {
     track: Track | null
-};
+}
 
 const MyTrackId = ({ track }: Props) => {
     const user = useUser()
@@ -37,7 +40,9 @@ const MyTrackId = ({ track }: Props) => {
     const [genres, setGenres] = useState<string[]>(track?.genres || [])
     const [artists, setArtists] = useState<string[]>(track?.artists || [])
     const [srcUrl, setSrcUrl] = useState(track?.src)
-    const [duration, setDuration] = useState<number>(parseInt(`${track?.duration_s}`))
+    const [duration, setDuration] = useState<number>(
+        parseInt(`${track?.duration_s}`)
+    )
     const [imageUrl, setImageUrl] = useState(track?.image_url)
     const [submitting, setSubmitting] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
@@ -53,9 +58,9 @@ const MyTrackId = ({ track }: Props) => {
 
             const trackToUpdate: TrackUpdate = {
                 name: songName,
-                genres: genres.filter(v => v.length > 0),
-                artists: artists.filter(v => v.length > 0),
-                is_verified: false
+                genres: genres.filter((v) => v.length > 0),
+                artists: artists.filter((v) => v.length > 0),
+                is_verified: false,
             }
 
             const res = await fetch(`/api/track?trackId=${track.id}`, {
@@ -74,11 +79,10 @@ const MyTrackId = ({ track }: Props) => {
             // console.log((jsonData as ApiResSuccess).data)
 
             alert('Updated! Please wait for verification process')
-            router.push("/me/tracks")
+            router.push('/me/tracks')
         } catch (e: any) {
             console.error(e)
-            if (e.error)
-                setError(e.error.message)
+            if (e.error) setError(e.error.message)
         } finally {
             setSubmitting(false)
         }
@@ -129,9 +133,7 @@ const MyTrackId = ({ track }: Props) => {
     return (
         <>
             <Head>
-                <title>
-                    {`Playody | ${track.name || track.id}`}
-                </title>
+                <title>{`Playody | ${track.name || track.id}`}</title>
             </Head>
             <div className={'tw-w-full tw-rounded-md tw-bg-black/20'}>
                 <Container className={'tw-py-4 '}>
@@ -139,14 +141,18 @@ const MyTrackId = ({ track }: Props) => {
                         <Stack>
                             <FormControl isRequired>
                                 <FormLabel>Song name</FormLabel>
-                                <Input value={songName} placeholder='Song name' onChange={(e) => {
-                                    e.preventDefault()
-                                    setSongName(e.target.value)
-                                }} />
+                                <Input
+                                    value={songName}
+                                    placeholder="Song name"
+                                    onChange={(e) => {
+                                        e.preventDefault()
+                                        setSongName(e.target.value)
+                                    }}
+                                />
                             </FormControl>
                             <FormControl isRequired>
                                 <FormLabel>Genres</FormLabel>
-                                <SimpleGrid minChildWidth='100px' spacing={2}>
+                                <SimpleGrid minChildWidth="100px" spacing={2}>
                                     {genres.map((v, i) => (
                                         <Input
                                             key={`genre-${i}`}
@@ -154,7 +160,10 @@ const MyTrackId = ({ track }: Props) => {
                                             value={v}
                                             onChange={(e) => {
                                                 e.preventDefault()
-                                                onGenresChange(e.target.value, i)
+                                                onGenresChange(
+                                                    e.target.value,
+                                                    i
+                                                )
                                             }}
                                         />
                                     ))}
@@ -162,16 +171,18 @@ const MyTrackId = ({ track }: Props) => {
                                         {genres.length > 1 && (
                                             <div>
                                                 <IconButton
-                                                    aria-label='Remove genre button'
+                                                    aria-label="Remove genre button"
                                                     icon={<RiSubtractFill />}
-                                                    onClick={() => removeLastGenre()}
+                                                    onClick={() =>
+                                                        removeLastGenre()
+                                                    }
                                                 />
                                             </div>
                                         )}
                                         {genres.length < 2 && (
                                             <div>
                                                 <IconButton
-                                                    aria-label='Add genre button'
+                                                    aria-label="Add genre button"
                                                     icon={<RiAddFill />}
                                                     onClick={() => addGenre()}
                                                 />
@@ -182,7 +193,7 @@ const MyTrackId = ({ track }: Props) => {
                             </FormControl>
                             <FormControl isRequired>
                                 <FormLabel>Artists</FormLabel>
-                                <SimpleGrid minChildWidth='100px' spacing={2}>
+                                <SimpleGrid minChildWidth="100px" spacing={2}>
                                     {artists.map((v, i) => (
                                         <Input
                                             key={`artist-${i}`}
@@ -190,21 +201,26 @@ const MyTrackId = ({ track }: Props) => {
                                             value={artists[i]}
                                             onChange={(e) => {
                                                 e.preventDefault()
-                                                onArtistsChange(e.target.value, i)
+                                                onArtistsChange(
+                                                    e.target.value,
+                                                    i
+                                                )
                                             }}
                                         />
                                     ))}
                                     <div className={'tw-flex tw-space-x-2'}>
                                         {artists.length > 1 && (
                                             <IconButton
-                                                aria-label='Remove artist button'
+                                                aria-label="Remove artist button"
                                                 icon={<RiSubtractFill />}
-                                                onClick={() => removeLastArtist()}
+                                                onClick={() =>
+                                                    removeLastArtist()
+                                                }
                                             />
                                         )}
                                         {artists.length < 4 && (
                                             <IconButton
-                                                aria-label='Add artist button'
+                                                aria-label="Add artist button"
                                                 icon={<RiAddFill />}
                                                 onClick={() => addArtist()}
                                             />
@@ -212,12 +228,31 @@ const MyTrackId = ({ track }: Props) => {
                                     </div>
                                 </SimpleGrid>
                             </FormControl>
-                            {track?.image_url && <div className={'tw-p-2 tw-aspect-square tw-max-w-xs'}>
-                                <Image alt={`${track.name}'s image`} src={track?.image_url} />
-                            </div>}
-                            <audio className={'tw-w-full'} controls src={track?.src || undefined} />
+                            {track?.image_url && (
+                                <div
+                                    className={
+                                        'tw-p-2 tw-aspect-square tw-max-w-xs'
+                                    }
+                                >
+                                    <Image
+                                        alt={`${track.name}'s image`}
+                                        src={track?.image_url}
+                                    />
+                                </div>
+                            )}
+                            <audio
+                                className={'tw-w-full'}
+                                controls
+                                src={track?.src || undefined}
+                            />
                             <FormControl>
-                                <Button type={'submit'} colorScheme={'teal'} isLoading={submitting}>Submit</Button>
+                                <Button
+                                    type={'submit'}
+                                    colorScheme={'teal'}
+                                    isLoading={submitting}
+                                >
+                                    Submit
+                                </Button>
                             </FormControl>
                         </Stack>
                     </form>
@@ -242,10 +277,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
             notFound: true,
         }
 
+    const trackId = decodeURIComponent(ctx.query.trackId as string)
+
     const track = await supabaseClient
         .from('tracks')
         .select('*')
-        .eq('id', ctx.query.trackId)
+        .eq('id', trackId)
         .eq('author', user.data.user.id)
         .limit(1)
         .single()
