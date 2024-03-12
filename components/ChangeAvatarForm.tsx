@@ -13,7 +13,7 @@ export default function ChangeAvatarForm() {
                 <Avatar src={profile.avatar_url || undefined} size={
                     {
                         base: 'md',
-                        md: 'xl',
+                        lg: 'xl',
                     }
                 } />
             </Box>

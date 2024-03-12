@@ -39,7 +39,7 @@ const MyProfile = ({ profile }: Props) => {
     return (
         <>
             <div className={'tw-w-full tw-flex tw-flex-col tw-space-y-2'}>
-                <div className={'tw-flex tw-flex-col-reverse md:tw-flex-row tw-w-full tw-gap-2'}>
+                <div className={'tw-flex tw-flex-col-reverse lg:tw-flex-row tw-w-full tw-gap-2'}>
                     <div className='tw-flex-1 tw-flex tw-flex-col tw-space-y-2 tw-bg-black/20 tw-p-5 tw-rounded-md'>
                         <Link as={NextLink} href={'/queue'}>
                             Queue
@@ -68,7 +68,7 @@ const MyProfile = ({ profile }: Props) => {
                     </div>
                 </div>
                 <div
-                    className={'tw-flex tw-flex-col md:tw-flex-row tw-w-full tw-gap-2'}
+                    className={'tw-flex tw-flex-col lg:tw-flex-row tw-w-full tw-gap-2'}
                 >
                     <div
                         className={'tw-flex-1 tw-rounded-md tw-bg-black/20 tw-py-10'}

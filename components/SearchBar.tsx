@@ -18,7 +18,7 @@ function SearchBar({ query, onChange, placeholder = 'Play a melody', ...props }:
             <Input
                 type={'text'}
                 value={query}
-                w={{ base: 'full', md: 300 }}
+                w={{ base: 'full' }}
                 placeholder={placeholder}
                 onChange={onChange}
                 {...props}

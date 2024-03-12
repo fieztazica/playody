@@ -27,10 +27,10 @@ export function NavBar({ children, ...props }: Props) {
                 className={`tw-w-full tw-sticky tw-top-0 tw-backdrop-blur-sm tw-z-10 tw-mb-2 tw-block}`}
             >
                 <div
-                    className='tw-w-full tw-p-2 tw-bg-black/20 tw-hidden md:tw-flex tw-justify-between tw-gap-2 tw-rounded-md'>
+                    className='tw-w-full tw-p-2 tw-bg-black/20 tw-hidden lg:tw-flex tw-justify-between tw-gap-2 tw-rounded-md'>
                     <div className={'tw-w-fit tw-flex tw-flex-row tw-space-x-2'}>
                         <ButtonGroup
-                            display={{ base: 'none', md: 'block' }}
+                            display={{ base: 'none', lg: 'block' }}
                             w='fit-content'
                         >
                             <IconButton
@@ -51,7 +51,7 @@ export function NavBar({ children, ...props }: Props) {
                     </div>
                     <div
                         className={
-                            'tw-hidden md:tw-flex tw-justify-center tw-items-center tw-px-2'
+                            'tw-hidden lg:tw-flex tw-justify-center tw-items-center tw-px-2'
                         }
                     >
                         <NextLink href={'/'}>
@@ -62,7 +62,7 @@ export function NavBar({ children, ...props }: Props) {
                 {children && (
                     <div
                         className={
-                            'tw-w-full tw-p-2 tw-bg-black/20 tw-flex md:tw-hidden tw-justify-between tw-rounded-md'
+                            'tw-w-full tw-p-2 tw-bg-black/20 tw-flex lg:tw-hidden tw-justify-between tw-rounded-md'
                         }
                     >
                         {children}

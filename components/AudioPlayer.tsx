@@ -64,12 +64,12 @@ function AudioPlayer() {
                 )}
             </Head>
             <div
-                className={'tw-flex tw-justify-between tw-flex-col md:tw-flex-row tw-space-x-2 tw-rounded-md tw-mx-2 tw-mb-2 tw-p-2 tw-bg-black/20'}>
+                className={'tw-flex tw-justify-between tw-flex-col lg:tw-flex-row tw-space-x-2 tw-rounded-md tw-mx-2 tw-mb-2 tw-p-2 tw-bg-black/20'}>
                 <div className={'tw-flex-1 tw-flex tw-flex-row tw-justify-between'}>
                     <div className={'tw-flex-1'}>
                         <DisplaySong />
                     </div>
-                    <div className={'tw-flex md:tw-hidden tw-items-start tw-space-x-1'}>
+                    <div className={'tw-flex lg:tw-hidden tw-items-start tw-space-x-1'}>
                         {loading &&
                             <Spinner ml={2} />
                         }
@@ -79,7 +79,7 @@ function AudioPlayer() {
                 <div className={'tw-flex-1'}>
                     <AudioControl />
                 </div>
-                <div className={'tw-hidden md:tw-block tw-flex-1 tw-relative '}>
+                <div className={'tw-hidden lg:tw-block tw-flex-1 tw-relative '}>
                         {loading && <div className={'tw-absolute tw-top-0 tw-right-0'}>
                             <Spinner ml={2} />
                         </div>}

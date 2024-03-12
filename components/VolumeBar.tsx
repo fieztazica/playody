@@ -49,7 +49,7 @@ function VolumeBar({ ...props }) {
     return (
             <HStack align={"center"} justify={"center"} display={{
                 base: "none",
-                md: "flex"
+                lg: "flex"
             }} spacing={1} {...props}>
                 <div className={'tw-flex tw-w-fit tw-rounded-full tw-py-3 tw-px-2 hover:tw-bg-white/5 tw-duration-300'}>
                     <Slider

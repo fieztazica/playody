@@ -174,7 +174,7 @@ const MyPlaylistName = ({ playlist }: Props) => {
                 <div
                     className={'tw-flex tw-bg-black/20 tw-rounded-md tw-px-4 tw-py-2 tw-justify-center tw-items-center'}>
                     <div className={'tw-flex tw-flex-col tw-space-y-1 tw-flex-1'}>
-                        <p className={'tw-font-extrabold tw-text-2xl md:tw-text-4xl'}>
+                        <p className={'tw-font-extrabold tw-text-2xl lg:tw-text-4xl'}>
                             {playlist.name}
                         </p>
                         <SkeletonText isLoaded={!refreshing}>
@@ -189,7 +189,7 @@ const MyPlaylistName = ({ playlist }: Props) => {
                             <IconButton
                                 boxSize={{
                                     base: '64px',
-                                    md: '84px',
+                                    lg: '84px',
                                 }}
                                 rounded={'full'}
                                 fontSize={'4xl'}

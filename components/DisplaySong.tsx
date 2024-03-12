@@ -26,8 +26,8 @@ function DisplaySong({ ...props }) {
                 alt={`${playingTrack?.name}'s cover`}
                 title={`${playingTrack?.name}'s cover`}
                 objectFit={'cover'}
-                maxW={{ base: '64px', md: '6em' }}
-                maxH={{ base: '64px', md: '6em' }}
+                maxW={{ base: '64px', lg: '6em' }}
+                maxH={{ base: '64px', lg: '6em' }}
                 boxShadow={'0 0 20px -15px white'}
                 bg='rgba(255,255,255,0.1)'
                 className={'tw-aspect-square'}
@@ -36,13 +36,13 @@ function DisplaySong({ ...props }) {
                 align='stretch'
                 overflow={'hidden'}
             >
-                <p className={'tw-text-ellipsis tw-overflow-hidden tw-text-base tw-font-bold md:tw-text-xl'}
+                <p className={'tw-text-ellipsis tw-overflow-hidden tw-text-base tw-font-bold lg:tw-text-xl'}
                    title={playingTrack?.name || 'No Song Playing'}>
                     {playingTrack?.name || 'No Song Playing'}
                 </p>
-                <div className={'container tw-hidden md:tw-block'}>
+                <div className={'container tw-hidden lg:tw-block'}>
                     <div className={'tw-truncate tw-duration-300 hover:animated'}>
-                          <span className={'tw-text-sm md:tw-text-base'}
+                          <span className={'tw-text-sm lg:tw-text-base'}
                                title={playingTrack?.artists?.map((v) => v).join(', ') || 'No artist'}>
                             {playingTrack?.artists?.map((v) => v).join(', ')}
                         </span>

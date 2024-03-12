@@ -21,7 +21,7 @@ function MainLayout({ children, navbar = true }: { children: React.ReactNode, na
             <div className={'tw-h-screen tw-flex tw-flex-col'}>
                 <div className={'tw-grow tw-overflow-y-auto'}>
                     <div
-                        className={'tw-h-full tw-w-full tw-max-w-xs tw-hidden md:tw-flex tw-float-left tw-flex-col tw-space-y-2 tw-resize-x tw-pt-2 tw-pl-2'}>
+                        className={'tw-h-full tw-w-full tw-max-w-xs tw-hidden lg:tw-flex tw-float-left tw-flex-col tw-space-y-2 tw-resize-x tw-pt-2 tw-pl-2'}>
                         <SideBar />
                     </div>
                     <div className={'tw-overflow-y-auto tw-grow tw-h-full tw-flex-col tw-p-2'}>

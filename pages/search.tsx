@@ -158,7 +158,7 @@ const Search = ({
                                                   )
                                                 : i
                                         ]
-                                    } hover:tw-shadow-md hover:tw-shadow-white/20 hover:tw-brightness-150 tw-cursor-pointer active:tw-brightness-50 tw-font-bold tw-p-2 tw-rounded-md tw-min-w-[128px] md:tw-min-w-[256px] lg:tw-min-w-[360px] tw-min-h-[64px]`}
+                                    } hover:tw-shadow-md hover:tw-shadow-white/20 hover:tw-brightness-150 tw-cursor-pointer active:tw-brightness-50 tw-font-bold tw-p-2 tw-rounded-md tw-min-w-[128px] lg:tw-min-w-[256px] lg:tw-min-w-[360px] tw-min-h-[64px]`}
                                 >
                                     {v}
                                 </div>

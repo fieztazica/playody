@@ -220,7 +220,7 @@ const VerifyTracks = (
                                 </div>
                                 <div
                                     className={
-                                        'tw-flex tw-flex-col-reverse md:tw-flex-row tw-items-center tw-justify-between'
+                                        'tw-flex tw-flex-col-reverse lg:tw-flex-row tw-items-center tw-justify-between'
                                     }
                                 >
                                     <div>

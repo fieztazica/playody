@@ -20,7 +20,7 @@ const MobileNavBar = (props: Props) => {
     const pathname = usePathname()
     const { profile } = useAppStates()
     return (
-        <header className={'tw-block md:tw-hidden'}>
+        <header className={'tw-block lg:tw-hidden'}>
             <div className={'tw-flex tw-flex-row tw-justify-between tw-items-center tw-bg-black/50 tw-px-2'}>
                 {profile === null
                     ? <div key={`login_nav_link_logo`} className={'tw-flex-1'}>

@@ -27,7 +27,7 @@ function SeekBar() {
         <Stack key={'SeekBarComponent'} direction={'row'} w='full' spacing={4} justify={'center'} align={'center'}>
             <Text
                 key={'time_consumed'}
-                fontSize={{ base: 'xs', md: 'md' }}
+                fontSize={{ base: 'xs', lg: 'md' }}
                 color={playingTrack ? undefined : "gray"}
                 minW={'max-content'}
             >
@@ -53,7 +53,7 @@ function SeekBar() {
             </Slider>
             <Text
                 key={'time_left'}
-                fontSize={{ base: 'xs', md: 'md' }}
+                fontSize={{ base: 'xs', lg: 'md' }}
                 color={playingTrack ? undefined : "gray"}
                 minW={'max-content'}
             >

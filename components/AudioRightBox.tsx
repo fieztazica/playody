@@ -33,7 +33,7 @@ export function AudioRightBox({ ...props }) {
                 <NextLink href={'/queue'}>
                     <div className={'tw-relative'}>
                         <div
-                            className={'tw-absolute md:tw-hidden tw-top-0 tw-left-0 tw-px-1 tw-rounded-full tw-z-10 tw-bg-purple-500/90 tw-text-white/80 tw-text-sm'}>
+                            className={'tw-absolute lg:tw-hidden tw-top-0 tw-left-0 tw-px-1 tw-rounded-full tw-z-10 tw-bg-purple-500/90 tw-text-white/80 tw-text-sm'}>
                             {queue.length}
                         </div>
                         <IconButton
@@ -48,7 +48,7 @@ export function AudioRightBox({ ...props }) {
 
                 </NextLink>
             </Tooltip>
-            <div className={'tw-hidden md:tw-block tw-h-8 tw-w-[1px] tw-rounded-full tw-bg-white/50'}>
+            <div className={'tw-hidden lg:tw-block tw-h-8 tw-w-[1px] tw-rounded-full tw-bg-white/50'}>
 
             </div>
             <VolumeBar />
