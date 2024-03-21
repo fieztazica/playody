@@ -67,6 +67,7 @@ export default function useLyrics() {
 
     useEffect(() => {
         if (activeLine && activeLine.current) {
+            //@ts-ignore
             activeLine.current.scrollIntoView({
                 behavior: 'auto',
                 block: 'center',
