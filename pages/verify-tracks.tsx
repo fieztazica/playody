@@ -77,9 +77,7 @@ const VerifyTracks = (
                                         className={`tw-font-semibold`}
                                         title={v.author || undefined}
                                     >
-                                        @
-                                        {v?.profiles?.[0]?.full_name ||
-                                            'Unknown'}
+                                        @{v.author || 'Unknown'}
                                     </span>{' '}
                                     uploaded at{' '}
                                     {new Date(
