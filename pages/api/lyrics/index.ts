@@ -4,6 +4,7 @@ import { Client } from 'genius-lyrics'
 import { Lyrics } from '@/typings'
 
 const GeniusClient = new Client(process.env.GENIUS_ACCESS_TOKEN)
+const TextylURL = new URL('https://api.textyl.co/api/lyrics')
 
 async function ApiLyrics(
     req: NextApiRequest,
@@ -20,26 +21,18 @@ async function ApiLyrics(
             return
         }
         const query = decodeURIComponent(q as string)
-        const searches = await GeniusClient.songs.search(query)
 
-        if (!searches || !searches.length) {
-            res.status(404).json({
-                message: 'Not found',
-                data: {},
-                error: null,
-            })
-            return
+        let lyrics: Lyrics = []
+        let provider = 'textyl.co'
+        lyrics = await textylGet(query)
+        if (!lyrics || !lyrics.length) {
+            lyrics = await geniusGet(query)
+            provider = 'genius.com'
         }
-        const song = searches[0]
-        const geniusLyrics = await song.lyrics()
-        const lyrics: Lyrics = geniusLyrics.split('\n').map((v) => ({
-            time: 0,
-            text: v,
-        }))
 
         res.status(200).json({
             message: '',
-            data: { lyrics, song: song._raw },
+            data: { lyrics, provider },
             error: null,
         })
         return
@@ -57,3 +50,33 @@ async function ApiLyrics(
 }
 
 export default ApiLyrics
+
+async function geniusGet(query: string) {
+    const searches = await GeniusClient.songs.search(query)
+    if (!searches || !searches.length) {
+        throw new Error('Not found')
+    }
+    const song = searches[0]
+    const geniusLyrics = await song.lyrics()
+    const lyrics: Lyrics = geniusLyrics.split('\n').map((v) => ({
+        time: 0,
+        text: v,
+    }))
+    return lyrics
+}
+
+async function textylGet(query: string) {
+    const data = (await fetch(
+        `${TextylURL.toString()}?q=${encodeURIComponent(query)}`
+    ).then((r) => r.json())) as TextylLyricComponent[]
+    const lyrics = data.map((v) => ({
+        time: v.seconds,
+        text: v.lyrics,
+    }))
+    return lyrics
+}
+
+type TextylLyricComponent = {
+    seconds: number
+    lyrics: string
+}

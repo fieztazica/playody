@@ -1,16 +1,9 @@
 import MainLayout from '@/components/MainLayout'
-import { useAudioCtx } from '@/lib/contexts/AudioContext'
-import { GetStaticProps } from 'next'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { Text } from '@chakra-ui/react'
-import { Lyrics } from '@/typings'
 import useLyrics from '@/lib/hooks/useLyrics'
-// import { Lyrics } from '../../components/Lyrics';
-// import { getLyrics } from '../../lib/api';
+import { useRef } from 'react'
 
 const LyricsPage = () => {
-    const { isLoading, playingTrack, currentTime, lyrics } = useLyrics()
+    const { playingTrack, lyrics, currentLineIndex, activeLine } = useLyrics()
 
     if (!playingTrack) {
         return (
@@ -30,10 +23,27 @@ const LyricsPage = () => {
                         'tw-flex tw-flex-col tw-w-full tw-space-y-2 tw-flex-1'
                     }
                 >
-                    {currentTime.toFixed(1)}
-                    {playingTrack?.name}
+                    {lyrics.length
+                        ? lyrics.map((v, i) => (
+                              <p
+                                  key={`lyric_${i}`}
+                                  ref={
+                                      i == currentLineIndex
+                                          ? activeLine
+                                          : undefined
+                                  }
+                                  className={`tw-px-4 tw-text-xl lg:tw-text-2xl tw-font-bold ${
+                                      i == currentLineIndex
+                                          ? " tw-underline tw-decoration-2 tw-decoration-indigo-500 after:tw-content-['🎤'] tw-bg-black/20 tw-rounded-md"
+                                          : ''
+                                  }`}
+                              >
+                                  {v.text}
+                              </p>
+                          ))
+                        : 'Lyrics not found'}
                 </div>
-                <div className="tw-text-xs">Provided by Genius</div>
+                <div className="tw-text-xs">{`Provided by textyl.co, genius.com`}</div>
             </div>
         </>
     )

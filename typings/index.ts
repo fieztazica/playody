@@ -9,19 +9,21 @@ import {
 } from 'react'
 import { Database } from '@/typings/supabase'
 import { Session, SupabaseClient } from '@supabase/supabase-js'
+import { UseDisclosureReturn } from '@chakra-ui/react'
 
 export type Lyrics = Lyric[]
 
 export type Lyric = {
-    time: number,
+    time: number
     text: string
 }
 
 export type AppCtxType = {
-    myPlaylists: Playlist[] | null,
-    fetchMyPlaylists: () => void,
-    profile: Profile | null,
+    myPlaylists: Playlist[] | null
+    fetchMyPlaylists: () => void
+    profile: Profile | null
     fetchProfile: () => void
+    indicator: UseDisclosureReturn
 }
 
 export type AudioCtxType = {
@@ -45,11 +47,11 @@ export type AudioCtxType = {
     previousTracks: Track[]
     setPreviousTracks: Dispatch<SetStateAction<Track[]>>
     nextSong: () => void
-    previousSong: () => void,
-    addToQueue: (track: Track) => void,
-    removeFromQueue: (track: Track) => void,
-    getRandomTrack: () => Track,
-    addTrackToPlaylist: (playlist: Playlist, track: Track) => Promise<void>,
+    previousSong: () => void
+    addToQueue: (track: Track) => void
+    removeFromQueue: (track: Track) => void
+    getRandomTrack: () => Track
+    addTrackToPlaylist: (playlist: Playlist, track: Track) => Promise<void>
 }
 
 export type Track = Database['public']['Tables']['tracks']['Row']
@@ -61,7 +63,7 @@ export type TrackWithProfile = Track & { profiles: Profile[] }
 export type LoopMode = 'queue' | 'song' | null
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-    getLayout?: (page: ReactElement) => ReactNode,
+    getLayout?: (page: ReactElement) => ReactNode
     title?: string
 }
 

@@ -2,13 +2,17 @@ import { Track } from '@/typings'
 import { useAudioCtx } from '../contexts/AudioContext'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useAppStates } from '../contexts/AppContext'
+import useIndicator from './useIndicator'
 
 export default function useSearch() {
+    const { indicator: appIndicator } = useAppStates()
     const { addToQueue } = useAudioCtx()
     const [searching, setSearching] = useState(false)
     const [searchResults, setSearchResults] = useState<Track[]>([])
     const router = useRouter()
     const [query, setQuery] = useState<string>('')
+    useIndicator(searching, { indicator: appIndicator })
 
     useEffect(() => {
         setQuery(decodeURIComponent((router.query.q || '') as string))

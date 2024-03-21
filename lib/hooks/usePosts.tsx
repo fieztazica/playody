@@ -1,8 +1,11 @@
 import { Profile, Track } from '@/typings'
 import { useEffect, useRef, useState } from 'react'
 import { useInViewport } from 'react-in-viewport'
+import { useAppStates } from '../contexts/AppContext'
+import useIndicator from './useIndicator'
 
 export default function usePosts() {
+    const { indicator: appIndicator } = useAppStates()
     const [page, setPage] = useState(1)
     const [isEnded, setIsEnded] = useState(false)
     const [posts, setPosts] = useState<
@@ -16,6 +19,7 @@ export default function usePosts() {
         { disconnectOnLeave: false },
         undefined
     )
+    useIndicator(loading, { indicator: appIndicator })
 
     async function loadPosts() {
         try {
