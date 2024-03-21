@@ -78,7 +78,7 @@ const VerifyTracks = (
                                         title={v.author || undefined}
                                     >
                                         @
-                                        {v.profiles.shift()?.full_name ||
+                                        {v?.profiles?.[0]?.full_name ||
                                             'Unknown'}
                                     </span>{' '}
                                     uploaded at{' '}
