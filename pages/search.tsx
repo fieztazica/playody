@@ -4,6 +4,7 @@ import SearchBar from '@/components/SearchBar'
 import { TrackCard } from '@/components/TrackCard'
 import UnderlineTypo from '@/components/UnderlineTypo'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
+import useSearch from '@/lib/hooks/useSearch'
 import { Track } from '@/typings'
 import { Database } from '@/typings/supabase'
 import { Stack } from '@chakra-ui/react'
@@ -36,82 +37,23 @@ const tailwindColors = [
 const Search = ({
     genres,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const { addToQueue } = useAudioCtx()
-    const [searching, setSearching] = useState(false)
-    const [searchResults, setSearchResults] = useState<Track[]>([])
-    const router = useRouter()
-    const [query, setQuery] = useState<string>('')
+    const {
+        handleDoubleClick,
+        handleOnQuery,
+        query,
+        searchResults,
+        addToQueue,
+        searching,
+    } = useSearch()
 
     function getRandomInt(max: number) {
         return Math.floor(Math.random() * max)
     }
-    useEffect(() => {
-        setQuery(decodeURIComponent((router.query.q || '') as string))
-    }, [router.query.q])
 
-    useEffect(() => {
-        query
-            ? router.replace(
-                  {
-                      pathname: '/search',
-                      query: {
-                          q: encodeURIComponent(query),
-                      },
-                  },
-                  undefined,
-                  { shallow: true }
-              )
-            : router.replace(
-                  {
-                      pathname: '/search',
-                  },
-                  undefined,
-                  { shallow: true }
-              )
-
-        const timer = setTimeout(() => {
-            findSong(query)
-        }, 1500)
-
-        return () => {
-            clearTimeout(timer)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [query])
-
-    async function findSong(query: string) {
-        try {
-            setSearching(true)
-            if (query) {
-                const res = await fetch(`/api/search?q=${query}`).then((r) =>
-                    r.json()
-                )
-
-                if (res.data) {
-                    setSearchResults(res.data)
-                }
-            } else {
-                setSearchResults([])
-            }
-        } catch (e: any) {
-            console.error(e)
-        } finally {
-            setSearching(false)
-        }
-    }
-
-    function handleDoubleClick(
-        event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-        track: Track
-    ) {
-        if (event.detail == 2) {
-            addToQueue(track)
-        }
-    }
-
-    function handleOnQuery(event: React.ChangeEvent<HTMLInputElement>) {
-        event.preventDefault()
-        setQuery(event.target.value)
+    function getTailwindColor(i: number) {
+        return tailwindColors[
+            i >= tailwindColors.length ? getRandomInt(tailwindColors.length) : i
+        ]
     }
 
     return (
@@ -150,15 +92,9 @@ const Search = ({
                                 href={`/search?q=${encodeURIComponent(v)}`}
                             >
                                 <div
-                                    className={`${
-                                        tailwindColors[
-                                            i >= tailwindColors.length
-                                                ? getRandomInt(
-                                                      tailwindColors.length
-                                                  )
-                                                : i
-                                        ]
-                                    } hover:tw-shadow-md hover:tw-shadow-white/20 hover:tw-brightness-150 tw-cursor-pointer active:tw-brightness-50 tw-font-bold tw-p-2 tw-rounded-md tw-min-w-[128px] lg:tw-min-w-[256px] lg:tw-min-w-[360px] tw-min-h-[64px]`}
+                                    className={`${getTailwindColor(
+                                        i
+                                    )} hover:tw-shadow-md hover:tw-shadow-white/20 hover:tw-brightness-150 tw-cursor-pointer active:tw-brightness-50 tw-font-bold tw-p-2 tw-rounded-md tw-min-w-[128px] lg:tw-min-w-[256px] lg:tw-min-w-[360px] tw-min-h-[64px]`}
                                 >
                                     {v}
                                 </div>

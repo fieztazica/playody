@@ -1,53 +1,58 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Client } from 'genius-lyrics'
+import { Lyrics } from '@/typings'
 
-const GeniusClient = new Client(process.env.GENIUS_ACCESS_TOKEN);
+const GeniusClient = new Client(process.env.GENIUS_ACCESS_TOKEN)
 
 async function ApiLyrics(
     req: NextApiRequest,
-    res: NextApiResponse<ApiResError | ApiResSuccess>,
+    res: NextApiResponse<ApiResError | ApiResSuccess>
 ) {
     try {
-        const query = decodeURIComponent(req.query['q'] as string)
-
-        if (!query) {
-            return res.status(400).json({
+        const q = req.query['q']
+        if (!q || !q.length) {
+            res.status(400).json({
                 message: "Query 'q' not provided",
+                data: null,
+                error: null,
+            })
+            return
+        }
+        const query = decodeURIComponent(q as string)
+        const searches = await GeniusClient.songs.search(query)
+
+        if (!searches || !searches.length) {
+            res.status(404).json({
+                message: 'Not found',
                 data: {},
                 error: null,
             })
+            return
         }
-        const searches = await GeniusClient.songs.search(query);
+        const song = searches[0]
+        const geniusLyrics = await song.lyrics()
+        const lyrics: Lyrics = geniusLyrics.split('\n').map((v) => ({
+            time: 0,
+            text: v,
+        }))
 
-        if (!searches.length) {
-            return res.status(404).json({
-                message: "Not found",
-                data: {},
-                error: null,
-            })
-        }
-
-        // Pick first one
-        const firstSong = searches[0];
-
-        // Ok lets get the lyrics
-        const lyrics = await firstSong.lyrics();
-        console.log("Lyrics of the Song:\n", lyrics, "\n");
-        return res.status(200).json({
-            message: "",
-            data: { lyrics },
+        res.status(200).json({
+            message: '',
+            data: { lyrics, song: song._raw },
             error: null,
         })
+        return
     } catch (error) {
-        const resError = (error as Error)
-        return res.status((resError as any)?.error?.statusCode || 500).json({
+        const resError = error as Error
+        res.status((resError as any)?.error?.statusCode || 500).json({
             message: resError.message,
             data: {},
             error: {
-                ...resError
+                ...resError,
             },
         })
+        return
     }
 }
 

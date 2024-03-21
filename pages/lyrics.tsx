@@ -1,44 +1,42 @@
-import MainLayout from '@/components/MainLayout';
-import { useAudioCtx } from '@/lib/contexts/AudioContext';
-import { GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { Text } from "@chakra-ui/react"
-import { Lyrics } from '@/typings';
-import Genius from "genius-lyrics";
+import MainLayout from '@/components/MainLayout'
+import { useAudioCtx } from '@/lib/contexts/AudioContext'
+import { GetStaticProps } from 'next'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { Text } from '@chakra-ui/react'
+import { Lyrics } from '@/typings'
+import useLyrics from '@/lib/hooks/useLyrics'
 // import { Lyrics } from '../../components/Lyrics';
 // import { getLyrics } from '../../lib/api';
 
 const LyricsPage = () => {
-    const [lyrics, setLyrics] = useState<Lyrics>([]);
-    const { currentTime, playingTrack } = useAudioCtx()
-
-    useEffect(() => {
-        if (!playingTrack) return;
-
-    }, [playingTrack]);
+    const { isLoading, playingTrack, currentTime, lyrics } = useLyrics()
 
     if (!playingTrack) {
         return (
             <>
-                <div className='tw-flex tw-flex-col tw-items-center tw-h-full'>
-                    <div className='tw-text-md'>No song currently playing</div>
+                <div className="tw-flex tw-flex-col tw-items-center tw-h-full">
+                    <div className="tw-text-md">No song currently playing</div>
                 </div>
             </>
-        );
+        )
     }
 
     return (
         <>
-            <div className='tw-flex tw-flex-col tw-items-center tw-h-full'>
-                <div className={'tw-flex tw-flex-col tw-w-full tw-space-y-2 tw-flex-1'}>
+            <div className="tw-flex tw-flex-col tw-items-center tw-h-full">
+                <div
+                    className={
+                        'tw-flex tw-flex-col tw-w-full tw-space-y-2 tw-flex-1'
+                    }
+                >
                     {currentTime.toFixed(1)}
                     {playingTrack?.name}
                 </div>
-                <div className='tw-text-xs'>Provided by Genius</div>
+                <div className="tw-text-xs">Provided by Genius</div>
             </div>
         </>
-    );
+    )
 }
 
 LyricsPage.getLayout = (page: React.ReactElement) => {

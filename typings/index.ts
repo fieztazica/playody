@@ -56,6 +56,8 @@ export type Track = Database['public']['Tables']['tracks']['Row']
 export type Profile = Database['public']['Tables']['profiles']['Row']
 export type Playlist = Database['public']['Tables']['playlists']['Row']
 
+export type TrackWithProfile = Track & { profiles: Profile[] }
+
 export type LoopMode = 'queue' | 'song' | null
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
