@@ -22,58 +22,60 @@ type Props = {
 export function NavBar({ children, ...props }: Props) {
     const router = useRouter()
     return (
-        <>
-            <nav
-                className={`tw-w-full tw-sticky tw-top-0 tw-backdrop-blur-sm tw-z-10 tw-mb-2 tw-block}`}
-            >
-                <div
-                    className='tw-w-full tw-p-2 tw-bg-black/20 tw-hidden lg:tw-flex tw-justify-between tw-gap-2 tw-rounded-md'>
-                    <div className={'tw-w-fit tw-flex tw-flex-row tw-space-x-2'}>
-                        <ButtonGroup
-                            display={{ base: 'none', lg: 'block' }}
-                            w='fit-content'
-                        >
-                            <IconButton
-                                icon={<FiChevronLeft />}
-                                title={'Back'}
-                                aria-label={'back button'}
-                                onClick={() => router.back()}
-                            />
-                            <IconButton
-                                icon={<FiChevronRight />}
-                                title={'Forward'}
-                                aria-label={'back button'}
-                                onClick={() => router.forward()}
-                                isDisabled
-                            />
-                        </ButtonGroup>
-                        <div>{children}</div>
-                    </div>
-                    <div
-                        className={
-                            'tw-hidden lg:tw-flex tw-justify-center tw-items-center tw-px-2'
-                        }
+        <div
+            className={`tw-w-full tw-sticky tw-top-0 tw-backdrop-blur-sm tw-z-10 tw-mb-2 tw-block}`}
+        >
+            <div
+                className='tw-w-full tw-p-2 tw-bg-black/20 tw-hidden lg:tw-flex tw-justify-between tw-gap-2 tw-rounded-md'>
+                <div className={'tw-w-fit tw-flex tw-flex-row tw-space-x-2'}>
+                    <ButtonGroup
+                        display={{ base: 'none', lg: 'block' }}
+                        w='fit-content'
                     >
-                        <NextLink href={'/'}>
-                            <PlayodyTitle />
-                        </NextLink>
-                    </div>
+                        <IconButton
+                            icon={<FiChevronLeft />}
+                            title={'Back'}
+                            aria-label={'back button'}
+                            onClick={() => router.back()}
+                        />
+                        <IconButton
+                            icon={<FiChevronRight />}
+                            title={'Forward'}
+                            aria-label={'back button'}
+                            onClick={() => router.forward()}
+                            isDisabled
+                        />
+                    </ButtonGroup>
+                    <div>{children}</div>
                 </div>
-                {children && (
-                    <div
-                        className={
-                            'tw-w-full tw-p-2 tw-bg-black/20 tw-flex lg:tw-hidden tw-justify-between tw-rounded-md'
-                        }
-                    >
-                        {children}
-                    </div>
-                )}
-            </nav>
+                <PlayodyLogo />
+            </div>
+            {children && (
+                <div
+                    className={
+                        'tw-w-full tw-p-2 tw-bg-black/20 tw-flex lg:tw-hidden tw-justify-between tw-rounded-md'
+                    }
+                >
+                    {children}
+                </div>
+            )}
             {router.pathname !== '/' &&
-                <div key={'breadcrumb'} className={'tw-mb-2 tw-rounded-md tw-p-2 tw-bg-black/20 tw-w-full'}>
+                <div key={'breadcrumb'} className={'tw-mt-2 tw-rounded-md tw-p-2 tw-bg-black/20 tw-w-full'}>
                     <Breadcrumbs />
                 </div>
             }
-        </>
+        </div>
     )
+}
+
+function PlayodyLogo() {
+    return (<div
+        className={
+            'tw-hidden lg:tw-flex tw-justify-center tw-items-center tw-px-2'
+        }
+    >
+        <NextLink href={'/'}>
+            <PlayodyTitle />
+        </NextLink>
+    </div>)
 }

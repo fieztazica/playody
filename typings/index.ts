@@ -10,6 +10,13 @@ import {
 import { Database } from '@/typings/supabase'
 import { Session, SupabaseClient } from '@supabase/supabase-js'
 
+export type Lyrics = Lyric[]
+
+export type Lyric = {
+    time: number,
+    text: string
+}
+
 export type AppCtxType = {
     myPlaylists: Playlist[] | null,
     fetchMyPlaylists: () => void,

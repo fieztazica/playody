@@ -18,14 +18,14 @@ import MobileNavBar from '@/components/MobileNavBar'
 function MainLayout({ children, navbar = true }: { children: React.ReactNode, navbar?: boolean }) {
     return (
         <GetReady>
-            <div className={'tw-h-screen tw-flex tw-flex-col'}>
-                <div className={'tw-grow tw-overflow-y-auto'}>
+            <div className={'tw-h-dvh tw-flex tw-flex-col'}>
+                <div className={'tw-flex-1 tw-overflow-y-auto'}>
                     <div
                         className={'tw-h-full tw-w-full tw-max-w-xs tw-hidden lg:tw-flex tw-float-left tw-flex-col tw-space-y-2 tw-resize-x tw-pt-2 tw-pl-2'}>
                         <SideBar />
                     </div>
-                    <div className={'tw-overflow-y-auto tw-grow tw-h-full tw-flex-col tw-p-2'}>
-                        <div className={'tw-grow tw-h-full tw-rounded-md'}>
+                    <div className={'tw-overflow-y-auto tw-h-full tw-p-2'}>
+                        <div className={'tw-h-full tw-rounded-md tw-flex tw-flex-col'}>
                             {navbar && <NavBar/>}
                             <main className={"tw-h-full"}>
                                     {children}
@@ -33,7 +33,7 @@ function MainLayout({ children, navbar = true }: { children: React.ReactNode, na
                         </div>
                     </div>
                 </div>
-                <div className={'tw-bottom-0 tw-mt-2'}>
+                <div className={'tw-flex-none tw-mt-2'}>
                     <AudioPlayer />
                 </div>
                 <MobileNavBar/>

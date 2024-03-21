@@ -1,16 +1,14 @@
 // @flow
-import * as React from 'react'
-import { useAudioCtx } from '@/lib/contexts/AudioContext'
-import { TrackCard } from '@/components/TrackCard'
 import MainLayout from '@/components/MainLayout'
-import Head from 'next/head'
-import UnderlineTypo from '@/components/UnderlineTypo'
-import { IconButton } from '@chakra-ui/react'
-import { MdPlaylistRemove } from 'react-icons/md'
-import { Track } from '@/typings'
 import { NavBar } from '@/components/NavBar'
 import SearchBar from '@/components/SearchBar'
+import { TrackCard } from '@/components/TrackCard'
+import UnderlineTypo from '@/components/UnderlineTypo'
+import { useAudioCtx } from '@/lib/contexts/AudioContext'
+import { Track } from '@/typings'
+import * as React from 'react'
 import { useState } from 'react'
+import { MdPlaylistRemove } from 'react-icons/md'
 
 const Queue = () => {
     const {
@@ -36,7 +34,7 @@ const Queue = () => {
                         setFilter(e.target.value.toLowerCase())
                     }}/>
             </NavBar>
-            <div className='tw-flex tw-flex-col tw-items-center tw-h-full'>
+            <div className='tw-flex tw-flex-col tw-items-center tw-flex-1'>
                 <div className={'tw-flex tw-flex-col tw-w-full tw-space-y-2'}>
                     {!isPause && playingTrack !== null && <>
                         <UnderlineTypo>
@@ -65,15 +63,15 @@ const Queue = () => {
                                     w={'full'}
                                 />
                                 <div title={'Remove this song from queue'}
-                                     className={'tw-transition tw-h-full tw-cursor-pointer ' +
+                                     className={'tw-transition tw-h-flex-1 tw-min-h-fit tw-cursor-pointer ' +
                                          'tw-flex tw-duration-300 tw-justify-center ' +
                                          'tw-items-center hover:tw-bg-red-700 ' +
-                                         'tw-bg-red-600 tw-rounded-md tw-basis-0 ' +
-                                         'group-hover:tw-basis-16 tw-transition-all tw-duration-300'}
+                                         'tw-bg-red-600 tw-rounded-md tw-hidden group-hover:tw-flex ' +
+                                         'tw-transition-all tw-duration-300'}
                                      onClick={() => removeFromQueue(v)}
                                 >
                                     <div
-                                        className={'tw-text-3xl tw-transition tw-delay-100 tw-duration-200 tw-flex tw-basis-0 tw-w-0 group-hover:tw-w-full '}>
+                                        className={'tw-text-3xl tw-transition tw-delay-100 tw-duration-200 tw-flex tw-basis-0 tw-w-full tw-aspect-square tw-m-4'}>
                                         <MdPlaylistRemove />
                                     </div>
                                 </div>

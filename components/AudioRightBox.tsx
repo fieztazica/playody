@@ -1,7 +1,7 @@
 import VolumeBar from '@/components/VolumeBar'
 import { IconButton, Tooltip } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { MdQueueMusic, MdPlaylistAdd } from 'react-icons/md'
+import { MdQueueMusic, MdPlaylistAdd, MdLyrics } from 'react-icons/md'
 import { useAudioCtx } from '@/lib/contexts/AudioContext'
 import AddToPlaylistModal from '@/components/AddToPlaylistModal'
 
@@ -29,6 +29,18 @@ export function AudioRightBox({ ...props }) {
                     </AddToPlaylistModal>
                 </>
             }
+            <Tooltip label={`Lyrics`}>
+                <NextLink href={'/lyrics'}>
+                    <IconButton
+                        aria-label={'Lyrics'}
+                        variant={'ghost'}
+                        rounded={'full'}
+                        fontSize={'xl'}
+                        size={'sm'}
+                        icon={<MdLyrics />}
+                    />
+                </NextLink>
+            </Tooltip>
             <Tooltip label={`Queue (${queue.length})`}>
                 <NextLink href={'/queue'}>
                     <div className={'tw-relative'}>

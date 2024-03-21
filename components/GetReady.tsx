@@ -46,7 +46,7 @@ export default function GetReady(props: Props) {
     return (
         <div
             className={
-                'tw-h-screen tw-w-full tw-flex tw-justify-center tw-items-center tw-flex-col tw-space-y-2'
+                'tw-h-dvh tw-w-full tw-flex tw-justify-center tw-items-center tw-flex-col tw-space-y-2'
             }
         >
             {(!user || !profile || myPlaylists === null) && (
