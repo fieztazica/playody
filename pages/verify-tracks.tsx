@@ -1,16 +1,13 @@
 import MainLayout from '@/components/MainLayout'
 import { NavBar } from '@/components/NavBar'
 import SearchBar from '@/components/SearchBar'
-import { TrackUpdate } from '@/lib/api/track'
 import useVerifyTracks from '@/lib/hooks/useVerifyTracks'
-import { Profile, Track, TrackWithProfile } from '@/typings'
+import { TrackWithProfile } from '@/typings'
 import { Database } from '@/typings/supabase'
 import { ButtonGroup, Checkbox, IconButton, Image } from '@chakra-ui/react'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
 import { MdRefresh } from 'react-icons/md'
 import { RxCheck, RxCross2, RxTrash } from 'react-icons/rx'
 
@@ -77,7 +74,7 @@ const VerifyTracks = (
                                         className={`tw-font-semibold`}
                                         title={v.author || undefined}
                                     >
-                                        @{v.author || 'Unknown'}
+                                        @{v?.profiles?.[0]?.full_name || 'Unknown'}
                                     </span>{' '}
                                     uploaded at{' '}
                                     {new Date(
