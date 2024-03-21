@@ -3,7 +3,8 @@ import useLyrics from '@/lib/hooks/useLyrics'
 import { useRef } from 'react'
 
 const LyricsPage = () => {
-    const { playingTrack, lyrics, currentLineIndex, activeLine } = useLyrics()
+    const { playingTrack, lyrics, currentLineIndex, activeLine, isLoading } =
+        useLyrics()
 
     if (!playingTrack) {
         return (
@@ -41,6 +42,8 @@ const LyricsPage = () => {
                                   {v.text}
                               </p>
                           ))
+                        : isLoading
+                        ? `Getting lyrics for ${playingTrack.name}...`
                         : 'Lyrics not found'}
                 </div>
                 <div className="tw-text-xs">{`Provided by textyl.co, genius.com`}</div>
