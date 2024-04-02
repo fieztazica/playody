@@ -44,7 +44,7 @@ export default function CreatePlaylistModal({ children, ...props }: Props) {
                 }
 
             const { data, error } = await supabaseClient
-                .from('playlist')
+                .from('playlists')
                 .select()
                 .eq('author', user.id)
                 .eq('name', playlistName)
