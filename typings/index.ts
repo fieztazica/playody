@@ -58,7 +58,9 @@ export type Track = Database['public']['Tables']['tracks']['Row']
 export type Profile = Database['public']['Tables']['profiles']['Row']
 export type Playlist = Database['public']['Tables']['playlists']['Row']
 
-export type TrackWithProfile = Track & { profiles: Profile[] }
+export type TrackWithProfile = Track & {
+    profiles: Profile  | null
+}
 
 export type LoopMode = 'queue' | 'song' | null
 

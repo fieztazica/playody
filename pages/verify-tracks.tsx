@@ -74,7 +74,7 @@ const VerifyTracks = (
                                         className={`tw-font-semibold`}
                                         title={v.author || undefined}
                                     >
-                                        @{v?.profiles?.[0]?.full_name || 'Unknown'}
+                                        @{v?.profiles?.full_name || 'Unknown'}
                                     </span>{' '}
                                     uploaded at{' '}
                                     {new Date(
@@ -186,6 +186,4 @@ export const getServerSideProps = (async (ctx) => {
             tracks: tracks.data,
         },
     }
-}) satisfies GetServerSideProps<{
-    tracks: TrackWithProfile[] | null
-}>
+}) satisfies GetServerSideProps
